@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data
+namespace DataHandler
 {
-    public class Class1
+    /** Interfejs wypelniana kolekcji danymi */
+    interface IDataProvider
     {
+        void Fill(DataContext data);
     }
 }
