@@ -10,11 +10,20 @@ namespace DataHandler
     class DataRepository
     {
         private DataContext _data;
+        private IdManager idManager;
 
         public DataRepository(IDataProvider dataProvider) // Dependency Injection w kontruktorze
         {
             _data = new DataContext();
-            dataProvider.Fill(_data);
+            idManager = new DefaultIdManager();
+            dataProvider.Fill(_data, idManager);
+        }
+
+        public DataRepository(IDataProvider dataProvider, IdManager idManager) // Dependency Injection w kontruktorze
+        {
+            _data = new DataContext();
+            this.idManager = idManager;
+            dataProvider.Fill(_data, idManager);
         }
 
         public void AddBook(Book book)

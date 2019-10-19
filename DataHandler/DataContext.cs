@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataHandler
 {
-    class DataContext
+   public class DataContext
     {
 
         public DataContext()
@@ -14,12 +16,13 @@ namespace DataHandler
             Readers = new List<Reader>();
             Books = new Dictionary<int, Book>(); ;
             Borrowings = new ObservableCollection<Borrowing>();
-            States = new List<State>();
+            Copies = new List<Copy>();
         }
 
         public List<Reader> Readers { get; }
         public Dictionary<int, Book> Books { get; }
         public ObservableCollection<Borrowing> Borrowings { get; }
-        public List<State> States { get; }
+        public List<Copy> Copies { get; }
+
     }
 }

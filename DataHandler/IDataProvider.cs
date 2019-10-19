@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 namespace DataHandler
 {
     /** Interfejs wypelniana kolekcji danymi */
-    interface IDataProvider
+   public interface IDataProvider
     {
-        void Fill(DataContext data);
+        void Fill(DataContext data, IdManager idManager);
+       
     }
 }

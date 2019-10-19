@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataHandler", "DataHandler\DataHandler.csproj", "{3ED17A45-3F4C-40AF-B071-92FFDA67DCBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCreator", "DataCreator\DataCreator.csproj", "{2515C8A3-B92C-4DE5-8750-346361008DC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3ED17A45-3F4C-40AF-B071-92FFDA67DCBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ED17A45-3F4C-40AF-B071-92FFDA67DCBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3ED17A45-3F4C-40AF-B071-92FFDA67DCBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2515C8A3-B92C-4DE5-8750-346361008DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2515C8A3-B92C-4DE5-8750-346361008DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2515C8A3-B92C-4DE5-8750-346361008DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2515C8A3-B92C-4DE5-8750-346361008DC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
