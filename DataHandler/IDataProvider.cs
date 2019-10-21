@@ -9,7 +9,7 @@ namespace DataHandler
     /** Interfejs wypelniana kolekcji danymi */
    public interface IDataProvider
     {
-        void Fill(DataContext data, IdManager idManager);
+        void Fill(DataContext data);
        
     }
 }

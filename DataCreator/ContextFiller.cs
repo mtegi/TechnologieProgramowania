@@ -10,11 +10,13 @@ namespace DataCreator
 {
     class ContextFiller : IDataProvider
     {
-        public void Fill(DataContext data, IdManager idManager)
+        FillIdManager idManager;
+        public void Fill(DataContext data)
         {
             //Dodawanie ksiązek i egzemplarzy
             int id;
             Author author;
+            idManager = new FillIdManager();
             
             id = idManager.GenerateBookId();
             author = new Author("Jan", "Lasica");
@@ -57,6 +59,7 @@ namespace DataCreator
             // Dodawanie Eventów
 
             data.Borrowings.Add(new Borrowing(idManager.getLastReaderId(), idManager.getLastCopyId(), new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0))));
+            data.Borrowings.Add(new Borrowing(idManager.getLastReaderId()-1, idManager.getLastCopyId()-3, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0))));
 
 
         }

@@ -41,8 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultIdManager.cs" />
-    <Compile Include="IdManager.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="DataRepository.cs" />
     <Compile Include="IDataProvider.cs" />

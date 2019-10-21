@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace DataHandler
 {
-    class DefaultIdManager:IdManager
+    class FillIdManager
     {
         private int bookId;
         private int copyId;
         private int readerId;
 
-       public DefaultIdManager()
+       public FillIdManager()
         {
             bookId = 0;
             copyId = 0;
@@ -20,35 +20,35 @@ namespace DataHandler
         }
 
 
-        public override int GenerateBookId()
+        public int GenerateBookId()
         {
             bookId++;
             return bookId;
         }
 
-        public override int GenerateCopyId()
+        public int GenerateCopyId()
         {
             copyId++;
             return copyId;
         }
 
-        public override int GenerateReaderId()
+        public int GenerateReaderId()
         {
             readerId++;
             return readerId;
         }
 
-        public override int getLastBookId()
+        public int getLastBookId()
         {
             return bookId;
         }
 
-        public override int getLastCopyId()
+        public int getLastCopyId()
         {
             return copyId;
         }
 
-        public override int getLastReaderId()
+        public int getLastReaderId()
         {
             return copyId;
         }

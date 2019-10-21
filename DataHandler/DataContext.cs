@@ -16,13 +16,13 @@ namespace DataHandler
             Readers = new List<Reader>();
             Books = new Dictionary<int, Book>(); ;
             Borrowings = new ObservableCollection<Borrowing>();
-            Copies = new List<Copy>();
+            Copies = new Dictionary<int,Copy>();
         }
 
         public List<Reader> Readers { get; }
         public Dictionary<int, Book> Books { get; }
         public ObservableCollection<Borrowing> Borrowings { get; }
-        public List<Copy> Copies { get; }
+        public Dictionary<int,Copy> Copies { get; }
 
     }
 }
