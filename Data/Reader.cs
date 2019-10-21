@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Data
 {
     /** Wykaz (czytelnik) */
-    public class Reader
+    public class Reader : IComparable<Reader>
     {
         public Reader(int id, string firstName, string lastName)
         {
@@ -22,5 +22,22 @@ namespace Data
         public string City { get; set; }
         public string Adress { get; set; }
 
+     
+        public int CompareTo(Reader other)
+        {
+            if (String.Compare(this.LastName, other.LastName) < 0)
+                return -1;
+            if (String.Compare(this.LastName, other.LastName) > 0)
+                return 1;
+            else
+            {
+                if (String.Compare(this.FirstName, other.FirstName) < 0)
+                    return -1;
+                if (String.Compare(this.FirstName, other.FirstName) > 0)
+                    return 1;
+                else
+                    return 0;
+            }
+        }
     }
 }

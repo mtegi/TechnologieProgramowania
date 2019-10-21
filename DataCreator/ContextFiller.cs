@@ -23,8 +23,9 @@ namespace DataCreator
             data.Books.Add(id, new Book(id, "Wydra", author,
                 new List<LiteraryGenre> {LiteraryGenre.Comedy, LiteraryGenre.Fantasy}));
 
-            data.Copies.Add(new Copy(idManager.GenerateCopyId(), id, false, CopyCondition.Mint));
-            data.Copies.Add(new Copy(idManager.GenerateCopyId(), id, false, CopyCondition.Good));
+          
+            data.Copies.Add(idManager.GenerateCopyId(), new Copy(idManager.getLastCopyId(), id, false, CopyCondition.Mint));
+            data.Copies.Add(idManager.GenerateCopyId(), new Copy(idManager.getLastCopyId(), id, false, CopyCondition.Good));
 
 
 
@@ -33,8 +34,8 @@ namespace DataCreator
             data.Books.Add(id, new Book(id, "Lolita", author,
                 new List<LiteraryGenre> { LiteraryGenre.Biography, LiteraryGenre.SciFi }));
 
-            data.Copies.Add(new Copy(idManager.GenerateCopyId(), id, false, CopyCondition.Mint));
-            data.Copies.Add(new Copy(idManager.GenerateCopyId(), id, false, CopyCondition.Poor));
+            data.Copies.Add(idManager.GenerateCopyId(), new Copy(idManager.getLastCopyId(), id, false, CopyCondition.Mint));
+            data.Copies.Add(idManager.GenerateCopyId(), new Copy(idManager.getLastCopyId(), id, false, CopyCondition.Mint));
 
 
             id = idManager.GenerateBookId();
@@ -42,8 +43,8 @@ namespace DataCreator
             data.Books.Add(id, new Book(id, "Kosmiczna Wojna", author,
                new List<LiteraryGenre> { LiteraryGenre.Thriller, LiteraryGenre.SciFi } ));
 
-            data.Copies.Add(new Copy(idManager.GenerateCopyId(), id, false, CopyCondition.Mint));
-            data.Copies.Add(new Copy(idManager.GenerateCopyId(), id, true, CopyCondition.NearMint));
+            data.Copies.Add(idManager.GenerateCopyId(), new Copy(idManager.getLastCopyId(), id, false, CopyCondition.Mint));
+            data.Copies.Add(idManager.GenerateCopyId(), new Copy(idManager.getLastCopyId(), id, false, CopyCondition.NearMint));
 
             // Dodawanie Czytelnikow
 
@@ -58,8 +59,8 @@ namespace DataCreator
 
             // Dodawanie Eventów
 
-            data.Borrowings.Add(new Borrowing(idManager.getLastReaderId(), idManager.getLastCopyId(), new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0))));
-            data.Borrowings.Add(new Borrowing(idManager.getLastReaderId()-1, idManager.getLastCopyId()-3, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0))));
+            data.Borrowings.Add(new Borrowing(idManager.getLastReaderId(), idManager.getLastCopyId(), new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)),false));
+            data.Borrowings.Add(new Borrowing(idManager.getLastReaderId()-1, idManager.getLastCopyId()-3, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)),true));
 
 
         }

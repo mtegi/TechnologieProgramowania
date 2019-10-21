@@ -213,11 +213,18 @@ namespace DataHandler
             return _data.Borrowings;
         }
 
+        //Metoda bezpieczna, zapewniająca spójność danych wypożyczanych książek
         public void DeleteBorrowing(Borrowing borrowing)
         {
             if (!borrowing.Completed)
                 throw new InvalidOperationException("Nie mozna usunąć wypożyczenia w trakcie jego trwania!");
             else
+            _data.Borrowings.Remove(borrowing);
+        }
+        
+        // Metoda bezpośrednia, pozwalająca na usuwanie błędnych wpisów
+        public void ForceDeleteBorrwing (Borrowing borrowing)
+        {
             _data.Borrowings.Remove(borrowing);
         }
 
