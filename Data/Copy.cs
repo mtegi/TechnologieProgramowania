@@ -12,7 +12,6 @@ namespace Data
         Mint, NearMint, Good, Poor, Damaged, HeavlyDamaged
     }
 
-    // TODO: uzupelnic klase
     /** OpisStanu  */
     public class Copy
     {

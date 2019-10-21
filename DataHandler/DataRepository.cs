@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataHandler
 {
-    class DataRepository
+    public class DataRepository
     {
         private DataContext _data;
 
@@ -185,7 +185,7 @@ namespace DataHandler
                 throw new ArgumentException("Dana książka jest już wypożyczona");
             else
             {
-               tempCopy.Borrowed = true;
+                tempCopy.Borrowed = true;
               _data.Borrowings.Add(borrowing);
             }
          

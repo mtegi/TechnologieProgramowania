@@ -8,7 +8,7 @@ using Data;
 
 namespace DataCreator
 {
-    class ContextFiller : IDataProvider
+   public class ContextFiller : IDataProvider
     {
         FillIdManager idManager;
         public void Fill(DataContext data)
@@ -59,8 +59,8 @@ namespace DataCreator
 
             // Dodawanie Eventów
 
-            data.Borrowings.Add(new Borrowing(idManager.getLastReaderId(), idManager.getLastCopyId(), new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)),false));
-            data.Borrowings.Add(new Borrowing(idManager.getLastReaderId()-1, idManager.getLastCopyId()-3, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)),true));
+            data.Borrowings.Add(new Borrowing(idManager.getLastReaderId(), 6, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)),false));
+            data.Borrowings.Add(new Borrowing(idManager.getLastReaderId()-1, 3, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)),false));
 
 
         }
