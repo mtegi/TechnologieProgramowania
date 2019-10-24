@@ -17,10 +17,9 @@ namespace DataHandler
             dataProvider.Fill(_data);
         }
 
-
-        public void AddBook(Book book)
+        public void AddBook(int id, string authorFirstName, string authorLastName, string title)
         {
-            _data.Books.Add(book.Id, book);
+            _data.Books.Add(id, new Book(id,title,new Author(authorFirstName, authorLastName)));
         }
 
         public Book GetBook(int bookID)

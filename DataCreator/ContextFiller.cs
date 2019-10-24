@@ -21,10 +21,10 @@ namespace DataCreator
                 new List<LiteraryGenre> {LiteraryGenre.Comedy, LiteraryGenre.Fantasy}));
 
             int copyId = 2001;
-            data.Copies.Add(copyId, new Copy(copyId, bookId, false, CopyCondition.Mint));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[0], false, CopyCondition.Mint));
 
             copyId = 2002;
-            data.Copies.Add(copyId, new Copy(copyId, bookId, false, CopyCondition.Good));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[0], false, CopyCondition.Good));
 
 
             author = new Author("Miłosz", "Liana");
@@ -33,10 +33,10 @@ namespace DataCreator
                 new List<LiteraryGenre> { LiteraryGenre.Biography, LiteraryGenre.SciFi }));
 
             copyId = 2003;
-            data.Copies.Add(copyId, new Copy(copyId, bookId, true, CopyCondition.Mint));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[1], true, CopyCondition.Mint));
 
             copyId = 2004;
-            data.Copies.Add(copyId, new Copy(copyId, bookId, false, CopyCondition.Mint));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[1], false, CopyCondition.Mint));
 
             bookId = 1003;
             author = new Author("Maciej", "Granat");
@@ -44,10 +44,10 @@ namespace DataCreator
                new List<LiteraryGenre> { LiteraryGenre.Thriller, LiteraryGenre.SciFi } ));
 
             copyId = 2005;
-            data.Copies.Add(copyId, new Copy(copyId, bookId, false, CopyCondition.Mint));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[2], false, CopyCondition.Mint));
 
             copyId = 2006;
-            data.Copies.Add(copyId, new Copy(copyId, bookId, true, CopyCondition.NearMint));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[2], true, CopyCondition.NearMint));
 
             // Dodawanie Czytelnikow
 
@@ -62,8 +62,8 @@ namespace DataCreator
 
             // Dodawanie Eventów
 
-            data.Borrowings.Add(new Borrowing(3001, 2003, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)),false));
-            data.Borrowings.Add(new Borrowing(3002, 2006, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)),false));
+            data.Borrowings.Add(new Borrowing(data.Readers[0], data.Copies[3], new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)),false));
+            data.Borrowings.Add(new Borrowing(data.Readers[1], data.Copies[6], new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)),false));
 
 
         }

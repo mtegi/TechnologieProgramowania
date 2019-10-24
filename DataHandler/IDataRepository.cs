@@ -9,7 +9,7 @@ namespace DataHandler
 {
     interface IDataRepository
     {
-         void AddBook(Book book);
+         void AddBook(int id, string authorFirstName, string authorLastName, string title);
          Book GetBook(int id);
          bool ContainsBook(int id);
          IEnumerable<Book> GetAllBooks();

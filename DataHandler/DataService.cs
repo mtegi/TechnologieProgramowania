@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataHandler
 {
-    class DataService
+    class DataService //TODO: Przebudowac
     {
         private IDataRepository repository;
 
@@ -21,7 +21,12 @@ namespace DataHandler
             repository.AddReader(new Reader(id, firstName, lastName));
         }
 
-        public void CreateBook()
+        public void BuyBook(int id, string authorFirstName, string authorLastName, string title)
+        {
+            //TODO: zdarzenie zakupu
+            //repository.
+            repository.AddBook(id,authorFirstName, authorLastName, title);
+        }
 
 
        IEnumerable<Book> FindBooksByTitle(string title)

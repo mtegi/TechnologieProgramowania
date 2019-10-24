@@ -20,13 +20,11 @@ namespace UnitTests
             Assert.AreEqual("Wydra", dataRepository.GetBook(1).Title);
             Assert.AreEqual("Jan", dataRepository.GetBook(1).Author.FirstName);
             Assert.AreEqual("Lasica", dataRepository.GetBook(1).Author.LastName);
-            Assert.AreEqual(LiteraryGenre.Comedy, dataRepository.GetBook(1).Genres[0]);
 
             Assert.AreEqual(2, dataRepository.GetBook(2).Id);
             Assert.AreEqual("Lolita", dataRepository.GetBook(2).Title);
             Assert.AreEqual("Mi³osz", dataRepository.GetBook(2).Author.FirstName);
             Assert.AreEqual("Liana", dataRepository.GetBook(2).Author.LastName);
-            Assert.AreEqual(LiteraryGenre.SciFi, dataRepository.GetBook(2).Genres[1]);
         }
 
         [TestMethod]
@@ -42,8 +40,8 @@ namespace UnitTests
         public void ContextFillerCopyTest()
         {
             dataRepository = new DataRepository(filler);
-            Assert.AreEqual(3, dataRepository.GetCopy(6).BookId);
-            Assert.AreEqual(2, dataRepository.GetCopy(3).BookId);
+            Assert.AreEqual(dataRepository.GetBook(1003), dataRepository.GetCopy(6).Book);
+            Assert.AreEqual(dataRepository.GetBook(1002), dataRepository.GetCopy(3).Book);
             Assert.AreEqual(false, dataRepository.GetCopy(1).Borrowed);
             int id = 1;
             foreach (Copy copy in dataRepository.GetAllCopies())
