@@ -9,17 +9,17 @@ namespace Data
     /** Zdarzenie (wypozyczenie) */
     public class Borrowing
     {
-        public Borrowing(int readerId, int copyId, DateTimeOffset borrowDate, DateTimeOffset returnDate, bool completed)
+        public Borrowing(Reader reader, Copy copy, DateTimeOffset borrowDate, DateTimeOffset returnDate, bool completed)
         {
-            ReaderId = readerId;
-            CopyId = copyId;
+            this.Reader = reader;
+            this.Copy = copy;
             BorrowDate = borrowDate;
             ReturnDate = returnDate;
             Completed = completed;
         }
 
-        public int ReaderId { get; }
-        public int CopyId { get; }
+        public Reader Reader{ get; }
+        public Copy Copy { get; }
         public DateTimeOffset BorrowDate { get; set; }
         public DateTimeOffset ReturnDate { get; set; }
         public bool Completed { get; set; }

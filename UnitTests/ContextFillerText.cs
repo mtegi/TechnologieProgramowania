@@ -59,8 +59,9 @@ namespace UnitTests
             dataRepository = new DataRepository(filler);
             foreach(Copy copy in dataRepository.GetAllCopies())
             {
-                if(copy.CopyId == 3 || copy.CopyId == 6) Assert.AreEqual(false, copy.Borrowed);
-                Assert.AreEqual(true, copy.Borrowed);
+                if(copy.CopyId == 3 || copy.CopyId == 6) Assert.AreEqual(true, copy.Borrowed);
+                else
+                Assert.AreEqual(false, copy.Borrowed);
 
             }         
         }

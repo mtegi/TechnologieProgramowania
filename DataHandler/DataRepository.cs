@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataHandler
 {
-    public class DataRepository
+    public class DataRepository : IDataRepository
     {
         private DataContext _data;
 
@@ -20,15 +20,17 @@ namespace DataHandler
 
         public void AddBook(Book book)
         {
-            if (_data.Books.ContainsKey(book.Id))
-                throw new ArgumentException("Książka o danym ID już znajduje się w katalogu");
-            else
             _data.Books.Add(book.Id, book);
         }
 
         public Book GetBook(int bookID)
         {
             return _data.Books[bookID];
+        }
+
+        public bool ContainsBook(int id)
+        {
+            return _data.Books.ContainsKey(id);
         }
 
         public IEnumerable<Book> GetAllBooks()
@@ -38,7 +40,6 @@ namespace DataHandler
 
         public void UpdateBook(int orginalId, Book newBook)
         {
-
 
             if (!_data.Books.ContainsKey(orginalId))
                 throw new ArgumentException("Próba aktualizacji książki, której nie ma w katalogu");
@@ -53,23 +54,15 @@ namespace DataHandler
         { 
             if (!_data.Books.ContainsValue(orginalBook))
                 throw new ArgumentException("Próba aktualizacji książki, której nie ma w katalogu");
+            if(orginalBook==newBook)
+                throw new ArgumentException("Próba aktualizacji książki referencją do tej smamej książki ");
+
             else
             {
                 _data.Books.Remove(orginalBook.Id);
                 _data.Books.Add(newBook.Id, newBook);
             }
 
-        }
-
-        public List<Book> FindBooks(string title)
-        {
-            List<Book> result = new List<Book>();
-            foreach (Book entry in _data.Books.Values)
-            {
-                if (String.Equals(entry.Title, title, StringComparison.CurrentCultureIgnoreCase))
-                    result.Add(entry);
-            }
-            return result;
         }
 
         public void DeleteBook(Book book)
@@ -95,6 +88,11 @@ namespace DataHandler
         public Reader GetReader(int id)
         {
             return _data.Readers.Find(x => x.Id == id);
+        }
+
+        public bool ContainsReader(int id)
+        {
+            return _data.Readers.Any(x => x.Id == id);
         }
 
         public IEnumerable<Reader> GetAllReaders()
@@ -124,6 +122,19 @@ namespace DataHandler
             }
         }
 
+        public void UpdateReader(Reader originalReader, Reader reader)
+        {
+            if (!_data.Readers.Contains(originalReader))
+                throw new ArgumentException("Próba aktualizacji czytelnika, którego nie ma w bazie");
+            if (originalReader == reader)
+                throw new ArgumentException("Próba aktualizacji czytelnika referencją do tego samego czytelnika");
+            else
+            {
+                _data.Readers.Remove(originalReader);
+                _data.Readers.Add(reader);
+            }
+        }
+
         public void AddCopy(Copy copy)
         {
             if (_data.Copies.ContainsKey(copy.CopyId))
@@ -135,6 +146,11 @@ namespace DataHandler
         public Copy GetCopy(int copyID)
         {
             return _data.Copies[copyID];
+        }
+
+        public bool ContainsCopy(int copyId)
+        {
+            return _data.Copies.ContainsKey(copyId);
         }
 
         public IEnumerable<Copy> GetAllCopies()
@@ -191,47 +207,24 @@ namespace DataHandler
          
         }
 
-        // Wypożyczenia danego czytelnika
-        public IEnumerable<Borrowing> GetReaderBorrowings(int readerId)
-        {
-            return _data.Borrowings.Where(x => x.ReaderId == readerId);
-        }
-
-        // Wypożyczenia danego czytelnika
-        public IEnumerable<Borrowing> GetCopyBorrowings(int copyId)
-        {
-            return _data.Borrowings.Where(x => x.CopyId == copyId);
-        }
-
-        public IEnumerable<Borrowing> GetCopyReaderBorrowings(int copyId, int readerId)
-        {
-            return _data.Borrowings.Where(x => x.CopyId == copyId && x.ReaderId ==readerId);
-        }
-
         public IEnumerable<Borrowing> GetAllBorrowings()
         {
             return _data.Borrowings;
         }
 
-        //Metoda bezpieczna, zapewniająca spójność danych wypożyczanych książek
+
         public void DeleteBorrowing(Borrowing borrowing)
         {
-            if (!borrowing.Completed)
-                throw new InvalidOperationException("Nie mozna usunąć wypożyczenia w trakcie jego trwania!");
-            else
             _data.Borrowings.Remove(borrowing);
         }
         
-        // Metoda bezpośrednia, pozwalająca na usuwanie błędnych wpisów
-        public void ForceDeleteBorrwing (Borrowing borrowing)
-        {
-            _data.Borrowings.Remove(borrowing);
-        }
 
         public void UpdateBorrowing(Borrowing orginalBorrowing, Borrowing newBorrowing)
         {
             if (!_data.Borrowings.Contains(orginalBorrowing))
                 throw new ArgumentException("Próba aktualizacji wypożyczenia które nie istnieje");
+            if (orginalBorrowing == newBorrowing)
+                throw new ArgumentException("Próba aktualizacji wypożyczenia poprzez referencje do tego samego wypożyczenia");
             else
             {
                 _data.Borrowings.Remove(orginalBorrowing);
@@ -239,28 +232,6 @@ namespace DataHandler
             }
                 
         }
-
-        public void CompleteBorrowing(Borrowing borrowing)
-        {
-            if (!_data.Borrowings.Contains(borrowing))
-                throw new ArgumentException("Próba zakończenia wypożyczenia które nie istnieje w bazie danych");
-            if (borrowing.Completed)
-                throw new ArgumentException("Próba zakończenia wypożyczenia które jest już zakończone");
-            if (!_data.Copies.ContainsKey(borrowing.CopyId))
-                throw new ArgumentException("Próba zakończenia wypożyczenia egzemplarza, którego nie ma w bazie");
-            if (!_data.Copies[borrowing.CopyId].Borrowed)
-                throw new ArgumentException("Próba zakończenia wypożyczenia egzemplarza, który nie jest aktualnie wypożyczony");
-            else
-            {
-                borrowing.Completed = true;
-                _data.Copies[borrowing.CopyId].Borrowed = false; 
-            }
-        }
-
-
-
-
-
 
     }
 }

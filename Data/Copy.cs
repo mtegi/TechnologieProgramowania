@@ -16,14 +16,14 @@ namespace Data
     public class Copy
     {
         public int CopyId { get; set; }
-        public int BookId { get; }
+        public Book Book { get; }
         public bool Borrowed { get; set; } //czy wypozyczona
         public CopyCondition Condition { get; set; }
 
-        public Copy(int copyID, int bookId, bool borrowed, CopyCondition condition)
+        public Copy(int copyID, Book book, bool borrowed, CopyCondition condition)
         {
             CopyId = copyID;
-            BookId = bookId;
+            this.Book = book;
             Borrowed = borrowed;
             Condition = condition;
         }
