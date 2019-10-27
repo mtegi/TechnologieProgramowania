@@ -50,10 +50,6 @@
       <Project>{3ed17a45-3f4c-40af-b071-92ffda67dcba}</Project>
       <Name>DataHandler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Data\Data.csproj">
-      <Project>{0ab5e73b-563b-4adb-85fa-e0c835d28de9}</Project>
-      <Name>Data</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

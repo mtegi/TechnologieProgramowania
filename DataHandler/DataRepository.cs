@@ -17,14 +17,14 @@ namespace DataHandler
             dataProvider.Fill(_data);
         }
 
-        public void AddBook(int id, string authorFirstName, string authorLastName, string title)
+        public void AddBook(int id, string title, string author, string genres)
         {
-            _data.Books.Add(id, new Book(id,title,new Author(authorFirstName, authorLastName)));
+            _data.Books.Add(id, new Book(id,title,author,genres));
         }
 
-        public Book GetBook(int bookID)
+        public WrappedBook GetBook(int bookID)
         {
-            return _data.Books[bookID];
+            return new WrappedBook(_data.Books[bookID]);
         }
 
         public bool ContainsBook(int id)
@@ -32,43 +32,23 @@ namespace DataHandler
             return _data.Books.ContainsKey(id);
         }
 
-        public IEnumerable<Book> GetAllBooks()
+        public IEnumerable<WrappedBook> GetAllBooks()
         {
-            return _data.Books.Values;
-        }
+             List<WrappedBook> result = new List<WrappedBook>();
 
-        public void UpdateBook(int orginalId, Book newBook)
-        {
-
-            if (!_data.Books.ContainsKey(orginalId))
-                throw new ArgumentException("Próba aktualizacji książki, której nie ma w katalogu");
-            else
+            foreach (KeyValuePair<int, Book> entry in _data.Books)
             {
-                _data.Books.Remove(orginalId);
-                _data.Books.Add(newBook.Id, newBook);
+                result.Add(new WrappedBook(entry.Value));
             }
+            return result;
         }
 
-        public void UpdateBook(Book orginalBook, Book newBook)
-        { 
-            if (!_data.Books.ContainsValue(orginalBook))
-                throw new ArgumentException("Próba aktualizacji książki, której nie ma w katalogu");
-            if(orginalBook==newBook)
-                throw new ArgumentException("Próba aktualizacji książki referencją do tej smamej książki ");
-
-            else
-            {
-                _data.Books.Remove(orginalBook.Id);
-                _data.Books.Add(newBook.Id, newBook);
-            }
-
-        }
-
-        public void DeleteBook(Book book)
+        public void UpdateBook(int orginalId, string title, string author, string genres)
         {
-
-            //TODO: sprawdzanie czy mozna, wyjatki
-            _data.Books.Remove(book.Id);
+                _data.Books[orginalId].Title = title;
+                _data.Books[orginalId].Author = author;
+                _data.Books[orginalId].Genres = genres;
+            
         }
 
         public void DeleteBook(int bookID)
@@ -76,17 +56,17 @@ namespace DataHandler
             _data.Books.Remove(bookID);
         }
 
-        public void AddReader(Reader reader)
+        public void AddReader(int id, string firstName, string lastName)
         {
-            if(_data.Readers.Any(i => i.Id==reader.Id))
+            if(_data.Readers.Any(i => i.Id==id))
                 throw new ArgumentException("Czytelnik o danym ID już znajduje się w wykazie");
             else
-            _data.Readers.Add(reader);
+            _data.Readers.Add(new Reader(id,firstName,lastName));
         }
 
-        public Reader GetReader(int id)
+        public WrappedReader GetReader(int id)
         {
-            return _data.Readers.Find(x => x.Id == id);
+            return new WrappedReader( _data.Readers.Find(x => x.Id == id));
         }
 
         public bool ContainsReader(int id)
@@ -94,15 +74,16 @@ namespace DataHandler
             return _data.Readers.Any(x => x.Id == id);
         }
 
-        public IEnumerable<Reader> GetAllReaders()
+        public IEnumerable<WrappedReader> GetAllReaders()
         {
-            return _data.Readers;
-        }
+            List<WrappedReader> result = new List<WrappedReader>();
 
-        public void DeleteReader(Reader reader)
-        {
-            //TODO: sprawdzic czy klient ma wypozyczenie bo inaczej nie mozna go usunac
-            _data.Readers.Remove(reader);
+            foreach (Reader reader in _data.Readers)
+            {
+                result.Add(new WrappedReader(reader));
+            }
+
+            return result;
         }
 
         public void DeleteReader(int readerId)
@@ -110,41 +91,20 @@ namespace DataHandler
             _data.Readers.RemoveAll(i => i.Id == readerId);
         }
 
-        public void UpdateReader(int originalId, Reader reader)
+        public void UpdateReader(int originalId, string firstName, string lastName)
         {
-            if (!_data.Readers.Any(i => i.Id == reader.Id))
-                throw new ArgumentException("Próba aktualizacji czytelnika, którego nie ma w bazie");
-            else
-            {
-                _data.Readers.RemoveAll(i => i.Id == originalId);
-                _data.Readers.Add(reader);
-            }
+            _data.Readers[originalId].FirstName = firstName;
+            _data.Readers[originalId].LastName = lastName;
         }
 
-        public void UpdateReader(Reader originalReader, Reader reader)
+        public void AddCopy(int copyId, int bookId, CopyCondition condition)
         {
-            if (!_data.Readers.Contains(originalReader))
-                throw new ArgumentException("Próba aktualizacji czytelnika, którego nie ma w bazie");
-            if (originalReader == reader)
-                throw new ArgumentException("Próba aktualizacji czytelnika referencją do tego samego czytelnika");
-            else
-            {
-                _data.Readers.Remove(originalReader);
-                _data.Readers.Add(reader);
-            }
+             _data.Copies.Add(copyId, new Copy(copyId,_data.Books[bookId], (int) condition ));
         }
 
-        public void AddCopy(Copy copy)
+        public WrappedCopy GetCopy(int copyID)
         {
-            if (_data.Copies.ContainsKey(copy.CopyId))
-                throw new ArgumentException("Książka o danym ID już znajduje się w katalogu");
-            else
-                _data.Copies.Add(copy.CopyId, copy);
-        }
-
-        public Copy GetCopy(int copyID)
-        {
-            return _data.Copies[copyID];
+            return new WrappedCopy( _data.Copies[copyID]);
         }
 
         public bool ContainsCopy(int copyId)
@@ -152,85 +112,50 @@ namespace DataHandler
             return _data.Copies.ContainsKey(copyId);
         }
 
-        public IEnumerable<Copy> GetAllCopies()
+        public IEnumerable<WrappedCopy> GetAllCopies()
         {
-            return _data.Copies.Values;
-        }
+            List<WrappedCopy> result = new List<WrappedCopy>();
 
-        public void UpdateCopy(int orginalId, Copy newCopy)
-        {
-
-
-            if (!_data.Copies.ContainsKey(orginalId))
-                throw new ArgumentException("Próba aktualizacji książki, której nie ma w katalogu");
-            else
+            foreach (KeyValuePair<int, Copy> entry in _data.Copies)
             {
-                _data.Copies.Remove(orginalId);
-                _data.Copies.Add(newCopy.CopyId, newCopy);
+                result.Add(new WrappedCopy(entry.Value));
             }
+            return result;
         }
 
-        public void UpdateCopy(Copy orginalCopy, Copy newCopy)
+        public void UpdateCopy(int id, int bookId, bool borrowed, CopyCondition condition)
         {
-            if (!_data.Copies.ContainsValue(orginalCopy))
-                throw new ArgumentException("Próba aktualizacji książki, której nie ma w katalogu");
-            else
-            {
-                _data.Copies.Remove(orginalCopy.CopyId);
-                _data.Copies.Add(newCopy.CopyId, newCopy);
-            }
-
+            _data.Copies[id].Book = _data.Books[bookId];
+            _data.Copies[id].Borrowed = borrowed;
+            _data.Copies[id].Condition = (int)condition;
         }
 
-
-        public void DeleteCopy(Copy copy)
-        {
-            _data.Copies.Remove(copy.CopyId);
-        }
 
         public void DeleteCopy(int copyID)
         {
             _data.Copies.Remove(copyID);
         }
 
-        public void AddBorrowing(Borrowing borrowing)
+        public void AddPurchaseEvent ( int copyId, DateTimeOffset eventDate, int price, string distributor)
         {
-           Copy tempCopy = GetCopy(borrowing.CopyId);
-            if (tempCopy.Borrowed)
-                throw new ArgumentException("Dana książka jest już wypożyczona");
-            else
-            {
-                tempCopy.Borrowed = true;
-              _data.Borrowings.Add(borrowing);
-            }
-         
+            _data.Events.Add(new PurchaseEvent(_data.Copies[copyId], eventDate, price, distributor));
         }
 
-        public IEnumerable<Borrowing> GetAllBorrowings()
+        public void AddDestructionEvent (int copyId, DateTimeOffset eventDate, string reason)
         {
-            return _data.Borrowings;
+            _data.Events.Add(new DestructionEvent(_data.Copies[copyId], eventDate, reason));
         }
 
-
-        public void DeleteBorrowing(Borrowing borrowing)
+        public void AddBorrowingEvent (int copyId, DateTimeOffset eventDate, DateTimeOffset returnDate, int readerId)
         {
-            _data.Borrowings.Remove(borrowing);
+            _data.Events.Add(new BorrowingEvent(_data.Copies[copyId], eventDate, returnDate, _data.Readers.Find(x => x.Id == readerId)));
         }
-        
 
-        public void UpdateBorrowing(Borrowing orginalBorrowing, Borrowing newBorrowing)
+        public void AddReturnEvent(int copyId, DateTimeOffset eventDate, WrappedBorrowing borrowing, int readerId)
         {
-            if (!_data.Borrowings.Contains(orginalBorrowing))
-                throw new ArgumentException("Próba aktualizacji wypożyczenia które nie istnieje");
-            if (orginalBorrowing == newBorrowing)
-                throw new ArgumentException("Próba aktualizacji wypożyczenia poprzez referencje do tego samego wypożyczenia");
-            else
-            {
-                _data.Borrowings.Remove(orginalBorrowing);
-                _data.Borrowings.Add(newBorrowing);
-            }
-                
+            _data.Events.Add(new ReturnEvent(_data.Copies[copyId], eventDate, (BorrowingEvent)borrowing.GetEvent(), _data.Readers.Find(x => x.Id == readerId));
         }
+
 
     }
 }

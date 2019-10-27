@@ -15,14 +15,17 @@ namespace DataHandler
         {
             Readers = new List<Reader>();
             Books = new Dictionary<int, Book>(); ;
-            Borrowings = new ObservableCollection<Borrowing>();
+            Events = new ObservableCollection<LibEvent>();
             Copies = new Dictionary<int,Copy>();
+
         }
 
         public List<Reader> Readers { get; }
         public Dictionary<int, Book> Books { get; }
-        public ObservableCollection<Borrowing> Borrowings { get; }
+        public ObservableCollection<LibEvent> Events { get; }
         public Dictionary<int,Copy> Copies { get; }
+
+        public List<Copy> Archive { get;  }
 
     }
 }

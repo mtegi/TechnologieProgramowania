@@ -7,24 +7,23 @@ using System.Threading.Tasks;
 namespace Data
 {
 
-    public enum CopyCondition
-    {
-        Mint, NearMint, Good, Poor, Damaged, HeavlyDamaged
-    }
-
     /** OpisStanu  */
     public class Copy
     {
         public int CopyId { get; set; }
-        public Book Book { get; }
+        public Book Book { get; set; }
         public bool Borrowed { get; set; } //czy wypozyczona
-        public CopyCondition Condition { get; set; }
+        public int Condition { get; set; }
 
-        public Copy(int copyID, Book book, bool borrowed, CopyCondition condition)
+        public Copy(int copyID, Book book, int condition)
         {
+
+            if (condition < 1 || condition > 6)
+                throw new ArgumentException("condition nie znajduje się w dowzolonym przedziale 1-6");
+
             CopyId = copyID;
             this.Book = book;
-            Borrowed = borrowed;
+            Borrowed = false;
             Condition = condition;
         }
     }

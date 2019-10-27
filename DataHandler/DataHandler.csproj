@@ -42,15 +42,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDataRepository.cs" />
-    <Compile Include="DataService.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="DataRepository.cs" />
     <Compile Include="IDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WrappedBook.cs" />
+    <Compile Include="WrappedBorrowing.cs" />
+    <Compile Include="WrappedCopy.cs" />
+    <Compile Include="WrappedDestruction.cs" />
+    <Compile Include="WrappedEvent.cs" />
+    <Compile Include="WrappedPurchase.cs" />
+    <Compile Include="WrappedReader.cs" />
+    <Compile Include="WrappedReturn.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj">
-      <Project>{0ab5e73b-563b-4adb-85fa-e0c835d28de9}</Project>
+      <Project>{5696205d-b45d-4406-8d70-3834c6bb9429}</Project>
       <Name>Data</Name>
     </ProjectReference>
   </ItemGroup>

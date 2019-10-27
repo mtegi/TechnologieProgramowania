@@ -15,7 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DataCreator\DataCreator.csproj" />
     <ProjectReference Include="..\DataHandler\DataHandler.csproj" />
-    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
 </Project>

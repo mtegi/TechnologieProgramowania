@@ -16,9 +16,9 @@ namespace Data
             LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
         }
 
-        public int Id { get; }
-        public string FirstName { get; }
-        public string LastName { get; }
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
      
         public int CompareTo(Reader other)
         {

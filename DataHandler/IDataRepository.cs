@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataHandler
 {
-    interface IDataRepository
+   public interface IDataRepository
     {
          void AddBook(int id, string authorFirstName, string authorLastName, string title);
          Book GetBook(int id);
