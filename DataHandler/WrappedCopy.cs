@@ -16,7 +16,7 @@ namespace DataHandler
     {
         private Copy Copy;
 
-        public int Id { get; }
+        public int copyId { get; }
         public WrappedBook Book { get; }
         public bool Borrowed { get; }
         public CopyCondition Condition { get; }
@@ -26,7 +26,8 @@ namespace DataHandler
        public WrappedCopy(Copy copy)
         {
             this.Copy = copy;
-            this.Id = copy.CopyId;
+
+            this.copyId = copy.CopyId;
             this.Book = new WrappedBook(Copy.Book);
             this.Borrowed = copy.Borrowed;
             this.Condition = (CopyCondition)copy.Condition;

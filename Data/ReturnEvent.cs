@@ -9,10 +9,12 @@ namespace Data
     public class ReturnEvent: LibEvent
     {
         public Reader Reader { get; set; }
+        public BorrowingEvent Borrowing { get; set; }
 
-        public  ReturnEvent(Copy copy, DateTimeOffset eventDate, Reader reader) : base(4, copy, eventDate)
+        public  ReturnEvent(Copy copy, DateTimeOffset eventDate, Reader reader, BorrowingEvent borrowing) : base(4, copy, eventDate)
         {
             this.Reader = reader;
+            this.Borrowing = borrowing;
         }
     }
 }

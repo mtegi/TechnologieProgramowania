@@ -14,18 +14,12 @@ namespace DataHandler
         public DateTimeOffset ReturnDate { get; }
         public bool Completed { get; }
 
-        public WrappedReturn ReturnEvent { get;  }
 
        public WrappedBorrowing (BorrowingEvent borrowing):base(borrowing)
         {
             this.ReturnDate = borrowing.ReturnDate;
             this.Reader = new WrappedReader(borrowing.Reader);
             this.Completed = borrowing.Completed;
-
-
-            if (Completed)
-                this.ReturnEvent = new WrappedReturn(borrowing.Return);
-            
 
         }
 

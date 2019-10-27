@@ -33,8 +33,9 @@ namespace DataHandler
          void AddPurchaseEvent(int copyId, DateTimeOffset eventDate, int price, string distributor);
          void AddDestructionEvent(int copyId, DateTimeOffset eventDate, string reason);
          void AddBorrowingEvent(int copyId, DateTimeOffset eventDate, DateTimeOffset returnDate, int readerId);
-         void AddReturnEvent(int copyId, DateTimeOffset eventDate, int readerId);
-
+         void CompleteBorrowingEvent(WrappedBorrowing borrowing);
+         void AddReturnEvent(int copyId, DateTimeOffset eventDate, int readerId, WrappedBorrowing borrowing);
+         IEnumerable<WrappedEvent> GetAllEvents();
 
 
     }
