@@ -151,9 +151,9 @@ namespace DataHandler
             _data.Events.Add(new BorrowingEvent(_data.Copies[copyId], eventDate, returnDate, _data.Readers.Find(x => x.Id == readerId)));
         }
 
-        public void AddReturnEvent(int copyId, DateTimeOffset eventDate, WrappedBorrowing borrowing, int readerId)
+        public void AddReturnEvent(int copyId, DateTimeOffset eventDate, int readerId)
         {
-            _data.Events.Add(new ReturnEvent(_data.Copies[copyId], eventDate, (BorrowingEvent)borrowing.GetEvent(), _data.Readers.Find(x => x.Id == readerId));
+            _data.Events.Add(new ReturnEvent(_data.Copies[copyId], eventDate, _data.Readers.Find(x => x.Id == readerId)));
         }
 
 

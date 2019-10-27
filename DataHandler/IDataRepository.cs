@@ -9,36 +9,33 @@ namespace DataHandler
 {
    public interface IDataRepository
     {
-         void AddBook(int id, string authorFirstName, string authorLastName, string title);
-         Book GetBook(int id);
+         void AddBook(int id, string title, string author, string genres);
+         WrappedBook GetBook(int id);
          bool ContainsBook(int id);
-         IEnumerable<Book> GetAllBooks();
-         void DeleteBook(Book book);
+         IEnumerable<WrappedBook> GetAllBooks();
          void DeleteBook(int id);
-         void UpdateBook(int orginalId, Book newBook);
-         void UpdateBook(Book orginalBook, Book newBook);
+         void UpdateBook(int orginalId, string title, string author, string genres);
 
-         void AddCopy(Copy copy);
-         Copy GetCopy(int id);
+         void AddCopy(int copyId, int bookId, CopyCondition condition);
+         WrappedCopy GetCopy(int id);
          bool ContainsCopy(int id);
-         IEnumerable<Copy> GetAllCopies();
-         void DeleteCopy(Copy copy);
+         IEnumerable<WrappedCopy> GetAllCopies();
          void DeleteCopy(int id);
-         void UpdateCopy(int orginalId, Copy newCopy);
-         void UpdateCopy(Copy orginalCopy, Copy newCopy);
+         void UpdateCopy(int orginalId, int bookId, bool borrowed, CopyCondition condition);
 
-         void AddReader(Reader reader);
-         Reader GetReader(int id);
+         void AddReader(int id, string FirstName, string Lastname);
+         WrappedReader GetReader(int id);
          bool ContainsReader(int id);
-         IEnumerable<Reader> GetAllReaders();
-         void DeleteReader(Reader reader);
+         IEnumerable<WrappedReader> GetAllReaders();
          void DeleteReader(int id);
-         void UpdateReader(int orginalId, Reader newReader);
-         void UpdateReader(Reader orginalReader, Reader newReader);
+         void UpdateReader(int orginalId, string FirstName, string Lastname);
 
-         void AddBorrowing(Borrowing borrowing);
-         IEnumerable<Borrowing> GetAllBorrowings();
-         void DeleteBorrowing(Borrowing borrowing);
-         void UpdateBorrowing(Borrowing orginalBorrowing, Borrowing newBorrowing);
+         void AddPurchaseEvent(int copyId, DateTimeOffset eventDate, int price, string distributor);
+         void AddDestructionEvent(int copyId, DateTimeOffset eventDate, string reason);
+         void AddBorrowingEvent(int copyId, DateTimeOffset eventDate, DateTimeOffset returnDate, int readerId);
+         void AddReturnEvent(int copyId, DateTimeOffset eventDate, int readerId);
+
+
+
     }
 }
