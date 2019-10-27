@@ -17,7 +17,7 @@ namespace Data
         
 
 
-        public BorrowingEvent(Copy copy, DateTimeOffset eventDate, DateTimeOffset returnDate, Reader reader) : base(3, copy, eventDate)
+        public BorrowingEvent(Reader reader, Copy copy, DateTimeOffset eventDate, DateTimeOffset returnDate) : base(3, copy, eventDate)
         {
             this.ReturnDate = returnDate;
             this.Reader = reader;

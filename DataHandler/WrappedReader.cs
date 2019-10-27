@@ -13,15 +13,15 @@ namespace DataHandler
         private Reader reader;
 
         public int Id { get; }
-        public string FristName { get; }
+        public string FirstName { get; }
         public string LastName { get; }
 
       public  WrappedReader(Reader reader)
         {
             this.reader = reader;
 
-            this.Id = Id; 
-            this.FristName = reader.FirstName;
+            this.Id = reader.Id; 
+            this.FirstName = reader.FirstName;
             this.LastName = reader.LastName;
         }
 

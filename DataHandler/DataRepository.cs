@@ -93,8 +93,9 @@ namespace DataHandler
 
         public void UpdateReader(int originalId, string firstName, string lastName)
         {
-            _data.Readers[originalId].FirstName = firstName;
-            _data.Readers[originalId].LastName = lastName;
+            Reader reader = _data.Readers.Find(r => r.Id == originalId);
+            reader.FirstName = firstName;
+            reader.LastName = lastName;
         }
 
         public void AddCopy(int copyId, int bookId, CopyCondition condition)
@@ -148,7 +149,7 @@ namespace DataHandler
 
         public void AddBorrowingEvent (int copyId, DateTimeOffset eventDate, DateTimeOffset returnDate, int readerId)
         {
-            _data.Events.Add(new BorrowingEvent(_data.Copies[copyId], eventDate, returnDate, _data.Readers.Find(x => x.Id == readerId)));
+            _data.Events.Add(new BorrowingEvent(_data.Readers.Find(x => x.Id == readerId), _data.Copies[copyId], eventDate, returnDate));
         }
 
         public void AddReturnEvent(int copyId, DateTimeOffset eventDate, int readerId)
