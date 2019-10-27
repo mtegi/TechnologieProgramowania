@@ -11,9 +11,6 @@ namespace Data
         public DateTimeOffset ReturnDate { get; set; }
         public Reader Reader { get; set; }
         public bool Completed { get; set; }
-
-        // Null until completed
-        public ReturnEvent Return { get; set; }
         
 
 
@@ -22,7 +19,6 @@ namespace Data
             this.ReturnDate = returnDate;
             this.Reader = reader;
             this.Completed = false;
-            this.Return = null; 
         }
 
     }

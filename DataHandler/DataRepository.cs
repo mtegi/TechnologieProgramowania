@@ -125,6 +125,7 @@ namespace DataHandler
 
         public void UpdateCopy(int id, int bookId, bool borrowed, CopyCondition condition)
         {
+
             _data.Copies[id].Book = _data.Books[bookId];
             _data.Copies[id].Borrowed = borrowed;
             _data.Copies[id].Condition = (int)condition;
@@ -151,9 +152,50 @@ namespace DataHandler
             _data.Events.Add(new BorrowingEvent(_data.Copies[copyId], eventDate, returnDate, _data.Readers.Find(x => x.Id == readerId)));
         }
 
-        public void AddReturnEvent(int copyId, DateTimeOffset eventDate, int readerId)
+        public void CompleteBorrowingEvent (WrappedBorrowing wrappedBorrwing)
         {
-            _data.Events.Add(new ReturnEvent(_data.Copies[copyId], eventDate, _data.Readers.Find(x => x.Id == readerId)));
+            BorrowingEvent borrowing = (BorrowingEvent)wrappedBorrwing.GetEvent();
+            borrowing.Completed = true;
+        }
+
+        public void AddReturnEvent(int copyId, DateTimeOffset eventDate, int readerId, WrappedBorrowing borrowing)
+        {
+            _data.Events.Add(new ReturnEvent(_data.Copies[copyId], eventDate, _data.Readers.Find(x => x.Id == readerId),(BorrowingEvent)borrowing.GetEvent()));
+        }
+
+        public IEnumerable<WrappedEvent> GetAllEvents()
+        {
+            List<WrappedEvent> result = new List<WrappedEvent>();
+
+            foreach (LibEvent libEvent in _data.Events)
+            {
+                result.Add(WrapEvent(libEvent));
+            }
+
+            return result;
+        }
+
+        private WrappedEvent WrapEvent (LibEvent libEvent)
+        {
+            WrappedEvent result;
+            switch((EventType)libEvent.EventType)
+            {
+                case EventType.Purchase:
+                    result = new WrappedPurchase((PurchaseEvent)libEvent);
+                    break;
+                case EventType.Destruction:
+                    result = new WrappedDestruction((DestructionEvent)libEvent);
+                    break;
+                case EventType.Borrowing:
+                    result = new WrappedBorrowing((BorrowingEvent)libEvent);
+                    break;
+                case EventType.Return:
+                    result = new WrappedReturn((ReturnEvent)libEvent);
+                    break;
+                default:
+                    throw new ArgumentException("Nie rozpoznano typu wydarzenia");
+            }
+            return result;
         }
 
 

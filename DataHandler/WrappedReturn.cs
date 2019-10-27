@@ -10,11 +10,13 @@ namespace DataHandler
     public class WrappedReturn:WrappedEvent
     {
         public WrappedReader Reader { get; }
+        public WrappedBorrowing Borrowing { get; }
 
        public WrappedReturn(ReturnEvent returnEvent) : base (returnEvent)
         {
  
             this.Reader = new WrappedReader(returnEvent.Reader);
+            this.Borrowing = new WrappedBorrowing(returnEvent.Borrowing);
         }
 
     }
