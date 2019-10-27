@@ -44,7 +44,7 @@ namespace UnitTests
             int id = 1;
             foreach (WrappedCopy copy in dataRepository.GetAllCopies())
             {
-                Assert.AreEqual(id, copy.Id);
+                Assert.AreEqual(id, copy.copyId);
                 id++;
             }
         }
@@ -55,7 +55,7 @@ namespace UnitTests
             dataRepository = new DataRepository(filler);
             foreach(WrappedCopy copy in dataRepository.GetAllCopies())
             {
-                if(copy.Id == 3 || copy.Id == 6) Assert.AreEqual(true, copy.Borrowed);
+                if(copy.copyId == 3 || copy.copyId == 6) Assert.AreEqual(true, copy.Borrowed);
                 else
                 Assert.AreEqual(false, copy.Borrowed);
 

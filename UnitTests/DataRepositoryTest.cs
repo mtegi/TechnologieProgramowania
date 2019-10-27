@@ -69,5 +69,22 @@ namespace UnitTests
             Assert.AreEqual("t", repo.GetReader(1).LastName);
             Assert.ThrowsException<NullReferenceException>(() => repo.UpdateReader(2000, "ttt", "t"));
         }
+
+        [TestMethod]
+        public void AddCopyTest()
+        {
+            repo = new DataRepository(new EmptyProvider());
+            Book book = new Book(1, "testtitle", "testautthor", "testgenre");
+            Copy copy = new Copy(1, book, 6); //TODO: ujednolicic tworzenie copy
+            Assert.AreEqual(0, repo.GetAllCopies().Count());
+            Assert.ThrowsException<KeyNotFoundException>(() => repo.AddCopy(copy.CopyId, book.Id, CopyCondition.Mint));
+            repo.AddBook(book.Id, book.Title, book.Author, book.Genres);
+            repo.AddCopy(copy.CopyId, book.Id, CopyCondition.Mint);
+            Assert.AreEqual(1, repo.GetAllCopies().Count());
+            Assert.AreEqual(1, repo.GetCopy(1).copyId);
+            Assert.AreEqual(false, repo.GetCopy(1).Borrowed);
+            Assert.AreEqual(CopyCondition.Mint, repo.GetCopy(1).Condition);
+        }
+
     }
 }
