@@ -1,4 +1,5 @@
 ﻿using Data;
+using DefinitionLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,7 +101,7 @@ namespace DataHandler
 
         public void AddCopy(int copyId, int bookId, CopyCondition condition)
         {
-             _data.Copies.Add(copyId, new Copy(copyId,_data.Books[bookId], (int) condition ));
+             _data.Copies.Add(copyId, new Copy(copyId,_data.Books[bookId],  condition ));
         }
 
         public WrappedCopy GetCopy(int copyID)
@@ -129,7 +130,7 @@ namespace DataHandler
 
             _data.Copies[id].Book = _data.Books[bookId];
             _data.Copies[id].Borrowed = borrowed;
-            _data.Copies[id].Condition = (int)condition;
+            _data.Copies[id].Condition = condition;
         }
 
 
@@ -179,7 +180,7 @@ namespace DataHandler
         private WrappedEvent WrapEvent (LibEvent libEvent)
         {
             WrappedEvent result;
-            switch((EventType)libEvent.EventType)
+            switch(libEvent.Type)
             {
                 case EventType.Purchase:
                     result = new WrappedPurchase((PurchaseEvent)libEvent);

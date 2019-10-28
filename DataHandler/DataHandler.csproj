@@ -60,6 +60,10 @@
       <Project>{5696205d-b45d-4406-8d70-3834c6bb9429}</Project>
       <Name>Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DefinitionLib\DefinitionLib.csproj">
+      <Project>{cca4ce43-672d-44dd-a632-7876de9f367f}</Project>
+      <Name>DefinitionLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

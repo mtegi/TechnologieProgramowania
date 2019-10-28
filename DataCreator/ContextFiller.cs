@@ -1,4 +1,5 @@
 ﻿using System;
+using DefinitionLib;
 using System.Collections.Generic;
 using DataHandler;
 using Data;
@@ -15,28 +16,28 @@ namespace DataCreator
             data.Books.Add(bookId, new Book(bookId, "Wydra", "Jan Lasica", "przygodowa"));
 
             int copyId = 2001;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[0], 1));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[0], CopyCondition.HeavlyDamaged));
 
             copyId = 2002;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[0],  2));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[0],  CopyCondition.Damaged));
 
             bookId = 1002;
             data.Books.Add(bookId, new Book(bookId, "Lolita", "Milosz Liana", "biografia"));
 
             copyId = 2003;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[1], 3));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[1], CopyCondition.Poor));
 
             copyId = 2004;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[1], 4));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[1], CopyCondition.Good));
 
             bookId = 1003;
             data.Books.Add(bookId, new Book(bookId, "Kosmiczna Wojna", "Maciej Granat", "S-F"));
 
             copyId = 2005;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[2], 3));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[2], CopyCondition.NearMint));
 
             copyId = 2006;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[2], 2));
+            data.Copies.Add(copyId, new Copy(copyId, data.Books[2], CopyCondition.Mint));
 
             // Dodawanie Czytelnikow
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DefinitionLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Data
     {
         public string Reason { get; set; }
 
-       public DestructionEvent(Copy copy, DateTimeOffset eventDate, string reason) : base(2, copy, eventDate)
+       public DestructionEvent(Copy copy, DateTimeOffset eventDate, string reason) : base(EventType.Destruction, copy, eventDate)
         {
             this.Reason = reason;
         }

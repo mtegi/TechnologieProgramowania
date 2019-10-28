@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DefinitionLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace Data
         
 
 
-        public BorrowingEvent(Reader reader, Copy copy, DateTimeOffset eventDate, DateTimeOffset returnDate) : base(3, copy, eventDate)
+        public BorrowingEvent(Reader reader, Copy copy, DateTimeOffset eventDate, DateTimeOffset returnDate) : base(EventType.Borrowing, copy, eventDate)
         {
             this.ReturnDate = returnDate;
             this.Reader = reader;

@@ -5,6 +5,7 @@ using Data;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using DefinitionLib;
 
 namespace UnitTests
 {
@@ -75,13 +76,13 @@ namespace UnitTests
         {
             repo = new DataRepository(new EmptyProvider());
             Book book = new Book(1, "testtitle", "testautthor", "testgenre");
-            Copy copy = new Copy(1, book, 6); //TODO: ujednolicic tworzenie copy
+            Copy copy = new Copy(1, book, CopyCondition.Mint); //TODO: ujednolicic tworzenie copy
             Assert.AreEqual(0, repo.GetAllCopies().Count());
             Assert.ThrowsException<KeyNotFoundException>(() => repo.AddCopy(copy.CopyId, book.Id, CopyCondition.Mint));
             repo.AddBook(book.Id, book.Title, book.Author, book.Genres);
             repo.AddCopy(copy.CopyId, book.Id, CopyCondition.Mint);
             Assert.AreEqual(1, repo.GetAllCopies().Count());
-            Assert.AreEqual(1, repo.GetCopy(1).copyId);
+            Assert.AreEqual(1, repo.GetCopy(1).CopyId);
             Assert.AreEqual(false, repo.GetCopy(1).Borrowed);
             Assert.AreEqual(CopyCondition.Mint, repo.GetCopy(1).Condition);
         }

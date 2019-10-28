@@ -4,13 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DefinitionLib;
 
 namespace DataHandler
 {
-    public enum EventType
-    {
-        Purchase=1, Destruction=2, Borrowing=3, Return=4
-    } 
 
     public abstract class WrappedEvent
     {
@@ -24,7 +21,7 @@ namespace DataHandler
         {
             this.libEvent = libEvent;
 
-            this.Type = (EventType)libEvent.EventType;
+            this.Type = libEvent.Type;
             this.Copy = new WrappedCopy(libEvent.Copy);
             this.EventDate = libEvent.EventDate;
         }

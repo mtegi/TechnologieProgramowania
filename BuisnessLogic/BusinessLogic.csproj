@@ -41,12 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataHandler\DataHandler.csproj">
       <Project>{3ed17a45-3f4c-40af-b071-92ffda67dcba}</Project>
       <Name>DataHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DefinitionLib\DefinitionLib.csproj">
+      <Project>{cca4ce43-672d-44dd-a632-7876de9f367f}</Project>
+      <Name>DefinitionLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
