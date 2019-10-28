@@ -11,7 +11,7 @@ namespace Data
     /** Katalog (ksiazka) */
     public class Book
     {
-        public Book(int id, string title, string author, LiteraryGenre[] genres)
+        public Book(int id, string title, string author, IEnumerable<LiteraryGenre> genres)
         {
             this.Id = id; /** klucz dostepu do danych */
             this.Title = title ?? throw new ArgumentNullException(nameof(title));

@@ -83,7 +83,7 @@ namespace BuisnessLogic
         }
 
 
-        public void AddCataloguePosition(int id, string title, string author, string genres)
+        public void AddCataloguePosition(int id, string title, string author, IEnumerable<LiteraryGenre> genres)
         {
             repository.AddBook(id, title, author, genres);
         }

@@ -13,7 +13,7 @@ namespace DataCreator
           
             int bookId = 1001;
 
-            data.Books.Add(bookId, new Book(bookId, "Wydra", "Jan Lasica", "przygodowa"));
+            data.Books.Add(bookId, new Book(bookId, "Wydra", "Jan Lasica", new LiteraryGenre[] {LiteraryGenre.Fatansy}));
 
             int copyId = 2001;
             data.Copies.Add(copyId, new Copy(copyId, data.Books[0], CopyCondition.HeavlyDamaged));
@@ -22,7 +22,7 @@ namespace DataCreator
             data.Copies.Add(copyId, new Copy(copyId, data.Books[0],  CopyCondition.Damaged));
 
             bookId = 1002;
-            data.Books.Add(bookId, new Book(bookId, "Lolita", "Milosz Liana", "biografia"));
+            data.Books.Add(bookId, new Book(bookId, "Lolita", "Milosz Liana", new LiteraryGenre[] { LiteraryGenre.Romance }));
 
             copyId = 2003;
             data.Copies.Add(copyId, new Copy(copyId, data.Books[1], CopyCondition.Poor));
@@ -31,7 +31,7 @@ namespace DataCreator
             data.Copies.Add(copyId, new Copy(copyId, data.Books[1], CopyCondition.Good));
 
             bookId = 1003;
-            data.Books.Add(bookId, new Book(bookId, "Kosmiczna Wojna", "Maciej Granat", "S-F"));
+            data.Books.Add(bookId, new Book(bookId, "Kosmiczna Wojna", "Maciej Granat", new LiteraryGenre[] { LiteraryGenre.SciFi }));
 
             copyId = 2005;
             data.Copies.Add(copyId, new Copy(copyId, data.Books[2], CopyCondition.NearMint));

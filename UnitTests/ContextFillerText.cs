@@ -9,7 +9,7 @@ namespace UnitTests
     [TestClass]
     public class ContextFillerText
     {
-        ContextFiller filler = new ContextFiller();
+        private readonly ContextFiller filler = new ContextFiller();
         DataRepository dataRepository;
         [TestMethod]
         public void ContextFillerBookTest()
@@ -44,7 +44,7 @@ namespace UnitTests
             int id = 1;
             foreach (WrappedCopy copy in dataRepository.GetAllCopies())
             {
-                Assert.AreEqual(id, copy.copyId);
+                Assert.AreEqual(id, copy.CopyId);
                 id++;
             }
         }
@@ -55,7 +55,7 @@ namespace UnitTests
             dataRepository = new DataRepository(filler);
             foreach(WrappedCopy copy in dataRepository.GetAllCopies())
             {
-                if(copy.copyId == 3 || copy.copyId == 6) Assert.AreEqual(true, copy.Borrowed);
+                if(copy.CopyId == 3 || copy.CopyId == 6) Assert.AreEqual(true, copy.Borrowed);
                 else
                 Assert.AreEqual(false, copy.Borrowed);
 

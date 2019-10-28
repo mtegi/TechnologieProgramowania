@@ -1,5 +1,7 @@
 ﻿using Data;
+using DefinitionLib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,14 +11,13 @@ namespace DataHandler
 {
     public class WrappedBook
     {
-        private Book book;
+        private readonly Book book;
 
 
         public string Title { get; }
         public int Id { get; }
         public string Author { get; }
-        public string Genres { get; }
-
+        public IEnumerable Genres { get; }
 
 
         public WrappedBook (Book book)
@@ -25,7 +26,7 @@ namespace DataHandler
             this.Title = book.Title;
             this.Id = book.Id;
             this.Author = book.Author;
-            this.Genres = book.Genres;
+            this.Genres = new List<LiteraryGenre> (book.Genres);
 
         }
 

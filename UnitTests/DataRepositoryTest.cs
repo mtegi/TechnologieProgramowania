@@ -23,9 +23,9 @@ namespace UnitTests
         public void AddBookTest()
         {
             repo = new DataRepository(new EmptyProvider());
-            Book book = new Book(1, "testtitle", "testautthor", "testgenre");
+            Book book = new Book(1, "testtitle", "testautthor", new LiteraryGenre []{ LiteraryGenre.Comedy });
             Assert.AreEqual(0, repo.GetAllBooks().Count());
-            repo.AddBook(book.Id,book.Title,book.Author,book.Genres);
+            repo.AddBook(book.Id,book.Title,book.Author, book.Genres);
             Assert.AreEqual(1, repo.GetAllBooks().Count());
             Assert.AreEqual(1, repo.GetBook(1).Id);
             Assert.AreEqual("testtitle", repo.GetBook(1).Title);
@@ -38,9 +38,9 @@ namespace UnitTests
         public void UpdateBookTest()
         {
             repo = new DataRepository(new EmptyProvider());
-            Book book = new Book(1, "testtitle", "testautthor", "testgenre");
+            Book book = new Book(1, "testtitle", "testautthor", new LiteraryGenre[] { LiteraryGenre.SciFi });
             repo.AddBook(book.Id, book.Title, book.Author, book.Genres);
-            repo.UpdateBook(1, "title", "testautthor", "testgenre");
+            repo.UpdateBook(1, "title", "testautthor", book.Genres);
             Assert.AreEqual("title", repo.GetBook(1).Title);
             Assert.ThrowsException<KeyNotFoundException>(() => repo.UpdateBook(2, book.Title, book.Author, book.Genres));
         }
@@ -75,8 +75,8 @@ namespace UnitTests
         public void AddCopyTest()
         {
             repo = new DataRepository(new EmptyProvider());
-            Book book = new Book(1, "testtitle", "testautthor", "testgenre");
-            Copy copy = new Copy(1, book, CopyCondition.Mint); //TODO: ujednolicic tworzenie copy
+            Book book = new Book(1, "testtitle", "testautthor", new LiteraryGenre[] { LiteraryGenre.Horror });
+            Copy copy = new Copy(1, book, CopyCondition.Mint);
             Assert.AreEqual(0, repo.GetAllCopies().Count());
             Assert.ThrowsException<KeyNotFoundException>(() => repo.AddCopy(copy.CopyId, book.Id, CopyCondition.Mint));
             repo.AddBook(book.Id, book.Title, book.Author, book.Genres);

@@ -10,12 +10,12 @@ namespace DataHandler
 {
    public interface IDataRepository
     {
-         void AddBook(int id, string title, string author, string genres);
+         void AddBook(int id, string title, string author, IEnumerable<LiteraryGenre> genres);
          WrappedBook GetBook(int id);
          bool ContainsBook(int id);
          IEnumerable<WrappedBook> GetAllBooks();
          void DeleteBook(int id);
-         void UpdateBook(int orginalId, string title, string author, string genres);
+         void UpdateBook(int orginalId, string title, string author, List<LiteraryGenre> genres);
 
          void AddCopy(int copyId, int bookId, CopyCondition condition);
          WrappedCopy GetCopy(int id);

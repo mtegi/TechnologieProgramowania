@@ -18,6 +18,6 @@ namespace DefinitionLib
 
     public enum LiteraryGenre
     {
-        SciFi = 1, Fatansy = 2, Comedy = 3, Horror = 4, Thriller =5, Romance = 6, 
+        SciFi = 1, Fatansy = 2, Comedy = 3, Horror = 4, Thriller =5, Romance = 6, Biography = 7, Novel = 8
     }
 }

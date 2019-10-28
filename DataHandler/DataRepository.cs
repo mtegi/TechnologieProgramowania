@@ -18,9 +18,14 @@ namespace DataHandler
             dataProvider.Fill(_data);
         }
 
-        public void AddBook(int id, string title, string author, string genres)
+        public void AddBook(int id, string title, string author, IEnumerable<LiteraryGenre> genres)
         {
             _data.Books.Add(id, new Book(id,title,author,genres));
+        }
+
+        public void AddBook(int id, string title, string author, List<LiteraryGenre> genres)
+        {
+            _data.Books.Add(id, new Book(id, title, author, genres));
         }
 
         public WrappedBook GetBook(int bookID)
@@ -44,7 +49,7 @@ namespace DataHandler
             return result;
         }
 
-        public void UpdateBook(int orginalId, string title, string author, string genres)
+        public void UpdateBook(int orginalId, string title, string author, List<LiteraryGenre> genres)
         {
                 _data.Books[orginalId].Title = title;
                 _data.Books[orginalId].Author = author;
