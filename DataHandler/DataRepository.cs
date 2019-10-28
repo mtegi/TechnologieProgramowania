@@ -33,12 +33,7 @@ namespace DataHandler
 
         public void AddBook(int id, string title, string author, IEnumerable<LiteraryGenre> genres)
         {
-            _data.Books.Add(id, new Book(id,title,author,genres));
-        }
-
-        public void AddBook(int id, string title, string author, List<LiteraryGenre> genres)
-        {
-            _data.Books.Add(id, new Book(id, title, author, genres));
+            _data.Books.Add(id, value: new Book(id,title,author,genres));
         }
 
         public WrappedBook GetBook(int bookID)
@@ -70,9 +65,9 @@ namespace DataHandler
             
         }
 
-        public void DeleteBook(int bookID)
+        public bool DeleteBook(int bookID)
         {
-            _data.Books.Remove(bookID);
+            return _data.Books.Remove(bookID);
         }
 
         public void AddReader(int id, string firstName, string lastName)
@@ -105,9 +100,10 @@ namespace DataHandler
             return result;
         }
 
-        public void DeleteReader(int readerId)
+        public bool DeleteReader(int readerId)
         {
-            _data.Readers.RemoveAll(i => i.Id == readerId);
+           Reader readertoremove = _data.Readers.Single(r => r.Id == readerId);
+           return  _data.Readers.Remove(readertoremove);
         }
 
         public void UpdateReader(int originalId, string firstName, string lastName)
@@ -152,9 +148,15 @@ namespace DataHandler
         }
 
 
-        public void DeleteCopy(int copyID)
+        public bool DeleteCopy(int copyID)
         {
-            _data.Copies.Remove(copyID);
+            bool canRemove = true;
+            foreach (KeyValuePair<int, Copy> copy in _data.Copies)
+            {
+                if (copy.Value.Borrowed == true) canRemove = false;
+            }
+            if(canRemove) return _data.Copies.Remove(copyID);
+            return false;
         }
 
         public void AddPurchaseEvent ( int copyId, DateTimeOffset eventDate, int price, string distributor)

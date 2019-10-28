@@ -17,7 +17,7 @@ namespace DataHandler
         public string Title { get; }
         public int Id { get; }
         public string Author { get; }
-        public IEnumerable Genres { get; }
+        public IEnumerable<LiteraryGenre> Genres { get; }
 
 
         public WrappedBook (Book book)
