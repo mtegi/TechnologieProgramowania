@@ -1,8 +1,8 @@
-﻿using System;
-using DefinitionLib;
-using System.Collections.Generic;
+﻿using Data;
 using DataHandler;
-using Data;
+using DefinitionLib;
+using System;
+using System.Collections.Generic;
 
 namespace DataCreator
 {
@@ -10,51 +10,49 @@ namespace DataCreator
     {
         public void Fill(DataContext data)
         {
-          
-            int bookId = 1001;
 
-            data.Books.Add(bookId, new Book(bookId, "Wydra", "Jan Lasica", new LiteraryGenre[] {LiteraryGenre.Fatansy}));
+            List<Book> books = new List<Book> {
+                 new Book(1, "Wydra", "Jan Lasica", new LiteraryGenre[] { LiteraryGenre.Fatansy }),
+                 new Book(2, "Lolita", "Milosz Liana", new LiteraryGenre[] { LiteraryGenre.Romance }),
+                 new Book(3, "Kosmiczna Wojna", "Maciej Granat", new LiteraryGenre[] { LiteraryGenre.SciFi })
+            };
 
-            int copyId = 2001;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[0], CopyCondition.HeavlyDamaged));
+            List<Reader> readers = new List<Reader> {
+                new Reader(1, "Jakub", "Nowek"),
+                new Reader(2, "Aniela", "Rybicka"),
+                new Reader(3, "Robert", "Złotek"),
+            };
 
-            copyId = 2002;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[0],  CopyCondition.Damaged));
+            List<Copy> copies = new List<Copy>
+            {
+                new Copy(1, books[0], CopyCondition.HeavlyDamaged),
+                new Copy(2, books[0], CopyCondition.Damaged),
+                new Copy(3,books[1], CopyCondition.Poor),
+                new Copy(4,books[1],CopyCondition.Good),
+                new Copy(5,books[2],CopyCondition.NearMint),
+                new Copy(6,books[2],CopyCondition.Mint),
+            };
 
-            bookId = 1002;
-            data.Books.Add(bookId, new Book(bookId, "Lolita", "Milosz Liana", new LiteraryGenre[] { LiteraryGenre.Romance }));
+            foreach (Book b in books)
+            {
+                data.Books.Add(b.Id, b);
+            }
 
-            copyId = 2003;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[1], CopyCondition.Poor));
-
-            copyId = 2004;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[1], CopyCondition.Good));
-
-            bookId = 1003;
-            data.Books.Add(bookId, new Book(bookId, "Kosmiczna Wojna", "Maciej Granat", new LiteraryGenre[] { LiteraryGenre.SciFi }));
-
-            copyId = 2005;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[2], CopyCondition.NearMint));
-
-            copyId = 2006;
-            data.Copies.Add(copyId, new Copy(copyId, data.Books[2], CopyCondition.Mint));
-
-            // Dodawanie Czytelnikow
-
-           
-            data.Readers.Add(new Reader(3001, "Jakub", "Nowek"));
-
- 
-            data.Readers.Add(new Reader(3002, "Aniela", "Rybicka"));
-
-
-            data.Readers.Add(new Reader(3003, "Robert", "Złotek"));
+            foreach (Reader r in readers)
+            {
+                data.Readers.Add(r);
+            }
+            foreach (Copy c in copies)
+            {
+                data.Copies.Add(c.CopyId, c);
+            }
 
             // Dodawanie Eventów
 
             data.Events.Add(new BorrowingEvent(data.Readers[0], data.Copies[3], new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0))));
+            data.Copies[3].Borrowed = true;
             data.Events.Add(new BorrowingEvent(data.Readers[1], data.Copies[6], new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0))));
-
+            data.Copies[6].Borrowed = true;
 
         }
     }

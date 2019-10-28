@@ -95,13 +95,12 @@ namespace BuisnessLogic
 
         public void PurchaseCopy (int copyId, int bookId, CopyCondition condition, DateTimeOffset eventDate, string distributor)
         {   
-            //ToDo: Exceptoions
             repository.AddPurchaseEvent(copyId, eventDate, bookId, distributor);
             repository.AddCopy(copyId, bookId, condition);
         }
 
         public void DestroyCopy ( int copyId, DateTimeOffset eventDate, string reason)
-        {  //ToDo: Exceptions
+        {  
             if (repository.GetCopy(copyId).Borrowed)
                 throw new ArgumentException("Nie można usunąć kopii, która jest aktualnie wypozyczona");
             else

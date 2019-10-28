@@ -16,30 +16,30 @@ namespace UnitTests
         {
             dataRepository = new DataRepository(filler);
 
-            Assert.AreEqual(1001, dataRepository.GetBook(1001).Id);
-            Assert.AreEqual("Wydra", dataRepository.GetBook(1001).Title);
-            Assert.AreEqual("Jan Lasica", dataRepository.GetBook(1001).Author);
+            Assert.AreEqual(1, dataRepository.GetBook(1).Id);
+            Assert.AreEqual("Wydra", dataRepository.GetBook(1).Title);
+           Assert.AreEqual("Jan Lasica", dataRepository.GetBook(1).Author);
 
-            Assert.AreEqual(1002, dataRepository.GetBook(1002).Id);
-            Assert.AreEqual("Lolita", dataRepository.GetBook(1002).Title);
-            Assert.AreEqual("Mi³osz Liana", dataRepository.GetBook(1002).Author);
+            Assert.AreEqual(2, dataRepository.GetBook(2).Id);
+            Assert.AreEqual("Lolita", dataRepository.GetBook(2).Title);
+            Assert.AreEqual("Milosz Liana", dataRepository.GetBook(2).Author);
         }
 
         [TestMethod]
         public void ContextFillerReaderTest()
         {
             dataRepository = new DataRepository(filler);
-            Assert.AreEqual("Nowek", dataRepository.GetReader(3001).LastName);
-            Assert.AreEqual("Rybicka", dataRepository.GetReader(3002).LastName);
-            Assert.AreEqual("Z³otek", dataRepository.GetReader(3003).LastName);
+            Assert.AreEqual("Nowek", dataRepository.GetReader(1).LastName);
+            Assert.AreEqual("Rybicka", dataRepository.GetReader(2).LastName);
+            Assert.AreEqual("Z³otek", dataRepository.GetReader(3).LastName);
         }
 
         [TestMethod]
         public void ContextFillerCopyTest()
         {
             dataRepository = new DataRepository(filler);
-            Assert.AreEqual(dataRepository.GetBook(1003), dataRepository.GetCopy(6).Book);
-            Assert.AreEqual(dataRepository.GetBook(1002), dataRepository.GetCopy(3).Book);
+            Assert.ReferenceEquals(dataRepository.GetBook(3), dataRepository.GetCopy(6).Book);
+            Assert.ReferenceEquals(dataRepository.GetBook(2), dataRepository.GetCopy(3).Book);
             Assert.AreEqual(false, dataRepository.GetCopy(1).Borrowed);
             int id = 1;
             foreach (WrappedCopy copy in dataRepository.GetAllCopies())
