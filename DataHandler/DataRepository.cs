@@ -64,9 +64,9 @@ namespace DataHandler
             return new WrappedBook(_data.Books[bookID]);
         }
 
-        public bool ContainsBook(int id)
+        public bool ContainsBook(int bookID)
         {
-            return _data.Books.ContainsKey(id);
+            return _data.Books.ContainsKey(bookID);
         }
 
         public IEnumerable<WrappedBook> GetAllBooks()
