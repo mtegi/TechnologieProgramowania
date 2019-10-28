@@ -11,6 +11,7 @@ namespace DataHandler
 {
     public class DataRepository : IDataRepository
     {
+     
         public event EventHandler PurchaseHappened;
         public event EventHandler DestructionHappened;
         public event EventHandler BorrowingHappened;
@@ -23,11 +24,33 @@ namespace DataHandler
         {
             _data = new DataContext();
             dataProvider.Fill(_data);
-        
+
+            _data.Events.CollectionChanged += EventsCollectionChanged;
         }
 
         private void EventsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach(LibEvent libEvent in e.NewItems)
+                {
+                    switch(libEvent.Type)
+                    {
+                        case EventType.Borrowing:
+                            BorrowingHappened?.Invoke(this, new EventArgs());
+                            break;
+                        case EventType.Return:
+                            ReturnHappened?.Invoke(this, new EventArgs());
+                            break;
+                        case EventType.Purchase:
+                            PurchaseHappened?.Invoke(this, new EventArgs());
+                            break;
+                        case EventType.Destruction:
+                            PurchaseHappened?.Invoke(this, new EventArgs());
+                            break;
+                    }
+                }
+            }
 
         }
 

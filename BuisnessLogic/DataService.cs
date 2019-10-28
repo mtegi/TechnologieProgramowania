@@ -10,7 +10,31 @@ namespace BuisnessLogic
 {
     class DataService
     {
-      private IDataRepository repository;
+        private IDataRepository repository;
+
+        public event EventHandler PurchaseHappened
+        {
+            add => repository.PurchaseHappened += value;
+            remove => repository.PurchaseHappened -= value;
+        }
+
+        public event EventHandler DestructionHappened
+        {
+            add => repository.DestructionHappened += value;
+            remove => repository.DestructionHappened -= value;
+        }
+
+        public event EventHandler BorrowingHappened
+        {
+            add => repository.BorrowingHappened += value;
+            remove => repository.BorrowingHappened -= value;
+        }
+
+        public event EventHandler ReturnHappened
+        {
+            add => repository.ReturnHappened += value;
+            remove => repository.ReturnHappened -= value;
+        }
 
         DataService(IDataRepository repository)
         {

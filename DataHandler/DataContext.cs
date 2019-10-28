@@ -25,7 +25,5 @@ namespace DataHandler
         public ObservableCollection<LibEvent> Events { get; }
         public Dictionary<int,Copy> Copies { get; }
 
-        public List<Copy> Archive { get;  }
-
     }
 }

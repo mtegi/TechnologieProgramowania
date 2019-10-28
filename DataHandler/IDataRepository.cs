@@ -10,7 +10,13 @@ namespace DataHandler
 {
    public interface IDataRepository
     {
-         void AddBook(int id, string title, string author, IEnumerable<LiteraryGenre> genres);
+        event EventHandler PurchaseHappened;
+        event EventHandler DestructionHappened;
+        event EventHandler BorrowingHappened;
+        event EventHandler ReturnHappened;
+
+
+        void AddBook(int id, string title, string author, IEnumerable<LiteraryGenre> genres);
          WrappedBook GetBook(int id);
          bool ContainsBook(int id);
          IEnumerable<WrappedBook> GetAllBooks();
