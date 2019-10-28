@@ -2,6 +2,7 @@
 using DefinitionLib;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,24 @@ namespace DataHandler
 {
     public class DataRepository : IDataRepository
     {
+        public event EventHandler PurchaseHappened;
+        public event EventHandler DestructionHappened;
+        public event EventHandler BorrowingHappened;
+        public event EventHandler ReturnHappened;
+
+
         private DataContext _data;
 
         public DataRepository(IDataProvider dataProvider) // Dependency Injection w kontruktorze
         {
             _data = new DataContext();
             dataProvider.Fill(_data);
+        
+        }
+
+        private void EventsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+
         }
 
         public void AddBook(int id, string title, string author, IEnumerable<LiteraryGenre> genres)
@@ -204,6 +217,7 @@ namespace DataHandler
             }
             return result;
         }
+
 
 
     }
