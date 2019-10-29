@@ -126,6 +126,8 @@ namespace UnitTests
             Assert.AreEqual(2, repo.GetAllEvents().Count());
             repo.AddPurchaseEvent(1, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), 200, "test");
             Assert.AreEqual(3, repo.GetAllEvents().Count());
+            repo.AddReturnEvent(1, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)),1, repo.GetAllEvents().OfType<WrappedBorrowing>().FirstOrDefault());
+            Assert.AreEqual(4, repo.GetAllEvents().Count());
         }
 
         [TestMethod]
@@ -140,7 +142,7 @@ namespace UnitTests
             repo.AddCopy(copy.CopyId, book.Id, CopyCondition.Mint);
             Assert.AreEqual(2, repo.GetAllBooks().Count());
             //Assert.ThrowsException<NullReferenceException>(() => repo.DeleteBook(book.Id));
-            Assert.AreEqual(true, repo.DeleteBook(2));
+            Assert.IsTrue(repo.DeleteBook(2));
         }
 
         [TestMethod]
@@ -154,8 +156,8 @@ namespace UnitTests
             repo.AddCopy(copy.CopyId, book.Id, CopyCondition.Mint);
             repo.AddCopy(copy2.CopyId, book.Id, CopyCondition.Mint);
             repo.UpdateCopy(copy2.CopyId, book.Id, true, CopyCondition.Mint);
-            Assert.AreEqual(false, repo.DeleteCopy(2));
-            Assert.AreEqual(true, repo.DeleteBook(1));
+            Assert.IsFalse(repo.DeleteCopy(2));
+            Assert.IsTrue(repo.DeleteBook(1));
         }
 
         [TestMethod]
@@ -164,8 +166,23 @@ namespace UnitTests
             repo = new DataRepository(new EmptyProvider());
             Reader r = new Reader(1, "t", "tt");
             repo.AddReader(r.Id, r.FirstName, r.LastName);
-            Assert.AreEqual(true, repo.DeleteReader(1));
+            Assert.IsTrue(repo.DeleteReader(1));
+        }
 
+        //TODO: Contain testy
+        [TestMethod]
+        public void ContainTest()
+        {
+            repo = new DataRepository(new EmptyProvider());
+            Reader r = new Reader(1, "t", "tt");
+            repo.AddReader(r.Id, r.FirstName, r.LastName);
+            Assert.IsTrue(repo.ContainsReader(1));
+            Book book = new Book(1, "testtitle", "testautthor", new LiteraryGenre[] { LiteraryGenre.Horror });
+            Copy copy = new Copy(1, book, CopyCondition.Mint);
+            repo.AddBook(book.Id, book.Title, book.Author, book.Genres);
+            repo.AddCopy(copy.CopyId, book.Id, CopyCondition.Mint);
+            Assert.IsTrue(repo.ContainsBook(1));
+            Assert.IsTrue(repo.ContainsCopy(1));
         }
     }
 }

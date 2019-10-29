@@ -16,6 +16,8 @@ namespace Data
         public bool Borrowed { get; set; } //czy wypozyczona
         public CopyCondition Condition { get; set; }
 
+        public Copy() { }
+
         public Copy(int copyID, Book book, CopyCondition condition)
         {
             CopyId = copyID;

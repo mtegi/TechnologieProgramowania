@@ -16,10 +16,11 @@ namespace Data
             LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
         }
 
+        public Reader() { }
+
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-     
         public int CompareTo(Reader other)
         {
             if (String.Compare(this.LastName, other.LastName) < 0)
