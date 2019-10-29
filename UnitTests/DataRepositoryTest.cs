@@ -6,19 +6,54 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using DefinitionLib;
+using System.Diagnostics;
 
 namespace UnitTests
 {
     [TestClass]
     public class DataRepositoryTest
     {
-        private class EmptyProvider : IDataProvider
+        internal class EmptyProvider : IDataProvider
         {
             public void Fill(DataContext data)
             {}
         }
 
+        internal class TraceProvider : IDataProvider
+        {
+            internal List<int> _callStack = new List<int>();
+
+            public void TraceData(TraceEventType eventType, int id, object data)
+            {
+                _callStack.Add(id);
+            }
+
+            internal void CheckConsistency()
+            {
+                Assert.AreEqual<int>(1, _callStack.Count);
+                Assert.AreEqual<int>("Fill".GetHashCode(), _callStack[0]);
+            }
+
+            public void Fill(DataContext data)
+            {
+                this.TraceData(TraceEventType.Verbose, nameof(Fill).GetHashCode(), "Filling DataContext");
+            }
+        }
+
         private DataRepository repo;
+
+        [TestMethod]
+        public void DependecyInjectionTest()
+        {
+            TraceProvider provider = new TraceProvider();
+            Assert.AreEqual<int>(0, provider._callStack.Count);
+            repo = new DataRepository(provider);
+            Assert.AreEqual<int>(1, provider._callStack.Count);
+            Assert.AreEqual<int>("Fill".GetHashCode(), provider._callStack[0]);
+            repo = new DataRepository(provider);
+            Assert.AreEqual<int>(2, provider._callStack.Count);
+        }
+
         [TestMethod]
         public void AddBookTest()
         {
@@ -169,9 +204,8 @@ namespace UnitTests
             Assert.IsTrue(repo.DeleteReader(1));
         }
 
-        //TODO: Contain testy
         [TestMethod]
-        public void ContainTest()
+        public void ContainTests()
         {
             repo = new DataRepository(new EmptyProvider());
             Reader r = new Reader(1, "t", "tt");
@@ -183,6 +217,8 @@ namespace UnitTests
             repo.AddCopy(copy.CopyId, book.Id, CopyCondition.Mint);
             Assert.IsTrue(repo.ContainsBook(1));
             Assert.IsTrue(repo.ContainsCopy(1));
+            Assert.IsFalse(repo.ContainsBook(10));
+            Assert.IsFalse(repo.ContainsCopy(10));
         }
     }
 }
