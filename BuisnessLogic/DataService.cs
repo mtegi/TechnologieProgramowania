@@ -8,7 +8,7 @@ using DefinitionLib;
 
 namespace BuisnessLogic
 {
-    class DataService
+   public class DataService
     {
     
         private IDataRepository repository;
@@ -38,16 +38,17 @@ namespace BuisnessLogic
         }
 
         //KONTRUKTOR
-        DataService(IDataRepository repository)
+       public DataService(IDataRepository repository)
         {
             this.repository = repository;
         }
 
 
         public void PurchaseCopy (int copyId, int bookId, CopyCondition condition, DateTimeOffset eventDate, string distributor)
-        {   
-            repository.AddPurchaseEvent(copyId, eventDate, bookId, distributor);
+        {
             repository.AddCopy(copyId, bookId, condition);
+            repository.AddPurchaseEvent(copyId, eventDate, bookId, distributor);
+            
         }
 
         public void DestroyCopy ( int copyId, DateTimeOffset eventDate, string reason)
@@ -63,9 +64,15 @@ namespace BuisnessLogic
 
         public void BorrowCopy (int copyId, int readerId, DateTimeOffset eventDate, DateTimeOffset returnDate)
         {
-            repository.AddBorrowingEvent(copyId, eventDate, returnDate, readerId);
             WrappedCopy borrowedCopy = repository.GetCopy(copyId);
-            repository.UpdateCopy(borrowedCopy.CopyId, borrowedCopy.Book.Id, true, borrowedCopy.Condition);
+
+            if (borrowedCopy.Borrowed == true)
+                throw new ArgumentException("Próba wypożyczenia kopii, która jest juz wypożyczona!");
+            else
+            {
+                repository.AddBorrowingEvent(copyId, eventDate, returnDate, readerId);
+                repository.UpdateCopy(borrowedCopy.CopyId, borrowedCopy.Book.Id, true, borrowedCopy.Condition);
+            }
         }
 
         public void ReturnCopy (int copyId, int readerId, DateTimeOffset eventDate, CopyCondition condition)
@@ -73,9 +80,16 @@ namespace BuisnessLogic
             WrappedCopy returnedCopy = repository.GetCopy(copyId);
             WrappedBorrowing borrowing = FindUserBorrowings(readerId,copyId).First(x => x.Completed == false);
 
-            repository.AddReturnEvent(copyId, eventDate, readerId, borrowing);
-            repository.CompleteBorrowingEvent(borrowing);
-            repository.UpdateCopy(returnedCopy.CopyId, returnedCopy.Book.Id, false, condition);
+            if (borrowing == null)
+                throw new ArgumentException("Nie udało się odnaleźć wypożyczenia, które ma zostać zakończone");
+            if (returnedCopy.Borrowed == false)
+                throw new ArgumentException(" Próba zwrócenia kopii, która nie jest aktualnie wypożyczona");
+            else
+            {
+                repository.AddReturnEvent(copyId, eventDate, readerId, borrowing);
+                repository.CompleteBorrowingEvent(borrowing);
+                repository.UpdateCopy(returnedCopy.CopyId, returnedCopy.Book.Id, false, condition);
+            }
 
         }
 

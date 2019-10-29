@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BuisnessLogic\BusinessLogic.csproj" />
     <ProjectReference Include="..\DataCreator\DataCreator.csproj" />
     <ProjectReference Include="..\DataHandler\DataHandler.csproj" />
     <ProjectReference Include="..\DefinitionLib\DefinitionLib.csproj" />

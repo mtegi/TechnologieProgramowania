@@ -46,7 +46,7 @@ namespace DataHandler
                             PurchaseHappened?.Invoke(this, new EventArgs());
                             break;
                         case EventType.Destruction:
-                            PurchaseHappened?.Invoke(this, new EventArgs());
+                            DestructionHappened?.Invoke(this, new EventArgs());
                             break;
                     }
                 }
