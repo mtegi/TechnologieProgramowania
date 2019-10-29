@@ -42,8 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContextFiller.cs" />
-    <Compile Include="XmlFiller.cs" />
-    <Compile Include="FillIdManager.cs" />
+    <Compile Include="Filler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -3,18 +3,19 @@ using DataHandler;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace UnitTests
 {
     [TestClass]
-   public class XmlFillerTest
+   public class FillerTest
     {
-        private readonly XmlFiller filler = new XmlFiller();
+        private readonly Filler filler = new Filler();
         DataRepository dataRepository;
 
         [TestMethod]
-        public void XmlFillerBookTest()
+        public void FillerBookTest()
         {
             dataRepository = new DataRepository(filler);
 
@@ -28,27 +29,29 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void XmlFillerReaderTest()
+        public void FillerReaderTest()
         {
             dataRepository = new DataRepository(filler);
             Assert.AreEqual("Nowek", dataRepository.GetReader(1).LastName);
             Assert.AreEqual("Rybicka", dataRepository.GetReader(2).LastName);
             Assert.AreEqual("Złotek", dataRepository.GetReader(3).LastName);
+            Assert.AreEqual(20, dataRepository.GetAllReaders().Count());
         }
 
         [TestMethod]
-        public void XmlFillerCopyTest()
+        public void FillerCopyTest()
         {
             dataRepository = new DataRepository(filler);
-            Assert.ReferenceEquals(dataRepository.GetBook(3), dataRepository.GetCopy(6).Book);
-            Assert.ReferenceEquals(dataRepository.GetBook(2), dataRepository.GetCopy(3).Book);
-            Assert.AreEqual(false, dataRepository.GetCopy(1).Borrowed);
-            int id = 1;
-            foreach (WrappedCopy copy in dataRepository.GetAllCopies())
-            {
-                Assert.AreEqual(id, copy.CopyId);
-                id++;
-            }
+            Assert.AreEqual(20, dataRepository.GetAllCopies().Count());
         }
+
+        [TestMethod]
+        public void FillerEventTest()
+        {
+            dataRepository = new DataRepository(filler);
+            Assert.IsTrue(dataRepository.GetAllEvents().Count() <= 20);
+            Assert.IsInstanceOfType(dataRepository.GetAllEvents().FirstOrDefault(), typeof(WrappedEvent));
+        }
+
     }
 }
