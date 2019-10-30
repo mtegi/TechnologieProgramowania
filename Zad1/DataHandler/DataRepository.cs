@@ -18,13 +18,13 @@ namespace DataHandler
         public event EventHandler ReturnHappened;
 
 
-        private DataContext _data;
+        private readonly DataContext _data = new DataContext();
+        private readonly IDataProvider _dataProvider;
 
         public DataRepository(IDataProvider dataProvider) // Dependency Injection w kontruktorze
         {
-            _data = new DataContext();
-            dataProvider.Fill(_data);
-
+            _dataProvider = dataProvider;
+            _dataProvider.Fill(_data);
             _data.Events.CollectionChanged += EventsCollectionChanged;
         }
 

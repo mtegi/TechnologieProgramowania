@@ -37,7 +37,6 @@ namespace BuisnessLogic
             remove => repository.ReturnHappened -= value;
         }
 
-        //KONTRUKTOR
        public DataService(IDataRepository repository)
         {
             this.repository = repository;
