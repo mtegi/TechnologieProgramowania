@@ -115,64 +115,64 @@ namespace BuisnessLogic
 
 
 
-        IEnumerable<WrappedEvent> FindEvents(EventType type)
+        public IEnumerable<WrappedEvent> FindEvents(EventType type)
         {
             return repository.GetAllEvents().Where(x => x.Type == type);
         }
-        IEnumerable<WrappedEvent> FindEvents(int copyId)
+        public IEnumerable<WrappedEvent> FindEvents(int copyId)
         {
             return repository.GetAllEvents().Where(x => x.Copy.CopyId == copyId);
         }
-        IEnumerable<WrappedEvent> FindEvents(int copyId, EventType type)
+        public IEnumerable<WrappedEvent> FindEvents(int copyId, EventType type)
         {
             return repository.GetAllEvents().Where(x => x.Copy.CopyId == copyId && x.Type == type);
         }
-        IEnumerable<WrappedEvent> FindEventsInPeriod(DateTimeOffset beginning, DateTimeOffset end)
+        public IEnumerable<WrappedEvent> FindEventsInPeriod(DateTimeOffset beginning, DateTimeOffset end)
         {
             return repository.GetAllEvents().Where(x => x.EventDate >= beginning && x.EventDate<=end);
         }
 
 
-        IEnumerable<WrappedBorrowing> FindUserBorrowings(int readerId)
+        public IEnumerable<WrappedBorrowing> FindUserBorrowings(int readerId)
         {
             return repository.GetAllEvents().Where(x => x.Type == EventType.Borrowing).Cast<WrappedBorrowing>().Where(x => x.Reader.Id == readerId);
         }
-        IEnumerable<WrappedBorrowing> FindUserBorrowings(int readerId, int copyId)
+        public IEnumerable<WrappedBorrowing> FindUserBorrowings(int readerId, int copyId)
         {
             return repository.GetAllEvents().Where(x => x.Type == EventType.Borrowing).Cast<WrappedBorrowing>().Where(x => x.Reader.Id == readerId && x.Copy.CopyId == copyId);
 
         }
 
-        IEnumerable<WrappedReturn> FindUserReturns(int readerId)
+        public IEnumerable<WrappedReturn> FindUserReturns(int readerId)
         {
             return repository.GetAllEvents().Where(x => x.Type == EventType.Return).Cast<WrappedReturn>().Where(x => x.Reader.Id == readerId);
         }
-        IEnumerable<WrappedReturn> FindUserReturns(int readerId, int copyId)
+        public IEnumerable<WrappedReturn> FindUserReturns(int readerId, int copyId)
         {
             return repository.GetAllEvents().Where(x => x.Type == EventType.Return).Cast<WrappedReturn>().Where(x => x.Reader.Id == readerId && x.Copy.CopyId == copyId);
         }
 
-        WrappedBorrowing FindLastBorrowing(int copyId)
+        public WrappedBorrowing FindLastBorrowing(int copyId)
         {
             return repository.GetAllEvents().Where(x => x.Type == EventType.Borrowing).Cast<WrappedBorrowing>().Last(x => x.Copy.CopyId == copyId);
         }
 
-        WrappedReturn FindLastReturn(int copyId)
+        public WrappedReturn FindLastReturn(int copyId)
         {
             return repository.GetAllEvents().Where(x => x.Type == EventType.Return).Cast<WrappedReturn>().Last(x => x.Copy.CopyId == copyId);
         }
 
-        IEnumerable<WrappedBook> FindBooksByTitle(string title)
+        public IEnumerable<WrappedBook> FindBooksByTitle(string title)
         {
             return repository.GetAllBooks().Where(x => x.Title == title);
         }
 
-        IEnumerable<WrappedBook> FindBooksByAuthor(string author)
+        public IEnumerable<WrappedBook> FindBooksByAuthor(string author)
         {
             return repository.GetAllBooks().Where(x => x.Author == author);
         }
 
-        IEnumerable<WrappedReader> FindReaders (string lastName )
+        public IEnumerable<WrappedReader> FindReaders (string lastName )
         {
             return repository.GetAllReaders().Where(x => x.LastName == lastName);
         }

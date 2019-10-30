@@ -27,53 +27,60 @@ namespace DataCreator
                 bookFile = new StreamReader("Books.xml");
                 readerFile = new StreamReader("Readers.xml");
                 copiesFile = new StreamReader("Copies.xml");
-            } catch (FileNotFoundException)
+            }
+            catch (FileNotFoundException)
             {
                 WriteFile();
+
+                bookFile = new StreamReader("Books.xml");
+                readerFile = new StreamReader("Readers.xml");
+                copiesFile = new StreamReader("Copies.xml");
             }
-            deserializer = new System.Xml.Serialization.XmlSerializer(typeof(List<Book>));
-            List<Book> books = (List<Book>) deserializer.Deserialize(bookFile);
-            bookFile.Close();
+ 
+                deserializer = new System.Xml.Serialization.XmlSerializer(typeof(List<Book>));
+                List<Book> books = (List<Book>)deserializer.Deserialize(bookFile);
+                bookFile.Close();
 
-            deserializer = new System.Xml.Serialization.XmlSerializer(typeof(List<Reader>));
-            List<Reader> readers = (List<Reader>)deserializer.Deserialize(readerFile);
-            readerFile.Close();
+                deserializer = new System.Xml.Serialization.XmlSerializer(typeof(List<Reader>));
+                List<Reader> readers = (List<Reader>)deserializer.Deserialize(readerFile);
+                readerFile.Close();
 
-            deserializer = new System.Xml.Serialization.XmlSerializer(typeof(List<Copy>));
-            List<Copy> copies = (List<Copy>)deserializer.Deserialize(copiesFile);
-            copiesFile.Close();
+                deserializer = new System.Xml.Serialization.XmlSerializer(typeof(List<Copy>));
+                List<Copy> copies = (List<Copy>)deserializer.Deserialize(copiesFile);
+                copiesFile.Close();
 
 
+
+
+                foreach (Book b in books)
+                {
+                    data.Books.Add(b.Id, b);
+                }
+
+                foreach (Reader r in readers)
+                {
+                    data.Readers.Add(r);
+                }
+                foreach (Copy c in copies)
+                {
+                    data.Copies.Add(c.CopyId, c);
+                }
+
+                SortedSet<int> rndCopyIndex = new SortedSet<int>();
+                while (rndCopyIndex.Count < 20)
+                {
+                    rndCopyIndex.Add(random.Next(copies.Count));
+                }
+                for (int i = 0; i <= random.Next(1, 21); i++)
+                {
+                    Reader randomReader = readers[random.Next(readers.Count)];
+                    Copy randomCopy = copies[rndCopyIndex.ElementAt(i)];
+                    DateTime randDate = GetRandomDate(new DateTime(2019, 10, 1), new DateTime(2019, 12, 31));
+                    DateTime randDate2 = GetRandomDate(randDate, randDate.AddDays(100));
+                    data.Events.Add(new BorrowingEvent(randomReader, randomCopy, new DateTimeOffset(randDate), new DateTimeOffset(randDate2)));
+                    data.Copies[randomCopy.CopyId].Borrowed = true;
+                }
             
-
-            foreach (Book b in books)
-            {
-                data.Books.Add(b.Id, b);
-            }
-
-            foreach (Reader r in readers)
-            {
-                data.Readers.Add(r);
-            }
-            foreach (Copy c in copies)
-            {
-                data.Copies.Add(c.CopyId, c);
-            }
-
-            SortedSet<int> rndCopyIndex = new SortedSet<int>();
-            while (rndCopyIndex.Count < 20)
-            {
-                rndCopyIndex.Add(random.Next(copies.Count));
-            }
-            for (int i = 0; i <= random.Next(1,21); i++)
-            {
-                Reader randomReader = readers[random.Next(readers.Count)];
-                Copy randomCopy = copies[rndCopyIndex.ElementAt(i)];
-                DateTime randDate = GetRandomDate(new DateTime(2019, 10, 1), new DateTime(2019, 12, 31));
-                DateTime randDate2 = GetRandomDate(randDate, randDate.AddDays(100));
-                data.Events.Add(new BorrowingEvent(randomReader, randomCopy, new DateTimeOffset(randDate) , new DateTimeOffset(randDate2)));
-                data.Copies[randomCopy.CopyId].Borrowed = true;
-            }
         }
 
 
