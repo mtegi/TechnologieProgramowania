@@ -1,5 +1,4 @@
-﻿using DataCreator;
-using DataHandler;
+﻿using Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -50,7 +49,7 @@ namespace UnitTests
         {
             dataRepository = new DataRepository(filler);
             Assert.IsTrue(dataRepository.GetAllEvents().Count() <= 20);
-            Assert.IsInstanceOfType(dataRepository.GetAllEvents().FirstOrDefault(), typeof(WrappedEvent));
+            Assert.IsInstanceOfType(dataRepository.GetAllEvents().FirstOrDefault(), typeof(LibEvent));
         }
 
     }

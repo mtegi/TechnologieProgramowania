@@ -1,6 +1,4 @@
 ﻿using Data;
-using DataHandler;
-using DefinitionLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace DataCreator
+namespace UnitTests
 {
    public class Filler : IDataProvider
     {

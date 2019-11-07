@@ -1,5 +1,4 @@
 ﻿using Data;
-using DefinitionLib;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataHandler
+namespace Data
 {
     public class DataRepository : IDataRepository
     {
@@ -34,20 +33,21 @@ namespace DataHandler
             {
                 foreach(LibEvent libEvent in e.NewItems)
                 {
-                    switch(libEvent.Type)
+                    if(libEvent is BorrowingEvent)
                     {
-                        case EventType.Borrowing:
-                            BorrowingHappened?.Invoke(this, new EventArgs());
-                            break;
-                        case EventType.Return:
-                            ReturnHappened?.Invoke(this, new EventArgs());
-                            break;
-                        case EventType.Purchase:
-                            PurchaseHappened?.Invoke(this, new EventArgs());
-                            break;
-                        case EventType.Destruction:
-                            DestructionHappened?.Invoke(this, new EventArgs());
-                            break;
+                        BorrowingHappened?.Invoke(this, new EventArgs());
+                    }
+                    else if(libEvent is ReturnEvent)
+                    {
+                        ReturnHappened?.Invoke(this, new EventArgs());
+                    }
+                    else if (libEvent is PurchaseEvent)
+                    {
+                        PurchaseHappened?.Invoke(this, new EventArgs());
+                    }
+                    else if (libEvent is DestructionEvent)
+                    {
+                        DestructionHappened?.Invoke(this, new EventArgs());
                     }
                 }
             }
@@ -59,9 +59,9 @@ namespace DataHandler
             _data.Books.Add(id, value: new Book(id,title,author,genres));
         }
 
-        public WrappedBook GetBook(int bookID)
+        public Book GetBook(int bookID)
         {
-            return new WrappedBook(_data.Books[bookID]);
+            return  _data.Books[bookID];
         }
 
         public bool ContainsBook(int bookID)
@@ -69,15 +69,9 @@ namespace DataHandler
             return _data.Books.ContainsKey(bookID);
         }
 
-        public IEnumerable<WrappedBook> GetAllBooks()
+        public IEnumerable<Book> GetAllBooks()
         {
-             List<WrappedBook> result = new List<WrappedBook>();
-
-            foreach (KeyValuePair<int, Book> entry in _data.Books)
-            {
-                result.Add(new WrappedBook(entry.Value));
-            }
-            return result;
+            return _data.Books.Values.ToList();
         }
 
         public void UpdateBook(int orginalId, string title, string author, List<LiteraryGenre> genres)
@@ -101,9 +95,9 @@ namespace DataHandler
             _data.Readers.Add(new Reader(id,firstName,lastName));
         }
 
-        public WrappedReader GetReader(int id)
+        public Reader GetReader(int id)
         {
-            return new WrappedReader( _data.Readers.Find(x => x.Id == id));
+            return _data.Readers.Find((x => x.Id == id));
         }
 
         public bool ContainsReader(int id)
@@ -111,16 +105,9 @@ namespace DataHandler
             return _data.Readers.Any(x => x.Id == id);
         }
 
-        public IEnumerable<WrappedReader> GetAllReaders()
+        public IEnumerable<Reader> GetAllReaders()
         {
-            List<WrappedReader> result = new List<WrappedReader>();
-
-            foreach (Reader reader in _data.Readers)
-            {
-                result.Add(new WrappedReader(reader));
-            }
-
-            return result;
+           return _data.Readers.ToList();
         }
 
         public bool DeleteReader(int readerId)
@@ -141,9 +128,9 @@ namespace DataHandler
              _data.Copies.Add(copyId, new Copy(copyId,_data.Books[bookId],  condition ));
         }
 
-        public WrappedCopy GetCopy(int copyID)
+        public Copy GetCopy(int copyID)
         {
-            return new WrappedCopy( _data.Copies[copyID]);
+            return _data.Copies[copyID];
         }
 
         public bool ContainsCopy(int copyId)
@@ -151,15 +138,9 @@ namespace DataHandler
             return _data.Copies.ContainsKey(copyId);
         }
 
-        public IEnumerable<WrappedCopy> GetAllCopies()
+        public IEnumerable<Copy> GetAllCopies()
         {
-            List<WrappedCopy> result = new List<WrappedCopy>();
-
-            foreach (KeyValuePair<int, Copy> entry in _data.Copies)
-            {
-                result.Add(new WrappedCopy(entry.Value));
-            }
-            return result;
+            return _data.Copies.Values.ToList();
         }
 
         public void UpdateCopy(int id, int bookId, bool borrowed, CopyCondition condition)
@@ -197,51 +178,22 @@ namespace DataHandler
             _data.Events.Add(new BorrowingEvent(_data.Readers.Find(x => x.Id == readerId), _data.Copies[copyId], eventDate, returnDate));
         }
 
-        public void CompleteBorrowingEvent (WrappedBorrowing wrappedBorrwing)
+        public void CompleteBorrowingEvent (BorrowingEvent borrowing)
         {
-            BorrowingEvent borrowing = (BorrowingEvent)wrappedBorrwing.GetEvent();
             borrowing.Completed = true;
         }
 
-        public void AddReturnEvent(int copyId, DateTimeOffset eventDate, int readerId, WrappedBorrowing borrowing)
+        public void AddReturnEvent(int copyId, DateTimeOffset eventDate, int readerId, BorrowingEvent borrowing)
         {
-            _data.Events.Add(new ReturnEvent(_data.Copies[copyId], eventDate, _data.Readers.Find(x => x.Id == readerId),(BorrowingEvent)borrowing.GetEvent()));
+            _data.Events.Add(new ReturnEvent(_data.Copies[copyId], eventDate, _data.Readers.Find(x => x.Id == readerId),borrowing));
         }
 
-        public IEnumerable<WrappedEvent> GetAllEvents()
+        public IEnumerable<LibEvent> GetAllEvents()
         {
-            List<WrappedEvent> result = new List<WrappedEvent>();
-
-            foreach (LibEvent libEvent in _data.Events)
-            {
-                result.Add(WrapEvent(libEvent));
-            }
-
-            return result;
+            return _data.Events.ToList();
         }
 
-        private WrappedEvent WrapEvent (LibEvent libEvent)
-        {
-            WrappedEvent result;
-            switch(libEvent.Type)
-            {
-                case EventType.Purchase:
-                    result = new WrappedPurchase((PurchaseEvent)libEvent);
-                    break;
-                case EventType.Destruction:
-                    result = new WrappedDestruction((DestructionEvent)libEvent);
-                    break;
-                case EventType.Borrowing:
-                    result = new WrappedBorrowing((BorrowingEvent)libEvent);
-                    break;
-                case EventType.Return:
-                    result = new WrappedReturn((ReturnEvent)libEvent);
-                    break;
-                default:
-                    throw new ArgumentException("Nie rozpoznano typu wydarzenia");
-            }
-            return result;
-        }
+ 
 
 
 

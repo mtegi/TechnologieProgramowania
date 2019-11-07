@@ -1,12 +1,9 @@
-﻿using DataHandler;
-using BuisnessLogic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Data;
-using DefinitionLib;
 
 namespace UnitTests
 {
@@ -47,18 +44,18 @@ namespace UnitTests
 
             dataService.PurchaseCopy(101, 1, CopyCondition.Mint, testDate, "TestDistrib");
 
-            WrappedPurchase purchaseEvent = (WrappedPurchase)repo.GetAllEvents().Last();
+            PurchaseEvent purchaseEvent = (PurchaseEvent)repo.GetAllEvents().Last();
 
             Assert.AreEqual(true, PurchaseEventRised);
 
             Assert.AreEqual(true, repo.ContainsCopy(101));
             Assert.AreEqual(CopyCondition.Mint, repo.GetCopy(101).Condition);
-            Assert.AreEqual(repo.GetBook(1).GetBook(), repo.GetCopy(101).Book.GetBook());
+            Assert.AreEqual(repo.GetBook(1), repo.GetCopy(101).Book);
             Assert.AreEqual("testtitle", repo.GetCopy(101).Book.Title);
             Assert.AreEqual("testauthor", repo.GetCopy(101).Book.Author);
 
             Assert.AreEqual(101, purchaseEvent.Copy.CopyId);
-            Assert.AreEqual(repo.GetCopy(101).GetCopy(), purchaseEvent.Copy.GetCopy());
+            Assert.AreEqual(repo.GetCopy(101), purchaseEvent.Copy);
             Assert.AreEqual("TestDistrib", purchaseEvent.Distributor);
             Assert.AreEqual(testDate, purchaseEvent.EventDate);
         }
@@ -87,7 +84,7 @@ namespace UnitTests
             Assert.AreEqual(true, repo.ContainsCopy(101));
 
             dataService.DestroyCopy(101, testDate, "TestReason");
-            WrappedDestruction destructionEvent = (WrappedDestruction)repo.GetAllEvents().Last();
+            DestructionEvent destructionEvent = (DestructionEvent)repo.GetAllEvents().Last();
 
             Assert.AreEqual(false, repo.ContainsCopy(101));
 
@@ -135,7 +132,7 @@ namespace UnitTests
             Assert.AreEqual(false, repo.GetCopy(101).Borrowed);
 
             dataService.BorrowCopy(101, 201, testDate, testDate2);
-            WrappedBorrowing borrowingEvent = (WrappedBorrowing)repo.GetAllEvents().Last();
+            BorrowingEvent borrowingEvent = (BorrowingEvent)repo.GetAllEvents().Last();
 
 
             Assert.AreEqual(true, repo.ContainsCopy(101));
@@ -187,14 +184,14 @@ namespace UnitTests
             
             //Borrow Copy
             dataService.BorrowCopy(101, 201, testDate, testDate2);
-            BorrowingEvent borrowingEvent = (BorrowingEvent)repo.GetAllEvents().Last().GetEvent();
+            BorrowingEvent borrowingEvent = (BorrowingEvent)repo.GetAllEvents().Last();
 
             Assert.AreEqual(true, repo.GetCopy(101).Borrowed);
 
 
             //Try to return copy
             dataService.ReturnCopy(101, 201, testDate3, CopyCondition.HeavlyDamaged);
-            ReturnEvent returnEvent = (ReturnEvent)repo.GetAllEvents().Last().GetEvent();
+            ReturnEvent returnEvent = (ReturnEvent)repo.GetAllEvents().Last();
 
             Assert.AreEqual(true, repo.ContainsCopy(101));
             Assert.AreEqual(true, repo.ContainsReader(201));
@@ -228,24 +225,24 @@ namespace UnitTests
             dataService.PurchaseCopy(103, 1, CopyCondition.Mint, testDate, "test");
             dataService.BorrowCopy(103, 201, testDate, testDate);
 
-            IEnumerable<WrappedEvent> findTypes = dataService.FindEvents(EventType.Purchase);
+            IEnumerable<LibEvent> findTypes = dataService.FindEvents(typeof(PurchaseEvent));
 
             Assert.AreEqual(2, findTypes.Count());
-            foreach (WrappedEvent libEvent in findTypes)
-                Assert.AreEqual(EventType.Purchase, libEvent.Type);
+            foreach (LibEvent libEvent in findTypes)
+                Assert.AreEqual(typeof(PurchaseEvent), libEvent.GetType());
 
-            IEnumerable<WrappedEvent> findCopies = dataService.FindEvents(101);
+            IEnumerable<LibEvent> findCopies = dataService.FindEvents(101);
 
             Assert.AreEqual(2, findCopies.Count());
-            foreach (WrappedEvent libEvent in findCopies)
+            foreach (LibEvent libEvent in findCopies)
                 Assert.AreEqual(101, libEvent.Copy.CopyId);
 
-            IEnumerable<WrappedEvent> findCopiesTypes = dataService.FindEvents(101,EventType.Purchase);
+            IEnumerable<LibEvent> findCopiesTypes = dataService.FindEvents(101, typeof(PurchaseEvent));
 
             Assert.AreEqual(1, findCopiesTypes.Count());
-            foreach (WrappedEvent libEvent in findCopiesTypes)
+            foreach (LibEvent libEvent in findCopiesTypes)
             {
-                Assert.AreEqual(EventType.Purchase, libEvent.Type);
+                Assert.AreEqual(typeof(PurchaseEvent), libEvent.GetType());
                 Assert.AreEqual(101, libEvent.Copy.CopyId);
             }
 
@@ -274,7 +271,7 @@ namespace UnitTests
             dataService.PurchaseCopy(102, 1, CopyCondition.Mint, testDate3, "test");
             dataService.PurchaseCopy(103, 1, CopyCondition.Mint, testDate4, "test");
 
-            IEnumerable<WrappedEvent> findEvents = dataService.FindEventsInPeriod(testDate2, testDate5);
+            IEnumerable<LibEvent> findEvents = dataService.FindEventsInPeriod(testDate2, testDate5);
 
             Assert.AreEqual(2, findEvents.Count());
         }
@@ -304,21 +301,21 @@ namespace UnitTests
             dataService.BorrowCopy(102, 202, testDate, testDate);
             dataService.BorrowCopy(103, 201, testDate, testDate);
 
-            IEnumerable<WrappedEvent> result1 = dataService.FindUserBorrowings(201);
+            IEnumerable<LibEvent> result1 = dataService.FindUserBorrowings(201);
 
             Assert.AreEqual(2, result1.Count());
-            foreach (WrappedBorrowing libEvent in result1)
+            foreach (BorrowingEvent libEvent in result1)
             {
-                Assert.AreEqual(EventType.Borrowing, libEvent.Type);
+                Assert.AreEqual(typeof(BorrowingEvent), libEvent.GetType());
                 Assert.AreEqual(201, libEvent.Reader.Id);
             }
 
-            IEnumerable<WrappedEvent> result2 = dataService.FindUserBorrowings(201,101);
+            IEnumerable<LibEvent> result2 = dataService.FindUserBorrowings(201,101);
 
             Assert.AreEqual(1, result2.Count());
-            foreach (WrappedBorrowing libEvent in result2)
+            foreach (BorrowingEvent libEvent in result2)
             {
-                Assert.AreEqual(EventType.Borrowing, libEvent.Type);
+                Assert.AreEqual(typeof(BorrowingEvent), libEvent.GetType());
                 Assert.AreEqual(101, libEvent.Copy.CopyId);
                 Assert.AreEqual(201, libEvent.Reader.Id);
             }
@@ -353,21 +350,21 @@ namespace UnitTests
             dataService.ReturnCopy(102, 202, testDate, CopyCondition.Mint);
             dataService.ReturnCopy(103, 201, testDate, CopyCondition.Mint);
 
-            IEnumerable<WrappedEvent> result1 = dataService.FindUserReturns(201);
+            IEnumerable<LibEvent> result1 = dataService.FindUserReturns(201);
 
             Assert.AreEqual(2, result1.Count());
-            foreach (WrappedReturn libEvent in result1)
+            foreach (ReturnEvent libEvent in result1)
             {
-                Assert.AreEqual(EventType.Return, libEvent.Type);
+                Assert.AreEqual(typeof(ReturnEvent), libEvent.GetType());
                 Assert.AreEqual(201, libEvent.Reader.Id);
             }
 
-            IEnumerable<WrappedEvent> result2 = dataService.FindUserReturns(201, 101);
+            IEnumerable<LibEvent> result2 = dataService.FindUserReturns(201, 101);
 
             Assert.AreEqual(1, result2.Count());
-            foreach (WrappedReturn libEvent in result2)
+            foreach (ReturnEvent libEvent in result2)
             {
-                Assert.AreEqual(EventType.Return, libEvent.Type);
+                Assert.AreEqual(typeof(ReturnEvent), libEvent.GetType());
                 Assert.AreEqual(101, libEvent.Copy.CopyId);
                 Assert.AreEqual(201, libEvent.Reader.Id);
             }
@@ -394,7 +391,7 @@ namespace UnitTests
             dataService.BorrowCopy(103, 201, testDate, testDate);
             dataService.PurchaseCopy(105, 1, CopyCondition.Mint, testDate, "test");
 
-            WrappedBorrowing result = dataService.FindLastBorrowing(101);
+            BorrowingEvent result = dataService.FindLastBorrowing(101);
             Assert.AreEqual(101,result.Copy.CopyId);
             Assert.AreEqual(201, result.Reader.Id);
         }
@@ -421,7 +418,7 @@ namespace UnitTests
                 dataService.BorrowCopy(103, 201, testDate, testDate);
                 dataService.ReturnCopy(103, 201, testDate, CopyCondition.Damaged);
 
-                WrappedReturn result = dataService.FindLastReturn(103);
+                ReturnEvent result = dataService.FindLastReturn(103);
                 Assert.AreEqual(103, result.Copy.CopyId);
                 Assert.AreEqual(201, result.Reader.Id);
             }
@@ -442,10 +439,10 @@ namespace UnitTests
             Book book3 = new Book(3, "testtitle2", "testauthor", new LiteraryGenre[] { LiteraryGenre.Comedy });
             repo.AddBook(book3.Id, book3.Title, book3.Author, book3.Genres);
 
-            IEnumerable<WrappedBook> result = dataService.FindBooksByTitle("testtitle2");
+            IEnumerable<Book> result = dataService.FindBooksByTitle("testtitle2");
 
             Assert.AreEqual(2, result.Count());
-            foreach (WrappedBook wbook in result)
+            foreach (Book wbook in result)
                 Assert.AreEqual("testtitle2", wbook.Title);
 
         }
@@ -465,10 +462,10 @@ namespace UnitTests
             Book book3 = new Book(3, "testtitle3", "testauthor2", new LiteraryGenre[] { LiteraryGenre.Comedy });
             repo.AddBook(book3.Id, book3.Title, book3.Author, book3.Genres);
 
-            IEnumerable<WrappedBook> result = dataService.FindBooksByAuthor("testauthor2");
+            IEnumerable<Book> result = dataService.FindBooksByAuthor("testauthor2");
 
             Assert.AreEqual(2, result.Count());
-            foreach (WrappedBook wbook in result)
+            foreach (Book wbook in result)
                 Assert.AreEqual("testauthor2", wbook.Author);
         }
 
@@ -487,15 +484,11 @@ namespace UnitTests
             Reader reader3 = new Reader(3, "Julian", "test");
             repo.AddReader(reader3.Id, reader3.FirstName, reader3.LastName);
 
-            IEnumerable<WrappedReader> result = dataService.FindReaders("test");
+            IEnumerable<Reader> result = dataService.FindReaders("test");
 
             Assert.AreEqual(2, result.Count());
-            foreach (WrappedReader reader in result)
+            foreach (Reader reader in result)
                 Assert.AreEqual("test",reader.LastName);
         }
-
-
-
-
     }
 }

@@ -1,11 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DataCreator;
-using DataHandler;
 using Data;
 using System.Linq;
 using System;
 using System.Collections.Generic;
-using DefinitionLib;
 using System.Diagnostics;
 
 namespace UnitTests
@@ -161,7 +158,7 @@ namespace UnitTests
             Assert.AreEqual(2, repo.GetAllEvents().Count());
             repo.AddPurchaseEvent(1, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), 200, "test");
             Assert.AreEqual(3, repo.GetAllEvents().Count());
-            repo.AddReturnEvent(1, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)),1, repo.GetAllEvents().OfType<WrappedBorrowing>().FirstOrDefault());
+            repo.AddReturnEvent(1, new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)),1, repo.GetAllEvents().OfType<BorrowingEvent>().FirstOrDefault());
             Assert.AreEqual(4, repo.GetAllEvents().Count());
         }
 

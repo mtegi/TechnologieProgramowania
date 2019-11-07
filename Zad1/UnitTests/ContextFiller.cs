@@ -1,10 +1,8 @@
 ﻿using Data;
-using DataHandler;
-using DefinitionLib;
 using System;
 using System.Collections.Generic;
 
-namespace DataCreator
+namespace UnitTests
 {
     public class ContextFiller : IDataProvider
     {

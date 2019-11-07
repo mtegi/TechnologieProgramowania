@@ -1,8 +1,5 @@
-using DataCreator;
-using DataHandler;
-using Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Data;
 
 namespace UnitTests
 {
@@ -42,7 +39,7 @@ namespace UnitTests
             Assert.ReferenceEquals(dataRepository.GetBook(2), dataRepository.GetCopy(3).Book);
             Assert.AreEqual(false, dataRepository.GetCopy(1).Borrowed);
             int id = 1;
-            foreach (WrappedCopy copy in dataRepository.GetAllCopies())
+            foreach (Copy copy in dataRepository.GetAllCopies())
             {
                 Assert.AreEqual(id, copy.CopyId);
                 id++;
@@ -53,7 +50,7 @@ namespace UnitTests
         public void ContextFillerBorrowingTest()
         {
             dataRepository = new DataRepository(filler);
-            foreach(WrappedCopy copy in dataRepository.GetAllCopies())
+            foreach(Copy copy in dataRepository.GetAllCopies())
             {
                 if(copy.CopyId == 3 || copy.CopyId == 6) Assert.AreEqual(true, copy.Borrowed);
                 else
