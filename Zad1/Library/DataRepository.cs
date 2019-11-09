@@ -1,12 +1,11 @@
-﻿using Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data
+namespace Library
 {
     public class DataRepository : IDataRepository
     {
@@ -20,7 +19,7 @@ namespace Data
         private readonly DataContext _data = new DataContext();
         private readonly IDataProvider _dataProvider;
 
-        public DataRepository(IDataProvider dataProvider) // Dependency Injection w kontruktorze
+        public DataRepository(IDataProvider dataProvider)
         {
             _dataProvider = dataProvider;
             _dataProvider.Fill(_data);
@@ -84,7 +83,13 @@ namespace Data
 
         public bool DeleteBook(int bookID)
         {
-            return _data.Books.Remove(bookID);
+            bool canRemove = true;
+            foreach (KeyValuePair<int, Copy> copy in _data.Copies)
+            {
+                if (copy.Value.Borrowed == true && copy.Key == bookID ) canRemove = false;
+            }
+            if (canRemove) return _data.Books.Remove(bookID);
+            return false;
         }
 
         public void AddReader(int id, string firstName, string lastName)
@@ -155,10 +160,7 @@ namespace Data
         public bool DeleteCopy(int copyID)
         {
             bool canRemove = true;
-            foreach (KeyValuePair<int, Copy> copy in _data.Copies)
-            {
-                if (copy.Value.Borrowed == true) canRemove = false;
-            }
+            if (_data.Copies[copyID].Borrowed) canRemove = false;
             if(canRemove) return _data.Copies.Remove(copyID);
             return false;
         }

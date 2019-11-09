@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Data
+namespace Library
 {
     /** Katalog (ksiazka) */
     public class Book
