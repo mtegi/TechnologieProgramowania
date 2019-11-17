@@ -1,4 +1,5 @@
 using Library;
+using Filler;
 using Serializer;
 using System;
 using System.IO;
@@ -6,8 +7,7 @@ using System.IO;
 namespace ConsoleApp
 {
     class Program
-    {
-        static DataContext data = new DataContext();
+    { 
         static private void Menu()
         {
             Console.WriteLine("Menu");
@@ -20,9 +20,12 @@ namespace ConsoleApp
         static void Main(string[] args)
         {   
             int choice = 0;
-           
+
+            DataContext data = new DataContext();
             JSONSerializer jSONSerializer = new JSONSerializer();
             CustomSerializer customSerializer = new CustomSerializer();
+            ContextFiller filler = new ContextFiller();
+            filler.Fill(data);
 
             while (choice != 5)
             {
@@ -46,7 +49,7 @@ namespace ConsoleApp
                             using (FileStream stream = File.Open(path, FileMode.Open))
                             {
                                 data = new DataContext(customSerializer.Deserialize(stream));
-                                Console.WriteLine("Deserializacja wlasna zakonczona");
+                                Console.WriteLine("Deserializacja wlasna zakonczona, liczba eventów: " + data.Events.Count.ToString());
                             }
                         }
                         else
@@ -89,8 +92,13 @@ namespace ConsoleApp
 
             if (String.IsNullOrEmpty(path))
                 path = "TP_SERIALIZTON_DEFAULT";
+
             return path;
         }
 
+       
     }
+
+
+   
 }

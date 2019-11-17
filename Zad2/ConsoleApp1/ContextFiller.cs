@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnitTests
+namespace Filler
 {
     public class ContextFiller : IDataProvider
     {
