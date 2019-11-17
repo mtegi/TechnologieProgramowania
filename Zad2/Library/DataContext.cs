@@ -11,6 +11,13 @@ namespace Library
    [Serializable]
    public class DataContext
     {
+        public DataContext(DataContext context)
+        {
+            Readers = new List<Reader>(context.Readers);
+            Books = new Dictionary<int, Book>(context.Books); ;
+            Events = new ObservableCollection<LibEvent>(context.Events);
+            Copies = new Dictionary<int, Copy>(context.Copies);
+        }
 
         public DataContext()
         {

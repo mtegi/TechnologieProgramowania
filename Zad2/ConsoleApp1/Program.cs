@@ -7,7 +7,8 @@ namespace ConsoleApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static DataContext data = new DataContext();
+        static private void Menu()
         {
             Console.WriteLine("Menu");
             Console.WriteLine("1. Serializacja wlasna");
@@ -15,39 +16,66 @@ namespace ConsoleApp
             Console.WriteLine("3. Serializacja JSON");
             Console.WriteLine("4. Deserializacja JSON");
             Console.WriteLine("5. Wyjdz");
-
+        }
+        static void Main(string[] args)
+        {   
             int choice = 0;
-
-            DataContext data = new DataContext();
+           
             JSONSerializer jSONSerializer = new JSONSerializer();
             CustomSerializer customSerializer = new CustomSerializer();
 
             while (choice != 5)
             {
+                Menu();
+                Console.Write("Wybieram: ");
                 choice = Console.Read() - '0';
                 switch (choice)
                 {
                     case 1:
                         string path = GetFile();
-                        FileStream fs = File.OpenWrite(path);
-                        customSerializer.Serialize(data, fs);
-                        Console.WriteLine("Serializacja zakonczona");
+                        using (FileStream stream = File.Open(path, FileMode.OpenOrCreate))
+                        {
+                            customSerializer.Serialize(data, stream);
+                        }
+                        Console.WriteLine("Serializacja wlasna zakonczona");
                         break;
                     case 2:
-                        fs = File.OpenRead(GetFile());
-                        data = customSerializer.Deserialize(fs);
-                        Console.WriteLine("Deserializacja zakonczona");
+                        path = GetFile();
+                        if (File.Exists(path))
+                        {
+                            using (FileStream stream = File.Open(path, FileMode.Open))
+                            {
+                                data = new DataContext(customSerializer.Deserialize(stream));
+                                Console.WriteLine("Deserializacja wlasna zakonczona");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Plik nie istnieje");
+                        }
                         break;
                     case 3:
-                        jSONSerializer.Serialize(GetFile(), data);
-                        Console.WriteLine("Serializacja zakonczona");
+                        path = GetFile();
+                        jSONSerializer.Serialize(path, data);
+                        Console.WriteLine("Serializacja JSON zakonczona");
                         break;
                     case 4:
-                        data = jSONSerializer.Deserialize(GetFile());
-                        Console.WriteLine("Deserializacja zakonczona");
+                        path = GetFile();
+                        if (File.Exists(path))
+                        {
+                            data = jSONSerializer.Deserialize(path);
+                            Console.WriteLine("Deserializacja JSON zakonczona");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Plik nie istnieje");
+                        }
                         break;
                     case 5:
                         Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Blad");
                         break;
                 }
             }
@@ -63,5 +91,6 @@ namespace ConsoleApp
                 path = "TP_SERIALIZTON_DEFAULT";
             return path;
         }
+
     }
 }
