@@ -58,6 +58,9 @@ namespace ConsoleApp
             Console.WriteLine("Podaj sciezke do pliku:");
             Console.ReadLine();
             string path = Console.ReadLine();
+
+            if (String.IsNullOrEmpty(path))
+                path = "TP_SERIALIZTON_DEFAULT";
             return path;
         }
     }
