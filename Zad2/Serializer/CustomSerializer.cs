@@ -20,7 +20,7 @@ namespace Serializer
             {
                 foreach (Book book in data.Books.Values)
                 {
-                    Int64 bookId = idGenerator.GetId(book, out bool firstTime);
+                    long bookId = idGenerator.GetId(book, out bool firstTime);
                     StringBuilder builder = new StringBuilder();
                     builder.Append(bookId);
                     builder.Append(';');
@@ -41,7 +41,7 @@ namespace Serializer
                 writer.WriteLine('#');
                 foreach (Reader reader in data.Readers)
                 {
-                    Int64 readerId = idGenerator.GetId(reader, out bool firstTime);
+                    long readerId = idGenerator.GetId(reader, out bool firstTime);
                     StringBuilder builder = new StringBuilder();
                     builder.Append(readerId);
                     builder.Append(';');
@@ -55,8 +55,8 @@ namespace Serializer
                 writer.WriteLine('#');
                 foreach (Copy copy in data.Copies.Values)
                 {
-                    Int64 copyId = idGenerator.GetId(copy, out bool firstTime);
-                    Int64 bookId = idGenerator.GetId(copy.Book, out firstTime);
+                    long copyId = idGenerator.GetId(copy, out bool firstTime);
+                    long bookId = idGenerator.GetId(copy.Book, out firstTime);
                     StringBuilder builder = new StringBuilder();
                     builder.Append(copyId);
                     builder.Append(';');
@@ -72,8 +72,8 @@ namespace Serializer
                 writer.WriteLine('#');
                 foreach (LibEvent libEvent in data.Events)
                 {
-                    Int64 libEventId = idGenerator.GetId(libEvent, out bool firstTime);
-                    Int64 copyId = idGenerator.GetId(libEvent.Copy, out firstTime);
+                    long libEventId = idGenerator.GetId(libEvent, out bool firstTime);
+                    long copyId = idGenerator.GetId(libEvent.Copy, out firstTime);
 
                     StringBuilder builder = new StringBuilder();
                     builder.Append(libEventId);

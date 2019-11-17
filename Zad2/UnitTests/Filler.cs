@@ -21,18 +21,17 @@ namespace UnitTests
             StreamReader copiesFile = null;
             System.Xml.Serialization.XmlSerializer deserializer;
             try
-            {
-                bookFile = new StreamReader("Books.xml");
-                readerFile = new StreamReader("Readers.xml");
-                copiesFile = new StreamReader("Copies.xml");
+            { 
+                bookFile = new StreamReader("./Filler/Books.xml");
+                readerFile = new StreamReader("./Filler/Readers.xml");
+                copiesFile = new StreamReader("./Filler/Copies.xml");
             }
             catch (FileNotFoundException)
             {
                 WriteFile();
-
-                bookFile = new StreamReader("Books.xml");
-                readerFile = new StreamReader("Readers.xml");
-                copiesFile = new StreamReader("Copies.xml");
+                bookFile = new StreamReader("./Filler/Books.xml");
+                readerFile = new StreamReader("./Filler/Readers.xml");
+                copiesFile = new StreamReader("./Filler/Copies.xml");
             }
  
                 deserializer = new System.Xml.Serialization.XmlSerializer(typeof(List<Book>));
@@ -134,9 +133,10 @@ namespace UnitTests
             for (int i = 1; i<= 20; i++)
                 copies.Add(new Copy(i, books[random.Next(books.Count)], copyConditions[random.Next(copyConditions.Count)]));
 
-            Serialize(new StreamWriter("Books.xml"), books);
-            Serialize(new StreamWriter("Readers.xml"), readers);
-            Serialize(new StreamWriter("Copies.xml"), copies);
+            System.IO.Directory.CreateDirectory("Filler");
+            Serialize(new StreamWriter("./Filler/Books.xml"), books);
+            Serialize(new StreamWriter("./Filler/Readers.xml"), readers);
+            Serialize(new StreamWriter("./Filler/Copies.xml"), copies);
         }
         private void Serialize(StreamWriter file, object o)
         {
