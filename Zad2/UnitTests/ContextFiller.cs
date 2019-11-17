@@ -47,10 +47,10 @@ namespace UnitTests
 
             // Dodawanie Eventów
             BorrowingEvent borrowing = new BorrowingEvent(data.Readers[2],data.Copies[4], new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)));
+            data.Events.Add(borrowing);
             data.Events.Add(new BorrowingEvent(data.Readers[0], data.Copies[3], new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0))));
             data.Copies[3].Borrowed = true;
-            data.Events.Add(new BorrowingEvent(data.Readers[1], data.Copies[6], new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0))));
-            data.Events.Add(borrowing);
+            data.Events.Add(new BorrowingEvent(data.Readers[1], data.Copies[6], new DateTimeOffset(2019, 10, 19, 22, 0, 0, new TimeSpan(2, 0, 0)), new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0))));           
             data.Events.Add(new ReturnEvent(data.Copies[4], new DateTimeOffset(2019, 10, 29, 22, 0, 0, new TimeSpan(2, 0, 0)), data.Readers[2], borrowing));           
             data.Copies[6].Borrowed = true;
 

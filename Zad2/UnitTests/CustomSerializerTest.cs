@@ -15,6 +15,12 @@ namespace UnitTests
     {
         DataContext data;
         private CustomSerializer serializer;
+        [TestMethod]
+        public void GetTypeTest()
+        {
+            Assert.AreEqual(null, Type.GetType("Library.BorrowingEvent"));
+            Assert.AreEqual(typeof(BorrowingEvent), Type.GetType("Library.BorrowingEvent,Library"));
+        }
 
         [TestMethod]
         public void DeserializeTest()
@@ -23,11 +29,14 @@ namespace UnitTests
             DataContext dataToSerialize = new DataContext();
             ContextFiller filler = new ContextFiller();
             filler.Fill(dataToSerialize);
-            FileStream fs = File.Create("serialized.txt");
-            serializer.Serialize(dataToSerialize, fs);
-
-            fs = File.OpenRead("serialized.txt");
-            data = serializer.Deserialize(fs);
+            using (FileStream stream = File.Open("serialized.txt", FileMode.OpenOrCreate))
+            {
+                serializer.Serialize(dataToSerialize, stream);
+            }
+            using (FileStream stream = File.Open("serialized.txt", FileMode.Open))
+            {
+                data = serializer.Deserialize(stream);
+            }
             DataRepository dataRepository = new DataRepository(data);
 
             //Sprawdz referencje
@@ -38,6 +47,12 @@ namespace UnitTests
             Assert.ReferenceEquals(dataRepository.GetAllEvents().ElementAt(2), dataRepository.GetAllEvents().ElementAt(3));
 
             //Sprawdz zawartosc
+            Assert.AreEqual(4, dataRepository.GetAllEvents().Count());
+            Assert.AreNotEqual(null, dataRepository.GetAllEvents().ElementAt(0));
+            Assert.AreNotEqual(null, dataRepository.GetAllEvents().ElementAt(1));
+            Assert.AreNotEqual(null, dataRepository.GetAllEvents().ElementAt(2));
+            Assert.AreNotEqual(null, dataRepository.GetAllEvents().ElementAt(3));
+            Assert.AreEqual("19.10.2019 22:00:00 +02:00", dataRepository.GetAllEvents().ElementAt(0).EventDate.ToString());
             Assert.AreEqual(1, dataRepository.GetBook(1).Id);
             Assert.AreEqual("Wydra", dataRepository.GetBook(1).Title);
             Assert.AreEqual("Jan Lasica", dataRepository.GetBook(1).Author);
