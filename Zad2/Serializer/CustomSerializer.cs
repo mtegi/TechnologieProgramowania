@@ -201,34 +201,33 @@ namespace Serializer
                 {
                     string[] eventProps = line.Split(';');
                     string objectId = eventProps[0];                    
-                    Type eventType = Type.GetType(eventProps[1]);
+                    Type eventType = Type.GetType(eventProps[1] + ",Library");
                     string copyId = eventProps[2];
-                    string eventDate = eventProps[4];
+                    string eventDate = eventProps[3];
                     LibEvent deserializedEvent = null;
                     if(eventType == typeof(BorrowingEvent))
                     {
-                        string readerId = eventProps[5];
-                        string returnDate = eventProps[6];
-                        string completed = eventProps[7];
+                        string readerId = eventProps[4];
+                        string returnDate = eventProps[5];
+                        string completed = eventProps[6];
                         deserializedEvent = new BorrowingEvent(tmpReaders[readerId], tmpCopies[copyId], Convert.ToDateTime(eventDate), Convert.ToDateTime(returnDate));
                     }
                     else if(eventType == typeof(ReturnEvent))
                     {
-                        string borrowingId = eventProps[6];
+                        string borrowingId = eventProps[4];
                         string readerId = eventProps[5];
                         deserializedEvent = new ReturnEvent(tmpCopies[copyId], Convert.ToDateTime(eventDate), tmpReaders[readerId], tmpEvents[borrowingId] as BorrowingEvent);
-                        
                     }
                     else if (eventType == typeof(PurchaseEvent))
                     {
-                        string distributor = eventProps[5];
-                        string price = eventProps[6];
+                        string distributor = eventProps[4];
+                        string price = eventProps[5];
                         deserializedEvent = new PurchaseEvent(tmpCopies[copyId], Convert.ToDateTime(eventDate), double.Parse(price), distributor);
                     }
                     else if (eventType == typeof(DestructionEvent))
                     {
-                        string reason = eventProps[5];
-                        deserializedEvent = new DestructionEvent(tmpCopies[copyId], Convert.ToDateTime(eventDate), reason);
+                        string reason = eventProps[4];
+                        deserializedEvent = new DestructionEvent(tmpCopies[copyId], Convert.ToDateTime(eventDate), reason);                 
                     }
                     tmpEvents.Add(objectId, deserializedEvent);
                     eventsToContext.Add(deserializedEvent);
