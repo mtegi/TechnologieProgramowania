@@ -20,14 +20,20 @@ namespace UnitTests
             StreamReader readerFile = null;
             StreamReader copiesFile = null;
             System.Xml.Serialization.XmlSerializer deserializer;
+            System.IO.Directory.CreateDirectory("Filler");
+
+
             try
-            { 
+            {
+               
                 bookFile = new StreamReader("./Filler/Books.xml");
                 readerFile = new StreamReader("./Filler/Readers.xml");
                 copiesFile = new StreamReader("./Filler/Copies.xml");
             }
             catch (FileNotFoundException)
             {
+
+               
                 WriteFile();
                 bookFile = new StreamReader("./Filler/Books.xml");
                 readerFile = new StreamReader("./Filler/Readers.xml");
@@ -133,7 +139,6 @@ namespace UnitTests
             for (int i = 1; i<= 20; i++)
                 copies.Add(new Copy(i, books[random.Next(books.Count)], copyConditions[random.Next(copyConditions.Count)]));
 
-            System.IO.Directory.CreateDirectory("Filler");
             Serialize(new StreamWriter("./Filler/Books.xml"), books);
             Serialize(new StreamWriter("./Filler/Readers.xml"), readers);
             Serialize(new StreamWriter("./Filler/Copies.xml"), copies);
