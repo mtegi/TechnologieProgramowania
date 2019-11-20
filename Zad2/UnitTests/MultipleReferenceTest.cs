@@ -1,5 +1,4 @@
-﻿using DummyClasses;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,14 +13,20 @@ namespace UnitTests
         [TestMethod]
         public void DummyClassesTest()
         {
-            DummyClass a = new DummyClass();
-            a.Id = 1;
+            DummyClass a = new DummyClass
+            {
+                Id = 1
+            };
 
-            DummyClass b = new DummyClass();
-            b.Id = 2;
+            DummyClass b = new DummyClass
+            {
+                Id = 2
+            };
 
-            DummyClass c = new DummyClass();
-            c.Id = 3;
+            DummyClass c = new DummyClass
+            {
+                Id = 3
+            };
 
             a.Other = b;
             b.Other = c;
@@ -64,20 +69,30 @@ namespace UnitTests
         {
 
 
-            DummyClass a = new DummyClass();
-            a.Id = 1;
+            DummyClass a = new DummyClass
+            {
+                Id = 1
+            };
 
-            DummyClass b = new DummyClass();
-            b.Id = 2;
+            DummyClass b = new DummyClass
+            {
+                Id = 2
+            };
 
-            DummyClass c = new DummyClass();
-            c.Id = 3;
+            DummyClass c = new DummyClass
+            {
+                Id = 3
+            };
 
-            DummyClass d = new DummyClass();
-            d.Id = 4;
+            DummyClass d = new DummyClass
+            {
+                Id = 4
+            };
 
-            DummyClass e = new DummyClass();
-            e.Id = 5;
+            DummyClass e = new DummyClass
+            {
+                Id = 5
+            };
 
 
             a.Other = b;

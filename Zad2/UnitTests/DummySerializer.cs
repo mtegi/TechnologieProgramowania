@@ -1,5 +1,4 @@
-﻿using DummyClasses;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
@@ -52,8 +51,10 @@ namespace UnitTests
                     }
                     else
                     {
-                        DummyClass deserializedDummy = new DummyClass();
-                        deserializedDummy.Id = int.Parse(dummyProps[2]);
+                        DummyClass deserializedDummy = new DummyClass
+                        {
+                            Id = int.Parse(dummyProps[2])
+                        };
                         if (tmpDummies.ContainsKey(other))
                         {
                             deserializedDummy.Other = tmpDummies[other];

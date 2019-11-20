@@ -14,9 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DummyClasses\DummyClasses.csproj" />
     <ProjectReference Include="..\Library\Library.csproj" />
-    <ProjectReference Include="..\Serializer\Serializer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DummyClasses
+namespace UnitTests
 {
     [Serializable]
     public class DummyClass

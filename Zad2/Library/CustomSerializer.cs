@@ -6,7 +6,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Serializer
+namespace Library
 {
     public class CustomSerializer
     {

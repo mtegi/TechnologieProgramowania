@@ -3,7 +3,7 @@ using System.IO;
 using Library;
 using Newtonsoft.Json;
 
-namespace Serializer
+namespace Library
 {
     public class JSONSerializer
     {

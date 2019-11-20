@@ -1,6 +1,5 @@
 using Library;
 using Filler;
-using Serializer;
 using System;
 using System.IO;
 
@@ -91,7 +90,7 @@ namespace ConsoleApp
             string path = Console.ReadLine();
 
             if (String.IsNullOrEmpty(path))
-                path = "TP_SERIALIZTON_DEFAULT";
+                path = "TP_SERIALIZATION_DEFAULT";
 
             return path;
         }
