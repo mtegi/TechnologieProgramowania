@@ -12,7 +12,7 @@ namespace DummyClasses
     {
         public DummyClass Other { get; set; }
         public float Id { get; set; }
-
+        public DummyClass() { }
         public DummyClass(SerializationInfo info,StreamingContext context)
         {
             Id = info.GetSingle(nameof(Id));
