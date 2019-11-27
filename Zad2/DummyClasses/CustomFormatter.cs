@@ -11,28 +11,66 @@ using System.Threading.Tasks;
 namespace DummyClasses
 {
     
-    class CustomFormatter : Formatter
-    {
-        private StreamWriter writer;
+   public class CustomFormatter : Formatter
+    { 
         public override ISurrogateSelector SurrogateSelector { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override SerializationBinder Binder { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override StreamingContext Context { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override StreamingContext Context { get; set; }
+
+        StringBuilder ObjectTextForm= new StringBuilder();
+        private List<string> ObjectsTextFormList = new List<string>();
+
 
         public override object Deserialize(Stream serializationStream)
         {
             throw new NotImplementedException();
         }
-        public void Serialize(Stream serializationStream, ISerializable graph)
-        {
-            var myType = graph.GetType();
-            SerializationInfo info = new SerializationInfo(myType, new FormatterConverter());
-            Context = new StreamingContext();
-            graph.GetObjectData(info, Context);
-            //TODO: i co teraz?
-        }
         public override void Serialize(Stream serializationStream, object graph)
         {
-            throw new NotImplementedException();
+            Stream stream = serializationStream;
+            ISerializable serialObj;
+            
+            if (graph is ISerializable)
+                serialObj = (ISerializable) graph;
+            else
+                throw new SerializationException();
+
+            SerializationInfo info = new SerializationInfo(graph.GetType(), new FormatterConverter());
+            Context = new StreamingContext(StreamingContextStates.File);
+            serialObj.GetObjectData(info, Context);
+
+            // "#" - object, "+" - simple type, "-" - reference
+
+            ObjectTextForm.AppendLine("#" + graph.GetType() + ":" + this.m_idGenerator.GetId(graph, out bool firstTime));
+
+            foreach (SerializationEntry item in info)
+            {
+                WriteMember(item.Name, item.Value);
+            }
+
+            ObjectsTextFormList.Add(ObjectTextForm.ToString());
+            ObjectTextForm = new StringBuilder();
+
+            while (this.m_objectQueue.Count != 0)
+            {
+                this.Serialize(null, this.m_objectQueue.Dequeue());
+            }
+
+
+
+            StreamWrite(stream);
+        }
+
+        private void StreamWrite(Stream serializationStream)
+        {
+            if (serializationStream != null)
+            {
+                using (StreamWriter writer = new StreamWriter(serializationStream))
+                {
+                    foreach (string line in ObjectsTextFormList)
+                        writer.Write(line);
+                }
+            }
         }
 
         protected override void WriteArray(object obj, string name, Type memberType)
@@ -52,9 +90,7 @@ namespace DummyClasses
 
         protected override void WriteChar(char val, string name)
         {
-                StringBuilder builder = new StringBuilder();
-                builder.Append(val);
-                builder.Append(';');
+            throw new NotImplementedException();
         }
 
         protected override void WriteDateTime(DateTime val, string name)
@@ -89,7 +125,17 @@ namespace DummyClasses
 
         protected override void WriteObjectRef(object obj, string name, Type memberType)
         {
-            throw new NotImplementedException();
+
+            if (obj is string)
+            {
+                //todo: serializacja string
+            }
+            else
+            {
+                this.Schedule(obj); //funkcja formattera, sama sprawdza czy obiekt juz jest
+                ObjectTextForm.AppendLine( "-" + name + ":" + this.m_idGenerator.GetId(obj, out bool firstTime));
+            }
+
         }
 
         protected override void WriteSByte(sbyte val, string name)
@@ -99,9 +145,7 @@ namespace DummyClasses
 
         protected override void WriteSingle(float val, string name)
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append(val);
-            builder.Append(';');
+            ObjectTextForm.AppendLine("+" + name + ":" + val.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture));
         }
 
         protected override void WriteTimeSpan(TimeSpan val, string name)
