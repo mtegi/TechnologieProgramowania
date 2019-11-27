@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -21,28 +22,88 @@ namespace DummyClasses
         private List<string> ObjectsTextFormList = new List<string>();
 
 
+
         public override object Deserialize(Stream serializationStream)
         {
+            string resultId=null;
+            Dictionary<string,object> data = new Dictionary<string, object>();
+            List<SerializationInfo> info = new List<SerializationInfo>();
+
+            // Przechodzi po pliku, tworzy nowe obiekty i puste serializationInfo. 
+            // Zapisuje if pierwszego obiektu bo to to co chcemy zwrócic.   
+
             using (StreamReader reader = new StreamReader(serializationStream))
             {
 
+                bool first = true;
                 string line;
-                while (!(line = reader.ReadLine()).StartsWith("*"))
+                while ((line = reader.ReadLine()) != null)
                 {
-                    //rozkladamy linijke z typem i id
-                    string[] firstLine = line.Split(':');
-                    string objectId = firstLine[1];
-                    Type eventType = Type.GetType(firstLine[0] + ",Library");
-                    while ((line = reader.ReadLine()).StartsWith("+") || (line = reader.ReadLine()).StartsWith("-"))
+
+                    if (line.StartsWith("#"))
                     {
-                        //rozkladamany linijke z property
-                        string[] propLine = line.Split(':');
-                        string value = propLine[1];
-                        string rest = propLine[0];
+
+                        
+                        string[] splitLine = line.Split(':');
+
+                        Type objType = Type.GetType(splitLine[1]);
+                        if (objType is null)
+                            throw new SerializationException();
+
+                        data.Add(splitLine[2], FormatterServices.GetUninitializedObject(objType));
+                        info.Add(new SerializationInfo(objType, new FormatterConverter()));
+
+                        if(first)
+                        {
+                            first = false;
+                            resultId = splitLine[2];
+                        }
                     }
                 }
+                
             }
-            return new object();
+
+            //Przechodzi po pliku jeszcze raz, tym razem wypełniajac serializationinfo wartosciami
+            // razem z referencjami do tych ustych obiektow co stworzylismy
+
+            using (StreamReader reader = new StreamReader(serializationStream))
+            {
+                string line;
+                int i = -1;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.StartsWith("#"))
+                    {
+                        i++;
+                    }
+
+                    if (line.StartsWith("+"))
+                    {
+                        string[] splitLine = line.Split(':');
+                        info[i].AddValue(splitLine[1], splitLine[2]);
+                    }
+
+                    if (line.StartsWith("-"))
+                    {
+                        string[] splitLine = line.Split(':');
+                        info[i].AddValue(splitLine[1], data[splitLine[2]]);
+                    }
+                }
+
+            }
+
+
+            // Tutaj trzeba jakos zainicjalizowac te obiekty na podstawie info
+            foreach (object item in data.Values)
+            {
+                Type[] constructorTypes = { typeof(SerializationInfo), Context.GetType() };
+
+                
+            }
+
+
+
+            return data[resultId];
         }
         public override void Serialize(Stream serializationStream, object graph)
         {
@@ -60,13 +121,12 @@ namespace DummyClasses
 
             // "#" - object, "+" - simple type, "-" - reference
 
-            ObjectTextForm.AppendLine(graph.GetType() + ":" + this.m_idGenerator.GetId(graph, out bool firstTime));
+            ObjectTextForm.AppendLine("#" +":"+ graph.GetType().AssemblyQualifiedName + ":"+ this.m_idGenerator.GetId(graph, out bool firstTime));
 
             foreach (SerializationEntry item in info)
             {
                 WriteMember(item.Name, item.Value);
             }
-            ObjectTextForm.Append("*\n");
             ObjectsTextFormList.Add(ObjectTextForm.ToString());
             ObjectTextForm = new StringBuilder();
 
@@ -152,7 +212,7 @@ namespace DummyClasses
             else
             {
                 this.Schedule(obj); //funkcja formattera, sama sprawdza czy obiekt juz jest
-                ObjectTextForm.AppendLine( "-" + name + ":" + this.m_idGenerator.GetId(obj, out bool firstTime));
+                ObjectTextForm.AppendLine( "-" + ":"+ name + ":" + this.m_idGenerator.GetId(obj, out bool firstTime));
             }
 
         }
@@ -164,7 +224,7 @@ namespace DummyClasses
 
         protected override void WriteSingle(float val, string name)
         {
-            ObjectTextForm.AppendLine("+" + name + ":" + val.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture));
+            ObjectTextForm.AppendLine("+" + ":"+ name + ":" + val.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture));
         }
 
         protected override void WriteTimeSpan(TimeSpan val, string name)

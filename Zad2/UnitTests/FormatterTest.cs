@@ -35,6 +35,28 @@ namespace UnitTests
             {
                 formatter.Serialize(stream, a);
             }
+
+            Type objtype = Type.GetType("DummyClasses.DummyClass, DummyClasses, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
+
+            Assert.IsNotNull(objtype);
+        }
+
+        [TestMethod]
+        public void ReferencjeTest()
+        {
+            DummyClass a = new DummyClass();
+
+            DummyClass b = new DummyClass();
+
+            b.Other = a;
+
+            a = new DummyClass();
+            a.Id = 5;
+
+
+            Assert.AreEqual(5, b.Other.Id);
         }
     }
+
+
 }
