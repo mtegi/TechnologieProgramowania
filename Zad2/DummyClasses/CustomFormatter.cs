@@ -23,7 +23,26 @@ namespace DummyClasses
 
         public override object Deserialize(Stream serializationStream)
         {
-            throw new NotImplementedException();
+            using (StreamReader reader = new StreamReader(serializationStream))
+            {
+
+                string line;
+                while (!(line = reader.ReadLine()).StartsWith("*"))
+                {
+                    //rozkladamy linijke z typem i id
+                    string[] firstLine = line.Split(':');
+                    string objectId = firstLine[1];
+                    Type eventType = Type.GetType(firstLine[0] + ",Library");
+                    while ((line = reader.ReadLine()).StartsWith("+") || (line = reader.ReadLine()).StartsWith("-"))
+                    {
+                        //rozkladamany linijke z property
+                        string[] propLine = line.Split(':');
+                        string value = propLine[1];
+                        string rest = propLine[0];
+                    }
+                }
+            }
+            return new object();
         }
         public override void Serialize(Stream serializationStream, object graph)
         {
@@ -41,13 +60,13 @@ namespace DummyClasses
 
             // "#" - object, "+" - simple type, "-" - reference
 
-            ObjectTextForm.AppendLine("#" + graph.GetType() + ":" + this.m_idGenerator.GetId(graph, out bool firstTime));
+            ObjectTextForm.AppendLine(graph.GetType() + ":" + this.m_idGenerator.GetId(graph, out bool firstTime));
 
             foreach (SerializationEntry item in info)
             {
                 WriteMember(item.Name, item.Value);
             }
-
+            ObjectTextForm.Append("*\n");
             ObjectsTextFormList.Add(ObjectTextForm.ToString());
             ObjectTextForm = new StringBuilder();
 
