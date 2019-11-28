@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -14,6 +15,12 @@ namespace DummyClasses
         public float Id { get; set; }
         public string Text { get; set; }
 
+        public DummyClassB(DummyClassC C,float Id, string text)
+        {
+            this.Id = Id;
+            this.Text = Text;
+            this.Other = C;
+        }
         public DummyClassB() { }
         public DummyClassB(SerializationInfo info,StreamingContext context)
         {

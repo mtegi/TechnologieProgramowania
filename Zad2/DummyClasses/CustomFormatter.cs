@@ -151,7 +151,7 @@ namespace DummyClasses
                 case "System.Single":
                     return Single.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
                 case "System.DateTime":
-                    return DateTime.ParseExact(value, "yyyyMMdd-HHmmss", System.Globalization.CultureInfo.InvariantCulture);
+                    return DateTime.ParseExact(value, "MM/dd/yyyy HH-mm-ss", System.Globalization.CultureInfo.InvariantCulture);
                 case "System.String":
                     return value;
                 case "null":
@@ -184,7 +184,7 @@ namespace DummyClasses
 
         protected override void WriteDateTime(DateTime val, string name)
         {
-            ObjectTextForm.AppendLine("+" + ":" + val.GetType() + ":" + name + ":" + val.ToString("yyyyMMdd-HHmmss", System.Globalization.CultureInfo.InvariantCulture));
+            ObjectTextForm.AppendLine("+" + ":" + val.GetType() + ":" + name + ":" + val.ToString("MM/dd/yyyy HH-mm-ss", System.Globalization.CultureInfo.InvariantCulture));
         }
 
         protected override void WriteDecimal(decimal val, string name)

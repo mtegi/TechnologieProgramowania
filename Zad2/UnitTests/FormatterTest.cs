@@ -38,6 +38,7 @@ namespace UnitTests
             }
 
             DummyClassA a2;
+            DummyClassB b2;
 
             using (FileStream stream = File.Open("format_dummies.txt", FileMode.Open))
             {
@@ -59,6 +60,11 @@ namespace UnitTests
             Assert.AreEqual(2020, a2.Other.Other.Time.Year);
             Assert.AreEqual(1, a2.Other.Other.Time.Month);
             Assert.AreEqual(1, a2.Other.Other.Time.Day);
+
+            b2 = a2.Other;
+            Assert.ReferenceEquals(a2.Other, b2);
+            b2.Id = 10f;
+            Assert.AreEqual(10f,a2.Other.Id);
         }
 
      
