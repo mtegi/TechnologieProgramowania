@@ -13,50 +13,56 @@ namespace UnitTests
         [TestMethod]
         public void SerializationTest()
         {
-            DummyClass a = new DummyClass();
+            DummyClassA a = new DummyClassA();
             a.Id = 1;
 
-            DummyClass b = new DummyClass();
+            DummyClassB b = new DummyClassB();
             b.Id = 2;
 
-            DummyClass c = new DummyClass();
+            DummyClassC c = new DummyClassC();
             c.Id = 3;
 
             a.Other = b;
             b.Other = c;
             c.Other = a;
 
+
+            b.Text = "HELLO";
+            c.Time = new DateTime(2020, 1, 1);
+
             CustomFormatter formatter= new CustomFormatter();
-
-     
-
 
             using (FileStream stream = File.Open("format_dummies.txt", FileMode.OpenOrCreate))
             {
                 formatter.Serialize(stream, a);
             }
 
-            Type objtype = Type.GetType("DummyClasses.DummyClass, DummyClasses, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
+            DummyClassA a2;
 
-            Assert.IsNotNull(objtype);
+            using (FileStream stream = File.Open("format_dummies.txt", FileMode.Open))
+            {
+               a2 = (DummyClassA) formatter.Deserialize(stream);
+
+            }
+
+            Assert.AreEqual(1, a2.Id);
+            Assert.AreEqual(2, a2.Other.Id);
+            Assert.AreEqual(3, a2.Other.Other.Id);
+            Assert.AreEqual(1, a2.Other.Other.Other.Id);
+
+            Assert.AreEqual(typeof(DummyClassA), a2.GetType());
+            Assert.AreEqual(typeof(DummyClassB), a2.Other.GetType());
+            Assert.AreEqual(typeof(DummyClassC), a2.Other.Other.GetType());
+            Assert.AreEqual(typeof(DummyClassA), a2.Other.Other.Other.GetType());
+
+            Assert.AreEqual("HELLO", a2.Other.Text);
+            Assert.AreEqual(2020, a2.Other.Other.Time.Year);
+            Assert.AreEqual(1, a2.Other.Other.Time.Month);
+            Assert.AreEqual(1, a2.Other.Other.Time.Day);
         }
 
-        [TestMethod]
-        public void ReferencjeTest()
-        {
-            DummyClass a = new DummyClass();
+     
 
-            DummyClass b = new DummyClass();
-
-            b.Other = a;
-
-            a = new DummyClass();
-            a.Id = 5;
-
-
-            Assert.AreEqual(5, b.Other.Id);
-        }
     }
-
 
 }

@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomFormatter.cs" />
-    <Compile Include="DummyClass.cs" />
+    <Compile Include="DummyClassC.cs" />
+    <Compile Include="DummyClassB.cs" />
+    <Compile Include="DummyClassA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
