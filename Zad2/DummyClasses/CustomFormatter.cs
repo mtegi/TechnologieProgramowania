@@ -30,8 +30,7 @@ namespace DummyClasses
 
             List<Tuple<string, string, string>> referenceBuffer = new List<Tuple<string, string, string>>();
 
-            // Przechodzi po pliku, tworzy nowe obiekty i puste serializationInfo. 
-            // Zapisuje if pierwszego obiektu bo to to co chcemy zwrócic.   
+  
 
             using (StreamReader reader = new StreamReader(serializationStream))
             {
@@ -85,7 +84,6 @@ namespace DummyClasses
                 info[reference.Item1].AddValue(reference.Item2, data[reference.Item3]);
             }
 
-            // Tutaj trzeba jakos zainicjalizowac te obiekty na podstawie info
             foreach (KeyValuePair<string, object> keyValue in data)
             {
                 Type[] constructorTypes = { typeof(SerializationInfo), typeof(StreamingContext) };
@@ -225,7 +223,7 @@ namespace DummyClasses
             }
             else
             {
-                this.Schedule(obj); //funkcja formattera, sama sprawdza czy obiekt juz jest
+                this.Schedule(obj); 
                 ObjectTextForm.AppendLine("-" + ":" + name + ":" + this.m_idGenerator.GetId(obj, out bool firstTime));
             }
 
