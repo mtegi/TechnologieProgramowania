@@ -1,8 +1,10 @@
-﻿using Library;
+﻿using DummyClasses;
+using Library;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Serializer;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -11,50 +13,63 @@ namespace UnitTests
     [TestClass]
     public class JSONTest
     {
-        DataContext data;
-        private JSONSerializer JSONSerializer;
-
+        
         [TestMethod]
-        public void DeserializeJSONTest()
+        public void DeserializeJSONDummiesTest()
         {
-            JSONSerializer = new JSONSerializer();
-            DataContext dataToSerialize = new DataContext();
-            ContextFiller filler = new ContextFiller();
-            filler.Fill(dataToSerialize);
-            JSONSerializer.Serialize("dataJSON.json", dataToSerialize);
-
-            data = JSONSerializer.Deserialize("dataJSON.json");
-            DataRepository dataRepository = new DataRepository(data);
-
-            //Sprawdz referencje
-            Assert.ReferenceEquals(dataRepository.GetAllEvents().ElementAt(0), dataRepository.GetReader(1));
-            Assert.ReferenceEquals(dataRepository.GetAllEvents().ElementAt(0), dataRepository.GetReader(2));
-            Assert.ReferenceEquals(dataRepository.GetBook(3), dataRepository.GetCopy(6).Book);
-            Assert.ReferenceEquals(dataRepository.GetBook(2), dataRepository.GetCopy(3).Book);
-            Assert.ReferenceEquals(dataRepository.GetAllEvents().ElementAt(2), dataRepository.GetAllEvents().ElementAt(3));
-
-            //Sprawdz zawartosc
-            Assert.AreEqual(1, dataRepository.GetBook(1).Id);
-            Assert.AreEqual("Wydra", dataRepository.GetBook(1).Title);
-            Assert.AreEqual("Jan Lasica", dataRepository.GetBook(1).Author);
-            Assert.AreEqual(2, dataRepository.GetBook(2).Id);
-            Assert.AreEqual("Lolita", dataRepository.GetBook(2).Title);
-            Assert.AreEqual("Milosz Liana", dataRepository.GetBook(2).Author);
-            Assert.AreEqual("Nowek", dataRepository.GetReader(1).LastName);
-            Assert.AreEqual("Rybicka", dataRepository.GetReader(2).LastName);
-            Assert.AreEqual(false, dataRepository.GetCopy(1).Borrowed);
-            int id = 1;
-            foreach (Copy copy in dataRepository.GetAllCopies())
+            DummyClassA a = new DummyClassA
             {
-                Assert.AreEqual(id, copy.CopyId);
-                id++;
-            }
-            foreach (Copy copy in dataRepository.GetAllCopies())
+                Id = 1
+            };
+
+            DummyClassB b = new DummyClassB
             {
-                if (copy.CopyId == 3 || copy.CopyId == 6) Assert.AreEqual(true, copy.Borrowed);
-                else
-                    Assert.AreEqual(false, copy.Borrowed);
-            }
+                Id = 2
+            };
+
+            DummyClassC c = new DummyClassC
+            {
+                Id = 3
+            };
+
+            a.Other = b;
+            b.Other = c;
+            c.Other = a;
+
+
+
+            b.Text = "HELLO";
+            c.Time = new DateTime(2020, 1, 1);
+
+
+
+            DummyClassA a2;
+            DummyClassB b2;
+
+            JSONSerializer serializer = new JSONSerializer();
+            serializer.Serialize("test.json", a);
+            a2 = serializer.Deserialize<DummyClassA>("test.json");
+
+            Assert.AreEqual(1, a2.Id);
+            Assert.AreEqual(2, a2.Other.Id);
+            Assert.AreEqual(3, a2.Other.Other.Id);
+            Assert.AreEqual(1, a2.Other.Other.Other.Id);
+
+            Assert.AreEqual(typeof(DummyClassA), a2.GetType());
+            Assert.AreEqual(typeof(DummyClassB), a2.Other.GetType());
+            Assert.AreEqual(typeof(DummyClassC), a2.Other.Other.GetType());
+            Assert.AreEqual(typeof(DummyClassA), a2.Other.Other.Other.GetType());
+
+            Assert.AreEqual("HELLO", a2.Other.Text);
+            Assert.AreEqual(2020, a2.Other.Other.Time.Year);
+            Assert.AreEqual(1, a2.Other.Other.Time.Month);
+            Assert.AreEqual(1, a2.Other.Other.Time.Day);
+
+            b2 = a2.Other;
+            Assert.ReferenceEquals(a2.Other, b2);
+            b2.Id = 10f;
+            Assert.AreEqual(10f, a2.Other.Id);
         }
-    }
+
+        }
 }

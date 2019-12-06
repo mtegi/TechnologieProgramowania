@@ -73,13 +73,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DummyClasses\DummyClasses.csproj">
+      <Project>{ce063f6b-49b0-4eb2-82f5-fe6494e74090}</Project>
+      <Name>DummyClasses</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Library\Library.csproj">
       <Project>{5696205D-B45D-4406-8D70-3834C6BB9429}</Project>
       <Name>Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Serializer\Serializer.csproj">
-      <Project>{ac848c91-6a4d-4240-b14b-a412bebdf6d1}</Project>
-      <Name>Serializer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

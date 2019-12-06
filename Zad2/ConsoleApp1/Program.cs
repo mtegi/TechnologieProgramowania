@@ -1,8 +1,8 @@
 using Library;
 using Filler;
-using Serializer;
 using System;
 using System.IO;
+using DummyClasses;
 
 namespace ConsoleApp
 {
@@ -12,7 +12,7 @@ namespace ConsoleApp
         {
             Console.WriteLine("Menu");
             Console.WriteLine("1. Serializacja wlasna");
-            Console.WriteLine("2. Deserializacja wlsana");
+            Console.WriteLine("2. Deserializacja wlasna");
             Console.WriteLine("3. Serializacja JSON");
             Console.WriteLine("4. Deserializacja JSON");
             Console.WriteLine("5. Wyjdz");
@@ -21,11 +21,25 @@ namespace ConsoleApp
         {   
             int choice = 0;
 
-            DataContext data = new DataContext();
+            CustomFormatter customFormatter = new CustomFormatter();
             JSONSerializer jSONSerializer = new JSONSerializer();
-            CustomSerializer customSerializer = new CustomSerializer();
-            ContextFiller filler = new ContextFiller();
-            filler.Fill(data);
+            DummyClassA a = new DummyClassA();
+            a.Id = 1;
+
+            DummyClassB b = new DummyClassB();
+            b.Id = 2;
+
+            DummyClassC c = new DummyClassC();
+            c.Id = 3;
+
+            a.Other = b;
+            b.Other = c;
+            c.Other = a;
+
+
+
+            b.Text = "HELLO";
+            c.Time = new DateTime(2020, 1, 1);
 
             while (choice != 5)
             {
@@ -38,7 +52,7 @@ namespace ConsoleApp
                         string path = GetFile();
                         using (FileStream stream = File.Open(path, FileMode.OpenOrCreate))
                         {
-                            customSerializer.Serialize(data, stream);
+                            customFormatter.Serialize(stream,a);
                         }
                         Console.WriteLine("Serializacja wlasna zakonczona");
                         break;
@@ -48,8 +62,8 @@ namespace ConsoleApp
                         {
                             using (FileStream stream = File.Open(path, FileMode.Open))
                             {
-                                data = new DataContext(customSerializer.Deserialize(stream));
-                                Console.WriteLine("Deserializacja wlasna zakonczona, liczba eventów: " + data.Events.Count.ToString());
+                                a = (DummyClassA) customFormatter.Deserialize(stream);
+                                Console.WriteLine("Deserializacja wlasna zakonczona");
                             }
                         }
                         else
@@ -59,14 +73,14 @@ namespace ConsoleApp
                         break;
                     case 3:
                         path = GetFile();
-                        jSONSerializer.Serialize(path, data);
+                        jSONSerializer.Serialize(path,a);
                         Console.WriteLine("Serializacja JSON zakonczona");
                         break;
                     case 4:
                         path = GetFile();
                         if (File.Exists(path))
                         {
-                            data = jSONSerializer.Deserialize(path);
+                            a = jSONSerializer.Deserialize<DummyClassA>(path);
                             Console.WriteLine("Deserializacja JSON zakonczona");
                         }
                         else

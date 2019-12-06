@@ -1,72 +1,123 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DummyClasses
 {
-    
-   public class CustomFormatter : Formatter
-    { 
+
+    public class CustomFormatter : Formatter
+    {
         public override ISurrogateSelector SurrogateSelector { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override SerializationBinder Binder { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override StreamingContext Context { get; set; }
 
-        StringBuilder ObjectTextForm= new StringBuilder();
+        StringBuilder ObjectTextForm = new StringBuilder();
         private List<string> ObjectsTextFormList = new List<string>();
 
 
+        public CustomFormatter()
+        {
+            Context = new StreamingContext(StreamingContextStates.File);
+        }
+
         public override object Deserialize(Stream serializationStream)
         {
+            string resultId = null;
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            Dictionary<string, SerializationInfo> info = new Dictionary<string, SerializationInfo>();
+
+            List<Tuple<string, string, string>> referenceBuffer = new List<Tuple<string, string, string>>();
+
+  
+
             using (StreamReader reader = new StreamReader(serializationStream))
             {
-
+                string id = null;
+                bool first = true;
                 string line;
-                while (!(line = reader.ReadLine()).StartsWith("*"))
+
+                while ((line = reader.ReadLine()) != null)
                 {
-                    //rozkladamy linijke z typem i id
-                    string[] firstLine = line.Split(':');
-                    string objectId = firstLine[1];
-                    Type eventType = Type.GetType(firstLine[0] + ",Library");
-                    while ((line = reader.ReadLine()).StartsWith("+") || (line = reader.ReadLine()).StartsWith("-"))
+
+                    if (line.StartsWith("#"))
                     {
-                        //rozkladamany linijke z property
-                        string[] propLine = line.Split(':');
-                        string value = propLine[1];
-                        string rest = propLine[0];
+                        string[] splitLine = line.Split(':');
+
+                        Type objType = Type.GetType(splitLine[1]);
+                        if (objType is null)
+                            throw new SerializationException();
+
+                        id = splitLine[2];
+                        data.Add(id, FormatterServices.GetUninitializedObject(objType));
+                        info.Add(id, new SerializationInfo(objType, new FormatterConverter()));
+
+
+                        if (first)
+                        {
+                            first = false;
+                            resultId = id;
+                        }
+                    }
+
+                    if (line.StartsWith("+"))
+                    {
+                        string[] splitLine = line.Split(':');
+                     
+                            info[id].AddValue(splitLine[2], ParseMember(splitLine[1], splitLine[3]));
+                    }
+
+                    if (line.StartsWith("-"))
+                    {
+                        string[] splitLine = line.Split(':');
+
+                        referenceBuffer.Add(Tuple.Create(id, splitLine[1], splitLine[2]));
                     }
                 }
+
+
             }
-            return new object();
+
+            foreach (Tuple<string, string, string> reference in referenceBuffer)
+            {
+                info[reference.Item1].AddValue(reference.Item2, data[reference.Item3]);
+            }
+
+            foreach (KeyValuePair<string, object> keyValue in data)
+            {
+                Type[] constructorTypes = { typeof(SerializationInfo), typeof(StreamingContext) };
+                object[] constuctorParameters = { info[keyValue.Key], Context };
+
+                keyValue.Value.GetType().GetConstructor(constructorTypes).Invoke(keyValue.Value, constuctorParameters);
+
+            }
+
+            return data[resultId];
         }
+
         public override void Serialize(Stream serializationStream, object graph)
         {
             Stream stream = serializationStream;
             ISerializable serialObj;
-            
+
             if (graph is ISerializable)
-                serialObj = (ISerializable) graph;
+                serialObj = (ISerializable)graph;
             else
                 throw new SerializationException();
 
             SerializationInfo info = new SerializationInfo(graph.GetType(), new FormatterConverter());
-            Context = new StreamingContext(StreamingContextStates.File);
+
             serialObj.GetObjectData(info, Context);
 
             // "#" - object, "+" - simple type, "-" - reference
 
-            ObjectTextForm.AppendLine(graph.GetType() + ":" + this.m_idGenerator.GetId(graph, out bool firstTime));
+            ObjectTextForm.AppendLine("#" + ":" + graph.GetType().AssemblyQualifiedName + ":" + this.m_idGenerator.GetId(graph, out bool firstTime));
 
             foreach (SerializationEntry item in info)
             {
                 WriteMember(item.Name, item.Value);
             }
-            ObjectTextForm.Append("*\n");
             ObjectsTextFormList.Add(ObjectTextForm.ToString());
             ObjectTextForm = new StringBuilder();
 
@@ -74,7 +125,6 @@ namespace DummyClasses
             {
                 this.Serialize(null, this.m_objectQueue.Dequeue());
             }
-
 
 
             StreamWrite(stream);
@@ -91,6 +141,24 @@ namespace DummyClasses
                 }
             }
         }
+
+        private object ParseMember(string type, string value)
+        {
+            switch (type)
+            {
+                case "System.Single":
+                    return Single.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
+                case "System.DateTime":
+                    return DateTime.ParseExact(value, "MM/dd/yyyy HH-mm-ss", System.Globalization.CultureInfo.InvariantCulture);
+                case "System.String":
+                    return value;
+                case "null":
+                    return null; 
+            }
+
+            throw new SerializationException("type: " + type + " value: " + value);
+        }
+
 
         protected override void WriteArray(object obj, string name, Type memberType)
         {
@@ -114,7 +182,7 @@ namespace DummyClasses
 
         protected override void WriteDateTime(DateTime val, string name)
         {
-            throw new NotImplementedException();
+            ObjectTextForm.AppendLine("+" + ":" + val.GetType() + ":" + name + ":" + val.ToString("MM/dd/yyyy HH-mm-ss", System.Globalization.CultureInfo.InvariantCulture));
         }
 
         protected override void WriteDecimal(decimal val, string name)
@@ -147,14 +215,23 @@ namespace DummyClasses
 
             if (obj is string)
             {
-                //todo: serializacja string
+                WriteString((String)obj, name);
+            }
+            else if (obj is null)
+            {
+                ObjectTextForm.AppendLine("+" + ":"+ "null" + ":" + name + ":" + "null");
             }
             else
             {
-                this.Schedule(obj); //funkcja formattera, sama sprawdza czy obiekt juz jest
-                ObjectTextForm.AppendLine( "-" + name + ":" + this.m_idGenerator.GetId(obj, out bool firstTime));
+                this.Schedule(obj); 
+                ObjectTextForm.AppendLine("-" + ":" + name + ":" + this.m_idGenerator.GetId(obj, out bool firstTime));
             }
 
+        }
+
+        private void WriteString(string val, string name)
+        {
+            ObjectTextForm.AppendLine("+" + ":" + val.GetType() + ":" + name + ":" + val);
         }
 
         protected override void WriteSByte(sbyte val, string name)
@@ -164,7 +241,7 @@ namespace DummyClasses
 
         protected override void WriteSingle(float val, string name)
         {
-            ObjectTextForm.AppendLine("+" + name + ":" + val.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture));
+            ObjectTextForm.AppendLine("+" + ":" + val.GetType() + ":" + name + ":" + val.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture));
         }
 
         protected override void WriteTimeSpan(TimeSpan val, string name)
