@@ -33,6 +33,7 @@ namespace Linq
         }
 
 
+
         public static List<string> GetProductNamesByVendorName(string vendorName)
         {
             using (DataClassesDataContext data = new DataClassesDataContext())
@@ -50,8 +51,8 @@ namespace Linq
             using (DataClassesDataContext data = new DataClassesDataContext())
             {
                 string result = (from productVendor in data.ProductVendors
-                                       where productVendor.Product.Name == productName
-                                       select productVendor.Vendor.Name).FirstOrDefault();
+                                 where productVendor.Product.Name == productName
+                                 select productVendor.Vendor.Name).FirstOrDefault();
                 return result;
             }
         }
@@ -102,9 +103,37 @@ namespace Linq
                 decimal result = (from product in products
                                   where (product.ProductSubcategory.ProductCategory.ProductCategoryID == category.ProductCategoryID || product.ProductSubcategory.ProductCategory.Name == category.Name)
                                   select product.StandardCost).ToList().Sum();
-                return (int) result;
+                return (int)result;
             }
         }
+        #endregion
+        #region 5
+        public static List<MyProduct> GetMyProductsByName(string namePart)
+        {
+            DataContext data = new DataContext();
+            return data.Products.Where(p => p.Name.Contains(namePart)).ToList();
+        }
+
+
+        public static List<MyProduct> GetMyProductsWithNRecentReviews(int howManyReviews)
+        {
+            DataContext data = new DataContext();
+            List<MyProduct> products = data.Products;
+            return products.Where(p => p.ProductReviews.Count == howManyReviews).ToList();
+        }
+
+        public static List<MyProduct> GetNMyProductsFromCategory(string categoryName, int n)
+        {
+            DataContext data = new DataContext();
+            return (from product in data.Products
+                    where product.ProductSubcategory != null && product.ProductSubcategory.ProductCategory.Name.Equals(categoryName)
+                    select product).Take(n).ToList();
+        }
+        #endregion
     }
-    #endregion    
 }
+
+
+
+
+

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
                 select product).ToList();
     }
 
-    public static string AsList_D(this List<Product> products, List<ProductVendor> vendors)
+    public static string AsString_D(this List<Product> products, List<ProductVendor> vendors)
     {
         StringBuilder stringBuilder = new StringBuilder();
         var query = (from product in products
@@ -45,7 +45,7 @@ using System.Threading.Tasks;
         return products.Skip(numOfProducts * (page - 1)).Take(numOfProducts).ToList();
     }
 
-    public static string AsList_I(this List<Product> products, List<ProductVendor> vendors)
+    public static string AsString_I(this List<Product> products, List<ProductVendor> vendors)
     {
         StringBuilder stringBuilder = new StringBuilder();
         var query = products.Join(vendors, product => product.ProductID, vendor => vendor.ProductID, (product, vendor) => product.Name + "-" + vendor.Vendor.Name).ToList();
