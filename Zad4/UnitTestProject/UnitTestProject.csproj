@@ -61,7 +61,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Linq\DataLayer.csproj">
+    <ProjectReference Include="..\DataLayer\DataLayer.csproj">
       <Project>{4243038c-6fbd-4c94-a3f7-abfdda8f5efd}</Project>
       <Name>DataLayer</Name>
     </ProjectReference>

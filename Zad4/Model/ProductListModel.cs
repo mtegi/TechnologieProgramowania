@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViewModel
+namespace  Model
 {
-    public class Class1
+    //Model listy produktów
+    public class ProductListModel
     {
     }
 }
