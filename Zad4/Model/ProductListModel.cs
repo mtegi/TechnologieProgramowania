@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace  Model
 {
-    //Model listy produktów
+    //Model produktów w lisce
     public class ProductListModel
     {
+        public int Id { get; }
+        public string Name { get; }
+
+        public ProductListModel(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace UnitTestProject
         [TestMethod]
         public void Add()
         {
-            IDataRepository repository = new Service.DataRepository();
+            IProductService repository = new Service.DataRepository();
             int size = repository.GetAllProducts().Count();
 
             Product product = new Product();
@@ -53,7 +53,7 @@ namespace UnitTestProject
         [TestMethod]
         public void Get()
         {
-            IDataRepository repository = new Service.DataRepository();
+            IProductService repository = new Service.DataRepository();
             int id = repository.GetAllProducts().First().ProductID;
             Assert.AreEqual(repository.GetAllProducts().First().Name, repository.Get(id).Name);
         }
@@ -61,14 +61,14 @@ namespace UnitTestProject
         [TestMethod]
         public void Delete()
         {
-            IDataRepository repository = new Service.DataRepository();
+            IProductService repository = new Service.DataRepository();
             Assert.IsTrue(repository.Delete(repository.GetAllProducts().Where(p => p.Name == "Test").First()));
         }
 
         [TestMethod]
         public void Update()
         {
-            IDataRepository repository = new Service.DataRepository();
+            IProductService repository = new Service.DataRepository();
             Product p = repository.GetAllProducts().First();
             p.Name = "test";
             int id = p.ProductID;

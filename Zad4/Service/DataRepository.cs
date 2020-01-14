@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-    public class DataRepository : IDataRepository
+    public class DataRepository : IProductService
     {
         private DataClassesDataContext context;
 
@@ -59,6 +59,16 @@ namespace Service
         public IQueryable<Product> GetAllProducts()
         {
             return context.Products;
+        }
+
+        public IEnumerable<Tuple<int,string>> GetDataForListView()
+        {
+            List<Tuple<int, string>> tuples = new List<Tuple<int, string>>();
+            foreach(Product p in context.Products)
+            {
+                tuples.Add(new Tuple<int, string>(p.ProductID, p.Name));
+            }
+            return tuples;
         }
 
         public bool Add(Product product)

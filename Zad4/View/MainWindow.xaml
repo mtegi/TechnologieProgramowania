@@ -4,11 +4,55 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View"
+        xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200">
 
-    <Grid>
-        
+    <Window.DataContext>
+        <viewModel:ProductListViewModel/>
+    </Window.DataContext>
+    
+    <Grid Margin="3,5,3,3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="398*" />
+            <ColumnDefinition Width="551*"/>
+            <ColumnDefinition Width="237*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="5,0,0,0" Orientation="Horizontal" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+            <TextBlock Text="ID" Width="80"/>
+            <TextBlock Text="Name" Width="343"/>
+        </StackPanel>
+        <ListView x:Name="productListView" ItemsSource="{Binding ProductsInList}" SelectedItem="{Binding ProductsInList}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Id}" Width="80"/>
+                        <TextBlock Text="{Binding Name}" Width="250"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel Orientation = "Vertical" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5,11,0,5" Grid.RowSpan="2">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="0,5,0,0" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                </Style>
+
+                <Style x:Key="deleted_entry"
+                   TargetType="MenuItem">
+                    <Setter Property="Background"
+                        Value="Yellow" />
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="Details" Command="{Binding DisplayDetails}"/>
+            <Button Content="Add" Command="{Binding DisplayAddWindow}"/>
+            <Button Content="Remove" Command="{Binding RemoveEntity}"/>
+        </StackPanel>
     </Grid>
 </Window>
         
