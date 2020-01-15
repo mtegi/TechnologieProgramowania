@@ -7,10 +7,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace UnitTestProject
 {
     [TestClass]
-    public class ExtensionTest
+    public class DatabaseTests
     {
         [TestMethod]
-        public void GetProductsWithoutCategory()
+        public void GetProducts()
         {
             using (DataClassesDataContext context = new DataClassesDataContext())
             {
@@ -21,7 +21,7 @@ namespace UnitTestProject
         }
 
         [TestMethod]
-        public void GetProductVendorString()
+        public void GetProductVendor()
         {
             using (DataClassesDataContext context = new DataClassesDataContext())
             {
@@ -39,7 +39,7 @@ namespace UnitTestProject
             }
         }
 
-        public void PageTest()
+        public void Test()
         {
             using (DataClassesDataContext context = new DataClassesDataContext())
             {

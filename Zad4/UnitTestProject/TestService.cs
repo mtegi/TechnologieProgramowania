@@ -49,7 +49,7 @@ namespace UnitTestProject
 
         public ProductWrapper GetDataForDetailsView(int id)
         {
-            throw new NotImplementedException();
+            return new ProductWrapper(Get(id));
         }
 
         public IEnumerable<Tuple<int, string>> GetDataForListView()
