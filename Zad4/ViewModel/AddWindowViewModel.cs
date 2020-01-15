@@ -46,7 +46,9 @@ namespace ViewModel
         private void AddProduct()
         {
 
-            this.productService.Add(ProductFactory.getNewWrapperProduct(ProductName, ProductNumber,MakeFlag));
+            this.productService.Add(ProductFactory.getNewWrapperProduct(ProductName, ProductNumber,MakeFlag,FinishedGoodsFlag,Color,SafetyStockLevel,
+                ReorderPoint,StandardCost,ListPrice,SizeUnitMeasureCode,WeightUnitMeasureCode,Weight,DaysToManufacture,ProductLine,Class,
+                Style, ProductSubcategoryID,ModelId, SellStartDate,SellEndDate));
         }
         
     }

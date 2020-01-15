@@ -243,7 +243,7 @@ namespace Service
                 product.ProductSubcategoryID = value;
             }
 }
-        public string ModelId { get; set; }
+        public int ModelId { get; set; }
         public DateTime? SellEndDate
         {
             get { return product.SellEndDate; }

@@ -47,7 +47,7 @@ namespace ViewModel
             Class = product.Class;
             Style = product.Style;
             ProductSubcategoryID = product.ProductSubcategoryID.ToString();
-            ModelId = product.ModelId;
+            ModelId = product.ModelId.ToString();
             SellStartDate = product.SellStartDate;
             SellEndDate = product.SellEndDate;
 
@@ -125,8 +125,9 @@ namespace ViewModel
             if (Int32.TryParse(ProductSubcategoryID, out parse_result_int))
                 product.ProductSubcategoryID = parse_result_int;
 
-            product.ModelId = ModelId;
-
+            if (Int32.TryParse(ModelId, out parse_result_int))
+                product.ModelId = parse_result_int;
+      
             service.Update(product);
            
 
