@@ -135,7 +135,17 @@ namespace Service
             }
         }
 
-     //   public string Size { get; set; } = null;
+        public string Size
+        {
+            get
+            {
+                return product.Size;
+            }
+            set
+            {
+                product.Size = value;
+            }
+        }
 
         public string SizeUnitMeasureCode {
             get
@@ -163,12 +173,76 @@ namespace Service
 
 
         
-        public decimal? Weight { get; set; }
-        public int DaysToManufacture { get; set; }
-        public string ProductLine { get; set; }
-        public string Class { get; set; }
-        public string Style { get; set; }
-        public string ProductSubcategoryID { get; set; }
+        public decimal? Weight
+        {
+            get
+            {
+                return product.Weight;
+            }
+            set
+            {
+                product.Weight = value;
+            }
+        }
+
+        public int DaysToManufacture
+        {
+            get
+            {
+                return product.DaysToManufacture;
+            }
+            set
+            {
+                product.DaysToManufacture = value;
+            }
+        }
+        public string ProductLine
+        {
+            get
+            {
+                return product.ProductLine;
+            }
+            set
+            {
+                product.ProductLine = value;
+            }
+        }
+
+
+
+        public string Class {
+            get
+            {
+                return product.ProductLine;
+            }
+            set
+            {
+                product.ProductLine = value;
+            }
+        }
+
+
+        public string Style {
+            get
+            {
+                return product.Style;
+            }
+            set
+            {
+                product.Style = value;
+            }
+                }
+
+        public int? ProductSubcategoryID {
+            get
+            {
+                return product.ProductSubcategoryID;
+            }
+            set
+            {
+                product.ProductSubcategoryID = value;
+            }
+}
         public string ModelId { get; set; }
         public DateTime? SellEndDate { get; set; }
         public DateTime SellStartDate { get; set; }
