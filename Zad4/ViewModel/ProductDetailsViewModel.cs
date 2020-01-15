@@ -46,7 +46,7 @@ namespace ViewModel
             ProductLine = product.ProductLine;
             Class = product.Class;
             Style = product.Style;
-            ProductSubcategoryID = product.ProductSubcategoryID;
+            ProductSubcategoryID = product.ProductSubcategoryID.ToString();
             ModelId = product.ModelId;
 
         }
@@ -116,7 +116,11 @@ namespace ViewModel
             product.ProductLine = ProductLine;
             product.Class = Class;
             product.Style = Style;
-            product.ProductSubcategoryID = ProductSubcategoryID;
+
+
+            if (Int32.TryParse(ProductSubcategoryID, out parse_result_int))
+                product.ProductSubcategoryID = parse_result_int;
+
             product.ModelId = ModelId;
 
             service.Update(product);
