@@ -1,6 +1,5 @@
 ﻿using Model;
 using Service;
-using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +16,7 @@ namespace ViewModel
         private int productID;
         private ProductWrapper product;
         private IProductService service;
-
         public event PropertyChangedEventHandler PropertyChanged;
-
         public Command SaveDetailsCommand { get; private set; }
 
 
@@ -32,7 +29,6 @@ namespace ViewModel
             productID = selectedProductModel.Id;
             this.product = service.GetDataForDetailsView(productID);
             this.SaveDetailsCommand = new Command (SaveDetails);
-
             ProductName = product.ProductName;
             ProductNumber = product.ProductNumber;
             MakeFlag = product.MakeFlag;
