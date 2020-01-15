@@ -5,16 +5,34 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace ViewModel
 {
-   public class ProductListViewModel
+   public class ProductListViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        private ObservableCollection<ProductListModel> _products;   
         //Lista produktow - widok produktow jako lista
-        public ObservableCollection<ProductListModel> ProductsInList { get; set; }
+        public ObservableCollection<ProductListModel> ProductsInList{ get => _products;
+            set {
+                _products = value;
+                NotifyPropertyChanged("ProductsInList");
+            }
+        }
+        private void OnProductsChanged()
+        {
+            Fill(productService.GetDataForListView());
+        }
+
         private readonly IProductService productService;
         public ProductListModel SelectedProduct { get; set; }
         public Command OpenAdd { get; private set; }
