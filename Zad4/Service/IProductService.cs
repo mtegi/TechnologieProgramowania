@@ -14,7 +14,7 @@ namespace Service
         IQueryable<Product> GetAllProducts();
         IEnumerable<Tuple<int, string>> GetDataForListView();
         ProductWrapper GetDataForDetailsView(int id);
-        bool Update(Product product);
+        bool Update(ProductWrapper product);
         bool Delete(int ProductID); 
     }
 }

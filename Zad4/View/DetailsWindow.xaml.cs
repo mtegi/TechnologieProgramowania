@@ -25,5 +25,10 @@ namespace View
             InitializeComponent();
             this.DataContext = new ProductDetailsViewModel(item);
         }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

@@ -6,15 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace ViewModel
 {
    
-   public class ProductDetailsViewModel
+   public class ProductDetailsViewModel : INotifyPropertyChanged
     {
+        private int productID;
         private ProductWrapper product;
         private IProductService service;
-        public Command saveDetailsCommand { get; private set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public Command SaveDetailsCommand { get; private set; }
 
 
 
@@ -23,25 +29,42 @@ namespace ViewModel
         {
             this.service = productService;
             ProductListModel selectedProductModel = (ProductListModel)listModel;
-            this.product = service.GetDataForDetailsView(selectedProductModel.Id);
-            this.saveDetailsCommand = new Command (saveDetails);
+            productID = selectedProductModel.Id;
+            this.product = service.GetDataForDetailsView(productID);
+            this.SaveDetailsCommand = new Command (SaveDetails);
 
             ProductName = product.ProductName;
             ProductNumber = product.ProductNumber;
+            MakeFlag = product.MakeFlag;
+            FinishedGoodsFlag = product.FinishedGoodsFlag;
+            Color = product.Color;
+            SafetyStockLevel = product.SafetyStockLevel;
 
 
         }
 
-        private void saveDetails()
+        private void SaveDetails()
         {
+            product.ProductName = ProductName;
+            product.ProductNumber = ProductNumber;
+            product.MakeFlag = MakeFlag;
+            product.FinishedGoodsFlag = FinishedGoodsFlag;
+            product.Color = Color;
 
+            service.Update(product);
+
+            this.product = service.GetDataForDetailsView(productID);
+
+            product.ToString();
         }
+
+
 
         public string ProductName { get; set; }
         public string ProductNumber { get; set; }
         public bool MakeFlag { get; set; }
         public bool FinishedGoodsFlag { get; set; }
-        public string Color { get; set; } = null;
+        public string Color { get; set; }
         public short SafetyStockLevel { get; set; }
         public short ReorderPoint { get; set; }
         public decimal StandardCost { get; set; }
@@ -60,6 +83,12 @@ namespace ViewModel
         public DateTime SellStartDate { get; set; }
 
 
-
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }

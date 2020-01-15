@@ -27,6 +27,7 @@ namespace ViewModel
             ProductsInList = new ObservableCollection<ProductListModel>();
             Fill(productService.GetDataForListView());
             this.Delete = new Command(DeleteProduct);
+
         }
 
         private void DeleteProduct()

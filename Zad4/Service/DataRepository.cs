@@ -35,11 +35,12 @@ namespace Service
             }
         }
 
-        public bool Update(Product product)
+        public bool Update(ProductWrapper product)
         {
+            
             try
             {
-                Product updatedProduct = context.Products.Where(p => p.ProductID == product.ProductID).FirstOrDefault();
+                Product updatedProduct = context.Products.Where(p => p.ProductID == product.getProduct().ProductID).FirstOrDefault();
                 foreach (System.Reflection.PropertyInfo property in updatedProduct.GetType().GetProperties())
                 {
                     if (property.CanWrite)
