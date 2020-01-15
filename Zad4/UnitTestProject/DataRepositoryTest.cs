@@ -69,8 +69,8 @@ namespace UnitTestProject
         public void Update()
         {
             IProductService repository = new Service.DataRepository();
-            Product p = repository.GetAllProducts().First();
-            p.Name = "test";
+            ProductWrapper p = new ProductWrapper (repository.GetAllProducts().First());
+            p.ProductName = "test";
             int id = p.ProductID;
             repository.Update(p);
             Assert.AreEqual("test", repository.Get(id).Name);

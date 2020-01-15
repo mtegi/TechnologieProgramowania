@@ -62,7 +62,7 @@ namespace UnitTestProject
             return tuples;
         }
 
-        public bool Update(Product product)
+        public bool Update(ProductWrapper product)
         {
             throw new NotImplementedException();
         }

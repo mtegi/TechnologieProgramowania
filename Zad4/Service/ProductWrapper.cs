@@ -11,14 +11,24 @@ namespace Service
     {
         private Product product;
 
+
         public ProductWrapper(Product product)
         {
             this.product = product;
         }
 
+
         internal Product getProduct()
         {
             return this.product;
+        }
+
+        public int ProductID
+        {
+            get
+            {
+               return product.ProductID;
+            }
         }
 
         public string ProductName {

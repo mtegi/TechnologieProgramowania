@@ -74,7 +74,7 @@
       <Name>Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\Service\Service.csproj">
-      <Project>{6e1e72c4-24eb-445e-83ce-18e7a5e7d7a5}</Project>
+      <Project>{6E1E72C4-24EB-445E-83CE-18E7A5E7D7A5}</Project>
       <Name>Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj">
