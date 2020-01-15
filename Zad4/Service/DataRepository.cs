@@ -21,11 +21,11 @@ namespace Service
             return context.Products.Where(p => p.ProductID == id).FirstOrDefault();
         }
 
-        public bool Delete(Product product)
+        public bool Delete(int ProductID)
         {
             try
             {
-                context.Products.DeleteOnSubmit(product);
+                context.Products.DeleteOnSubmit(Get(ProductID));
                 context.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);
                 return true;
             }

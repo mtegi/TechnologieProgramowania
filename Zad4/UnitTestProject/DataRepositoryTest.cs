@@ -23,7 +23,7 @@ namespace UnitTestProject
             Product product = new Product();
 
             product.rowguid = new Guid();
-            product.Name = "Test";
+            product.Name = "Test5";
             product.ProductNumber = "TX-1111";
             product.MakeFlag = true;
             product.FinishedGoodsFlag = true;
@@ -62,7 +62,7 @@ namespace UnitTestProject
         public void Delete()
         {
             IProductService repository = new Service.DataRepository();
-            Assert.IsTrue(repository.Delete(repository.GetAllProducts().Where(p => p.Name == "Test").First()));
+            Assert.IsTrue(repository.Delete(repository.GetAllProducts().Where(p => p.Name == "Test5").First().ProductID));
         }
 
         [TestMethod]

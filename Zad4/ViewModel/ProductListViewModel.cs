@@ -10,12 +10,15 @@ using System.Threading.Tasks;
 
 namespace ViewModel
 {
-   public class ProductListViewModel : INotifyPropertyChanged
+   public class ProductListViewModel
     {
         //Lista produktow - widok produktow jako lista
         public ObservableCollection<ProductListModel> ProductsInList { get; set; }
         private readonly IProductService productService;
-
+        public ProductListModel SelectedProduct { get; set; }
+        public Command OpenDetails { get; private set; }
+        public Command OpenAdd { get; private set; }
+        public Command Delete { get; private set; }
 
         public ProductListViewModel():this(new DataRepository()){}
         public ProductListViewModel(IProductService productService)
@@ -23,19 +26,16 @@ namespace ViewModel
             this.productService = productService ?? throw new ArgumentNullException(nameof(productService));
             ProductsInList = new ObservableCollection<ProductListModel>();
             Fill(productService.GetDataForListView());
+            this.Delete = new Command(DeleteProduct);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged
+        private void DeleteProduct()
         {
-            add
+            if (this.productService.Delete(SelectedProduct.Id))
             {
-                ((INotifyPropertyChanged)ProductsInList).PropertyChanged += value;
+                ProductsInList.Remove(SelectedProduct);
             }
 
-            remove
-            {
-                ((INotifyPropertyChanged)ProductsInList).PropertyChanged -= value;
-            }
         }
 
         private void Fill(IEnumerable<Tuple<int,string>> data)    
