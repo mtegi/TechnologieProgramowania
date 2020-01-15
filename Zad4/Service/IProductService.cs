@@ -9,7 +9,7 @@ namespace Service
 {
    public interface IProductService
     {
-        bool Add(Product product);
+        bool Add(ProductWrapper product);
         Product Get(int id);
         IQueryable<Product> GetAllProducts();
         IEnumerable<Tuple<int, string>> GetDataForListView();
