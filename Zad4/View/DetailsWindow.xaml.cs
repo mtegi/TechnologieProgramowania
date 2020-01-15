@@ -10,27 +10,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ViewModel;
 
 namespace View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Logika interakcji dla klasy DetailsWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class DetailsWindow : Window
     {
-        public MainWindow()
+        public DetailsWindow(object item)
         {
             InitializeComponent();
-        }
-
-        private void OpenDetailsWindow(object sender, RoutedEventArgs e)
-        {   if (this.productListView.SelectedItem != null)
-            {
-                DetailsWindow details = new DetailsWindow(this.productListView.SelectedItem);
-                details.Show();
-            }
+            this.DataContext = new ProductDetailsViewModel(item);
         }
     }
 }

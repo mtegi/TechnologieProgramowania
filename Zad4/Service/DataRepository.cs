@@ -84,5 +84,10 @@ namespace Service
             }
 
         }
+
+        public ProductWrapper GetDataForDetailsView(int id)
+        {
+            return new ProductWrapper(this.Get(id));
+        }
     }
 }

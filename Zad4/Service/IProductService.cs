@@ -13,6 +13,7 @@ namespace Service
         Product Get(int id);
         IQueryable<Product> GetAllProducts();
         IEnumerable<Tuple<int, string>> GetDataForListView();
+        ProductWrapper GetDataForDetailsView(int id);
         bool Update(Product product);
         bool Delete(int ProductID); 
     }
