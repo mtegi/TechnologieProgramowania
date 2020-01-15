@@ -63,8 +63,53 @@
             <ComboBoxItem>False</ComboBoxItem>
         </ComboBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="ProductNumber: "/>
-        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SafetyStockLevel}"/>
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="SafetyStockLevel: "/>
+        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SafetyStockLevel, StringFormat=D}" />
+
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="ReorderPoint: "/>
+        <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding ReorderPoint,  StringFormat=D}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="6" Text="StandardCost: "/>
+        <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding StandardCost}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="7" Text="ListPrice: "/>
+        <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding ListPrice}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="8" Text="Size: "/>
+        <TextBox Grid.Column="1" Grid.Row="8" Text="{Binding Size}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="9" Text="SizeUnitMeasureCode: "/>
+        <TextBox Grid.Column="1" Grid.Row="9" Text="{Binding SizeUnitMeasureCode}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="10" Text="WeightUnitMeasureCode: "/>
+        <TextBox Grid.Column="1" Grid.Row="10" Text="{Binding WeightUnitMeasureCode}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="11" Text="Weight: "/>
+        <TextBox Grid.Column="1" Grid.Row="11" Text="{Binding Weight}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="12" Text="DaysToManufacture: "/>
+        <TextBox Grid.Column="1" Grid.Row="12" Text="{Binding DaysToManufacture}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="13" Text="ProductLine: "/>
+        <TextBox Grid.Column="1" Grid.Row="13" Text="{Binding ProductLine}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="14" Text="Class: "/>
+        <TextBox Grid.Column="1" Grid.Row="14" Text="{Binding Class}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="15" Text="Style: "/>
+        <TextBox Grid.Column="1" Grid.Row="15" Text="{Binding Style}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="16" Text="ProductSubcategoryID: "/>
+        <TextBox Grid.Column="1" Grid.Row="16" Text="{Binding ProductSubcategoryID}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="17" Text="ModelId: "/>
+        <TextBox Grid.Column="1" Grid.Row="17" Text="{Binding ModelId}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="18" Text="SellEndDate "/>
+        <DatePicker Grid.Column="1" Grid.Row="18" SelectedDate="{Binding SellEndDate}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="19" Text="SellStartDate "/>
+        <DatePicker Grid.Column="1" Grid.Row="19" SelectedDate="{Binding SellStartDate}" />
         <Button Grid.Row="24" Grid.ColumnSpan="2"  Content="Save" Command="{Binding Add}"></Button>
         </Grid>
 </Window>

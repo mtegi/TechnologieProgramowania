@@ -57,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestService.cs" />
     <Compile Include="ListVMTest.cs" />
+    <Compile Include="DetailsWindowTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

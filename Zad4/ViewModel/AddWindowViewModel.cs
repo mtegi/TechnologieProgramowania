@@ -11,6 +11,27 @@ namespace ViewModel
     {
         private readonly IProductService productService;
         public Command Add { get; private set; }
+        public string ProductName { get; set; }
+        public string ProductNumber { get; set; }
+        public bool MakeFlag { get; set; }
+        public bool FinishedGoodsFlag { get; set; }
+        public string Color { get; set; }
+        public string SafetyStockLevel { get; set; }
+        public string ReorderPoint { get; set; }
+        public string StandardCost { get; set; }
+        public string ListPrice { get; set; }
+        public string Size { get; set; } = null;
+        public string SizeUnitMeasureCode { get; set; }
+        public string WeightUnitMeasureCode { get; set; }
+        public string Weight { get; set; }
+        public string DaysToManufacture { get; set; }
+        public string ProductLine { get; set; }
+        public string Class { get; set; }
+        public string Style { get; set; }
+        public string ProductSubcategoryID { get; set; }
+        public string ModelId { get; set; }
+        public DateTime? SellEndDate { get; set; }
+        public DateTime SellStartDate { get; set; }
 
         public AddWindowViewModel() : this(new DataRepository())
         {
