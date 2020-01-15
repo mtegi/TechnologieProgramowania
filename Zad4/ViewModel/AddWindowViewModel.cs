@@ -33,10 +33,6 @@ namespace ViewModel
         public DateTime? SellEndDate { get; set; }
         public DateTime SellStartDate { get; set; }
 
-        public string ProductName { get; set; }
-        public string ProductNumber { get; set; }
-        public bool MakeFlag { get; set; }
-
         public AddWindowViewModel() : this(new DataRepository())
         {
             this.Add = new Command(AddProduct);
