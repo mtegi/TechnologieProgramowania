@@ -14,6 +14,7 @@ namespace ViewModel
    public class ProductDetailsViewModel : INotifyPropertyChanged
     {
         private int productID;
+        ProductListModel selectedProductModel;
         private ProductWrapper product;
         private IProductService service;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -25,7 +26,7 @@ namespace ViewModel
         public ProductDetailsViewModel(Object listModel, IProductService productService)
         {
             this.service = productService;
-            ProductListModel selectedProductModel = (ProductListModel)listModel;
+            selectedProductModel = (ProductListModel)listModel;
             productID = selectedProductModel.Id;
             this.product = service.GetDataForDetailsView(productID);
             this.SaveDetailsCommand = new Command (SaveDetails);
@@ -34,25 +35,16 @@ namespace ViewModel
             MakeFlag = product.MakeFlag;
             FinishedGoodsFlag = product.FinishedGoodsFlag;
             Color = product.Color;
-            SafetyStockLevel = product.SafetyStockLevel;
+            SafetyStockLevel = product.SafetyStockLevel.ToString(); //short
+            ReorderPoint = product.ReorderPoint.ToString(); //short
+            StandardCost = product.StandardCost.ToString(); //decimal
+            ListPrice = product.ListPrice.ToString(); //decimal
+            SizeUnitMeasureCode = product.SizeUnitMeasureCode;
+            WeightUnitMeasureCode = product.WeightUnitMeasureCode;
 
 
         }
 
-        private void SaveDetails()
-        {
-            product.ProductName = ProductName;
-            product.ProductNumber = ProductNumber;
-            product.MakeFlag = MakeFlag;
-            product.FinishedGoodsFlag = FinishedGoodsFlag;
-            product.Color = Color;
-
-            service.Update(product);
-
-            this.product = service.GetDataForDetailsView(productID);
-
-            product.ToString();
-        }
 
 
 
@@ -61,10 +53,10 @@ namespace ViewModel
         public bool MakeFlag { get; set; }
         public bool FinishedGoodsFlag { get; set; }
         public string Color { get; set; }
-        public short SafetyStockLevel { get; set; }
-        public short ReorderPoint { get; set; }
-        public decimal StandardCost { get; set; }
-        public decimal ListPrice { get; set; }
+        public string SafetyStockLevel { get; set; }
+        public string ReorderPoint { get; set; }
+        public string StandardCost { get; set; }
+        public string ListPrice { get; set; }
         public string Size { get; set; } = null;
         public string SizeUnitMeasureCode { get; set; }
         public string WeightUnitMeasureCode { get; set; }
@@ -77,6 +69,23 @@ namespace ViewModel
         public string ModelId { get; set; }
         public DateTime? SellEndDate { get; set; }
         public DateTime SellStartDate { get; set; }
+
+
+        private void SaveDetails()
+        {
+            product.ProductName = ProductName;
+            product.ProductNumber = ProductNumber;
+            product.MakeFlag = MakeFlag;
+            product.FinishedGoodsFlag = FinishedGoodsFlag;
+            product.Color = Color;
+
+            service.Update(product);
+
+            this.product = service.GetDataForDetailsView(productID);
+            selectedProductModel.Name = this.product.ProductName;
+
+            product.ToString();
+        }
 
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
