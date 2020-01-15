@@ -16,7 +16,6 @@ namespace ViewModel
         public ObservableCollection<ProductListModel> ProductsInList { get; set; }
         private readonly IProductService productService;
         public ProductListModel SelectedProduct { get; set; }
-        public Command OpenDetails { get; private set; }
         public Command OpenAdd { get; private set; }
         public Command Delete { get; private set; }
 
