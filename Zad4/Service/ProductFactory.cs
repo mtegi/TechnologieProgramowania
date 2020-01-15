@@ -32,26 +32,38 @@ namespace Service
             Int32 parse_result_int;
 
 
-            if (short.TryParse(SafetyStockLevel, out parse_result_short)) ;
+            if (short.TryParse(SafetyStockLevel, out parse_result_short))
             product.SafetyStockLevel = parse_result_short;
+            else
+            product.SafetyStockLevel = 1;
 
-            if (short.TryParse(ReorderPoint, out parse_result_short)) ;
+            if (short.TryParse(ReorderPoint, out parse_result_short))
             product.ReorderPoint = parse_result_short;
+            else
+            product.ReorderPoint = 1;
 
             if (decimal.TryParse(StandardCost, out parse_result_decimal))
                 product.StandardCost = parse_result_decimal;
+            else
+                product.StandardCost = 0;
 
             if (decimal.TryParse(ListPrice, out parse_result_decimal))
                 product.ListPrice = parse_result_decimal;
+            else
+                product.ListPrice = 0;
 
             product.SizeUnitMeasureCode = SizeUnitMeasureCode;
             product.WeightUnitMeasureCode = WeightUnitMeasureCode;
 
             if (Decimal.TryParse(Weight, out parse_result_decimal))
                 product.Weight = parse_result_decimal;
+            else
+                product.Weight = 1;
 
             if (Int32.TryParse(DaysToManufacture, out parse_result_int))
                 product.DaysToManufacture = parse_result_int;
+            else
+                product.DaysToManufacture = 0;
 
             product.ProductLine = ProductLine;
             product.Class = Class;
