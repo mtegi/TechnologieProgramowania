@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="DataRepository.cs" />
     <Compile Include="IProductService.cs" />
+    <Compile Include="ProductWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -26,7 +26,7 @@
             <TextBlock Text="ID" Width="80"/>
             <TextBlock Text="Name" Width="343"/>
         </StackPanel>
-        <ListView x:Name="productListView" ItemsSource="{Binding ProductsInList}" SelectedItem="{Binding ProductsInList}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+        <ListView x:Name="productListView" ItemsSource="{Binding ProductsInList}" SelectedItem="{Binding SelectedProduct}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -49,7 +49,7 @@
                         Value="Yellow" />
                 </Style>
             </StackPanel.Resources>
-            <Button Content="Details" Command="{Binding DisplayDetails}"/>
+            <Button Content="Details"  Click="OpenDetailsWindow"/>
             <Button Content="Add" Command="{Binding DisplayAddWindow}"/>
             <Button Content="Remove" Command="{Binding RemoveEntity}"/>
         </StackPanel>

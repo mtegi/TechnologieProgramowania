@@ -14,8 +14,11 @@ namespace ViewModel
     {
         //Lista produktow - widok produktow jako lista
         public ObservableCollection<ProductListModel> ProductsInList { get; set; }
+        public Object SelectedProduct{ get; set; }
+
         private readonly IProductService productService;
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public ProductListViewModel():this(new DataRepository()){}
         public ProductListViewModel(IProductService productService)
@@ -25,18 +28,6 @@ namespace ViewModel
             Fill(productService.GetDataForListView());
         }
 
-        public event PropertyChangedEventHandler PropertyChanged
-        {
-            add
-            {
-                ((INotifyPropertyChanged)ProductsInList).PropertyChanged += value;
-            }
-
-            remove
-            {
-                ((INotifyPropertyChanged)ProductsInList).PropertyChanged -= value;
-            }
-        }
 
         private void Fill(IEnumerable<Tuple<int,string>> data)    
         {   
@@ -45,6 +36,11 @@ namespace ViewModel
             {
                 ProductsInList.Add(new ProductListModel(item.Item1, item.Item2));
             }
+        }
+
+        private void OpenDetilsView()
+        {
+
         }
     }
 }   

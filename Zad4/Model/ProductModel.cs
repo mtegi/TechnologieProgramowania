@@ -14,6 +14,8 @@ namespace Model
     public class ProductModel : INotifyPropertyChanged  
     {
         //TODO: set property changed events
+
+        private ProductWrapper product;
         private int _productID { get; set; }
         public string ProductName { get; set; }
         public string ProductNumber { get; set; }
