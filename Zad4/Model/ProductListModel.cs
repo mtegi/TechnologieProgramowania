@@ -13,15 +13,7 @@ namespace  Model
     {
         public int Id { get; }
         public string Name {
-            get
-            {
-                return this.Name;
-            }
-            set
-            {
-                this.Name = value;
-                OnPropertyChanged("Name");
-            }
+            get;
         }
 
         public ProductListModel(int id, string name)

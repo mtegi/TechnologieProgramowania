@@ -41,7 +41,13 @@ namespace ViewModel
             ListPrice = product.ListPrice.ToString(); //decimal
             SizeUnitMeasureCode = product.SizeUnitMeasureCode;
             WeightUnitMeasureCode = product.WeightUnitMeasureCode;
-
+            Weight = product.Weight.ToString(); //decimal
+            DaysToManufacture = product.DaysToManufacture.ToString(); //int
+            ProductLine = product.ProductLine;
+            Class = product.Class;
+            Style = product.Style;
+            ProductSubcategoryID = product.ProductSubcategoryID;
+            ModelId = product.ModelId;
 
         }
 
@@ -60,8 +66,8 @@ namespace ViewModel
         public string Size { get; set; } = null;
         public string SizeUnitMeasureCode { get; set; }
         public string WeightUnitMeasureCode { get; set; }
-        public decimal? Weight { get; set; }
-        public int DaysToManufacture { get; set; }
+        public string Weight { get; set; }
+        public string DaysToManufacture { get; set; }
         public string ProductLine { get; set; }
         public string Class { get; set; }
         public string Style { get; set; }
@@ -73,18 +79,51 @@ namespace ViewModel
 
         private void SaveDetails()
         {
+            short parse_result_short;
+            decimal parse_result_decimal;
+            Int32 parse_result_int;
+
             product.ProductName = ProductName;
             product.ProductNumber = ProductNumber;
             product.MakeFlag = MakeFlag;
             product.FinishedGoodsFlag = FinishedGoodsFlag;
             product.Color = Color;
 
+
+
+           if(short.TryParse(SafetyStockLevel, out parse_result_short));
+            product.SafetyStockLevel = parse_result_short;
+
+           if (short.TryParse(ReorderPoint, out parse_result_short)) ;
+            product.ReorderPoint = parse_result_short;
+
+            if (decimal.TryParse(StandardCost, out parse_result_decimal))
+                product.StandardCost = parse_result_decimal;
+
+            if (decimal.TryParse(ListPrice, out parse_result_decimal))
+                product.ListPrice = parse_result_decimal;
+
+            product.SizeUnitMeasureCode = SizeUnitMeasureCode;
+            product.WeightUnitMeasureCode = WeightUnitMeasureCode;
+
+            if (Decimal.TryParse(Weight, out parse_result_decimal))
+                product.Weight = parse_result_decimal;
+
+            if (Int32.TryParse(DaysToManufacture, out parse_result_int))
+                product.DaysToManufacture = parse_result_int;
+
+            product.ProductLine = ProductLine;
+            product.Class = Class;
+            product.Style = Style;
+            product.ProductSubcategoryID = ProductSubcategoryID;
+            product.ModelId = ModelId;
+
             service.Update(product);
+           
 
             this.product = service.GetDataForDetailsView(productID);
-            selectedProductModel.Name = this.product.ProductName;
+           // selectedProductModel.Name = this.product.ProductName;
 
-            product.ToString();
         }
 
 

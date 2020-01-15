@@ -156,7 +156,7 @@ namespace Service
             }
             set
             {
-                this.WeightUnitMeasureCode = value;
+                product.WeightUnitMeasureCode = value;
             }
         }
 
