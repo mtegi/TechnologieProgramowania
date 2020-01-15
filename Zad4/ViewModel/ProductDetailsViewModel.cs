@@ -48,6 +48,8 @@ namespace ViewModel
             Style = product.Style;
             ProductSubcategoryID = product.ProductSubcategoryID.ToString();
             ModelId = product.ModelId;
+            SellStartDate = product.SellStartDate;
+            SellEndDate = product.SellEndDate;
 
         }
 
@@ -84,10 +86,13 @@ namespace ViewModel
             Int32 parse_result_int;
 
             product.ProductName = ProductName;
+
             product.ProductNumber = ProductNumber;
             product.MakeFlag = MakeFlag;
             product.FinishedGoodsFlag = FinishedGoodsFlag;
             product.Color = Color;
+            product.SellStartDate = SellStartDate;
+            product.SellEndDate = SellEndDate;
 
 
 
@@ -126,7 +131,7 @@ namespace ViewModel
            
 
             this.product = service.GetDataForDetailsView(productID);
-           // selectedProductModel.Name = this.product.ProductName;
+            selectedProductModel.Name = this.product.ProductName;
 
         }
 

@@ -18,7 +18,7 @@ namespace  Model
 
             get
             {
-                return _name; ;
+                return _name;
             }
             set
             {

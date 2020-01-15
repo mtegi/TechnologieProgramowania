@@ -10,31 +10,61 @@
     <Window.DataContext>
         <viewModel:AddWindowViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <viewModel:BoolToIndexConverter x:Key="boolToIndexConverter" />
+    </Window.Resources>
     <Grid>
             <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-            </Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Product Name: "/>
-        <TextBox Grid.Column="1" Grid.Row="0"  />
+        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding ProductName}"/>
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="ProductNumber: "/>
-        <TextBox Grid.Column="1" Grid.Row="1"  />
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ProductNumber}"/>
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="MakeFlag: "/>
-        <TextBox Grid.Column="1" Grid.Row="2"  />
-        <Button Grid.Row="9" Grid.ColumnSpan="2"  Content="Save" Command="{Binding Add}"></Button>
+        <ComboBox Grid.Column="1" Grid.Row="2" SelectedIndex="{Binding MakeFlag, Converter={StaticResource boolToIndexConverter}}">
+            <ComboBoxItem>True</ComboBoxItem>
+            <ComboBoxItem>False</ComboBoxItem>
+        </ComboBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="FinishedGoodsFlag: "/>
+        <ComboBox Grid.Column="1" Grid.Row="3" SelectedIndex="{Binding FinishedGoodsFlag, Converter={StaticResource boolToIndexConverter}}">
+            <ComboBoxItem>True</ComboBoxItem>
+            <ComboBoxItem>False</ComboBoxItem>
+        </ComboBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="ProductNumber: "/>
+        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SafetyStockLevel}"/>
+        <Button Grid.Row="24" Grid.ColumnSpan="2"  Content="Save" Command="{Binding Add}"></Button>
         </Grid>
 </Window>

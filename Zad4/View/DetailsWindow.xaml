@@ -104,7 +104,11 @@
         <TextBlock Grid.Column="0" Grid.Row="17" Text="ModelId: "/>
         <TextBox Grid.Column="1" Grid.Row="17" Text="{Binding ModelId}"/>
 
-     
+        <TextBlock Grid.Column="0" Grid.Row="18" Text="SellEndDate "/>
+        <DatePicker Grid.Column="1" Grid.Row="18" SelectedDate="{Binding SellEndDate}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="19" Text="SellStartDate "/>
+        <DatePicker Grid.Column="1" Grid.Row="19" SelectedDate="{Binding SellStartDate}" />
 
 
         <Button Grid.Column="0" Grid.Row="22" Content="Cancel" Click="CloseButton_Click"/>
