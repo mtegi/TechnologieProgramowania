@@ -11,34 +11,33 @@ namespace  Model
     //Model produktów w lisce
     public class ProductListModel : INotifyPropertyChanged
     {
-        public int Id { get; }
+        
+        private int _id;
+        private string _name;
         public string Name {
             get
             {
-                return this.Name;
+                return _name; ;
             }
             set
             {
-                this.Name = value;
+                _name = value;
                 OnPropertyChanged("Name");
             }
         }
+        public int Id { get { return _id; } set {
+                _id= value;
+                OnPropertyChanged("Id");
+            } }
 
         public ProductListModel(int id, string name)
         {
-            Id = id;
-            Name = name;
+            _id = id;
+            _name = name;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
-        }
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
