@@ -45,7 +45,7 @@ namespace Service
                 {
                     if (property.CanWrite)
                     {
-                        property.SetValue(updatedProduct, property.GetValue(product));
+                        property.SetValue(updatedProduct, property.GetValue(product.getProduct()));
                     }
                 }
                 context.SubmitChanges();
