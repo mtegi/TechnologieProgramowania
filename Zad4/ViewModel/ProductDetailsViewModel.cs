@@ -48,6 +48,8 @@ namespace ViewModel
             Style = product.Style;
             ProductSubcategoryID = product.ProductSubcategoryID.ToString();
             ModelId = product.ModelId;
+            SellStartDate = product.SellStartDate;
+            SellEndDate = product.SellEndDate;
 
         }
 
@@ -89,6 +91,8 @@ namespace ViewModel
             product.MakeFlag = MakeFlag;
             product.FinishedGoodsFlag = FinishedGoodsFlag;
             product.Color = Color;
+            product.SellStartDate = SellStartDate;
+            product.SellEndDate = SellEndDate;
 
 
 
