@@ -29,7 +29,7 @@ namespace View
         {   if (this.productListView.SelectedItem != null)
             {
                 DetailsWindow details = new DetailsWindow(this.productListView.SelectedItem);
-                details.Show();
+                details.ShowDialog();
             }
         }
     }
