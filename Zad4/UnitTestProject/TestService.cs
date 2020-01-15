@@ -26,9 +26,9 @@ namespace UnitTestProject
             Assert.AreEqual(Products.Count(), 5);
         }
 
-        public bool Add(ProductWrapper product)
+        public bool Add(Product product)
         {
-           Products.Add(product.getProduct());
+           Products.Add(product);
             return true;
         }
 

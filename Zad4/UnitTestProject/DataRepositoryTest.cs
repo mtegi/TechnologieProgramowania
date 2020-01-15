@@ -45,7 +45,7 @@ namespace UnitTestProject
             product.SellStartDate = DateTime.Today;
             product.SellEndDate = DateTime.Today.AddDays(1);
             product.ModifiedDate = DateTime.Today;
-            repository.Add(new ProductWrapper(product));
+            repository.Add(product);
 
             Assert.AreEqual(size + 1, repository.GetAllProducts().Count());
         }

@@ -72,14 +72,11 @@ namespace Service
             return tuples;
         }
 
-        public bool Add(ProductWrapper product)
+        public bool Add(Product product)
         {
-            Product productToAdd = product.getProduct();
-
-            
             try
             {
-                context.Products.InsertOnSubmit(productToAdd);
+                context.Products.InsertOnSubmit(product);
                 context.SubmitChanges();
                 return true;
             } catch

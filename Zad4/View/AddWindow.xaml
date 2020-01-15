@@ -7,9 +7,6 @@
         xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
         Title="AddWindow" Height="450" Width="800">
-    <Window.Resources>
-        <viewModel:BoolToIndexConverter x:Key="boolToIndexConverter" />
-    </Window.Resources>
     <Window.DataContext>
         <viewModel:AddWindowViewModel/>
     </Window.DataContext>
@@ -31,16 +28,13 @@
             </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Product Name: "/>
-        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding ProductName}" />
+        <TextBox Grid.Column="1" Grid.Row="0"  />
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="ProductNumber: "/>
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ProductNumber}" />
+        <TextBox Grid.Column="1" Grid.Row="1"  />
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="MakeFlag: "/>
-        <ComboBox Grid.Column="1" Grid.Row="2" SelectedIndex="{Binding MakeFlag, Converter={StaticResource boolToIndexConverter}}">
-            <ComboBoxItem>True</ComboBoxItem>
-            <ComboBoxItem>False</ComboBoxItem>
-        </ComboBox>
+        <TextBox Grid.Column="1" Grid.Row="2"  />
         <Button Grid.Row="9" Grid.ColumnSpan="2"  Content="Save" Command="{Binding Add}"></Button>
         </Grid>
 </Window>

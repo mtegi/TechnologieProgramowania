@@ -12,10 +12,6 @@ namespace ViewModel
         private readonly IProductService productService;
         public Command Add { get; private set; }
 
-        public string ProductName { get; set; }
-        public string ProductNumber { get; set; }
-        public bool MakeFlag { get; set; }
-
         public AddWindowViewModel() : this(new DataRepository())
         {
             this.Add = new Command(AddProduct);
@@ -28,7 +24,7 @@ namespace ViewModel
 
         private void AddProduct()
         {
-            this.productService.Add(ProductFactory.getNewWrapperProduct(ProductName,ProductNumber,MakeFlag));
+           // this.productService.Add();
         }
         
     }
