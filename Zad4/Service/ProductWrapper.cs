@@ -244,8 +244,15 @@ namespace Service
             }
 }
         public string ModelId { get; set; }
-        public DateTime? SellEndDate { get; set; }
-        public DateTime SellStartDate { get; set; }
-
+        public DateTime? SellEndDate
+        {
+            get { return product.SellEndDate; }
+            set { product.SellEndDate = value; }
+        }
+        public DateTime SellStartDate
+        {
+            get { return product.SellStartDate; }
+            set { product.SellStartDate = value; }
+        }
     }
 }
