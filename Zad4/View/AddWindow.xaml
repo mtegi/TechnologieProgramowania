@@ -1,0 +1,40 @@
+﻿<Window x:Class="View.AddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:View"
+        xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
+        mc:Ignorable="d"
+        Title="AddWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <viewModel:AddWindowViewModel/>
+    </Window.DataContext>
+    <Grid>
+            <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Product Name: "/>
+        <TextBox Grid.Column="1" Grid.Row="0"  />
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="ProductNumber: "/>
+        <TextBox Grid.Column="1" Grid.Row="1"  />
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="MakeFlag: "/>
+        <TextBox Grid.Column="1" Grid.Row="2"  />
+        <Button Grid.Row="9" Grid.ColumnSpan="2"  Content="Save" Command="{Binding Add}"></Button>
+        </Grid>
+</Window>

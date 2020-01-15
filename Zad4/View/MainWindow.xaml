@@ -51,7 +51,7 @@
                 </Style>
             </StackPanel.Resources>
             <Button Content="Details"  Click="OpenDetailsWindow" Width="200"/>
-            <Button Content="Add" Command="{Binding DisplayAddWindow}" Width="200"/>
+            <Button Content="Add" Click="OpenAddWindow" Width="200"/>
             <Button Content="Remove" Command="{Binding Delete}" Width="200"/>
         </StackPanel>
     </Grid>

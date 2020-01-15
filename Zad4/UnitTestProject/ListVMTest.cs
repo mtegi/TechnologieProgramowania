@@ -32,5 +32,14 @@ namespace UnitTestProject
             viewModel.Delete.Execute(null);
             Assert.AreEqual(4, viewModel.ProductsInList.Count());
         }
+
+        [TestMethod]
+        public void DeleteException()
+        {
+            ProductListViewModel viewModel = new ProductListViewModel(new TestService(), delegate () { throw new Exception(); });
+            Assert.AreEqual(5, viewModel.ProductsInList.Count());
+            viewModel.SelectedProduct = null;
+            Assert.ThrowsException<Exception>(delegate() { viewModel.Delete.Execute(null); });
+        }
     }
 }

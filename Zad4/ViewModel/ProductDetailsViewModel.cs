@@ -13,7 +13,7 @@ namespace ViewModel
     {
         private ProductWrapper product;
         private IProductService service;
-        public Command saveDetailsCommand { get; private set; }
+        public Command SaveDetailsCommand { get; private set; }
 
 
 
@@ -23,7 +23,7 @@ namespace ViewModel
             this.service = productService;
             ProductListModel selectedProductModel = (ProductListModel)listModel;
             this.product = service.GetDataForDetailsView(selectedProductModel.Id);
-            this.saveDetailsCommand = new Command (saveDetails);
+            this.SaveDetailsCommand = new Command (saveDetails);
 
             ProductName = product.ProductName;
             ProductNumber = product.ProductNumber;

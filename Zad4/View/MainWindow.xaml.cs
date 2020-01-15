@@ -32,5 +32,11 @@ namespace View
                 details.ShowDialog();
             }
         }
+
+        private void OpenAddWindow(object sender, RoutedEventArgs e)
+        {
+            AddWindow addWindow = new AddWindow();
+            addWindow.Show();
+        }
     }
 }
