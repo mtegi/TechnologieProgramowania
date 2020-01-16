@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="DetailsWindow" Height="450" Width="800">
         <Window.Resources>
-             <viewModel:BoolToIndexConverter x:Key="boolToIndexConverter" />
+             <local:BoolToIndexConverter x:Key="boolToIndexConverter" />
         </Window.Resources>
 
 
